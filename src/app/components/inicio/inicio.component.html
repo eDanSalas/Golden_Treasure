@@ -1,0 +1,79 @@
+<div class="video-container">
+    <video #videoPlayer autoplay loop playsinline [src]="videoUrl | safeurl" (contextmenu)="onRightClick($event)"></video>
+</div>
+
+<section class="hotel-text">
+    <img src="images/hotel.png" alt="Hotel">
+    <div class="text">
+        <h2>Bienvenido a <strong>Golden Treasure</strong></h2>
+        <hr>
+        <p class="p-texto">
+            Hotel ubicado frente a Playa La Corona en Guayabitos. 
+            ¡Te va a encantar nuestro paraíso tropical! Contamos con 140 habitaciones y suites con espectaculares vistas al mar, 
+            disfruta de unas vacaciones perfectas, sea cual sea tu motivo de viaje. 
+            Degusta sabores de la alta cocina mexicana e italiana en nuestros restaurantes a la carta, 
+            revitaliza tus sentidos en Aura SPA y relájate en la playa o la piscina. 
+            Diversión garantizada para niños y adultos con asombrosos shows nocturnos diarios. 
+            Ven y atesora momentos mágicos que solo Hotel Golden Treasure puede ofrecer.
+        </p>
+        <p class="p-reserva"><strong>¡Reserva Ahora!</strong></p>
+    </div>
+</section>
+
+<section class="cards-container">
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="card-item">
+                <div class="card-front">
+                    <img src="images/limpieza.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Limpieza</h3>
+                    <p class="card-text">
+                        Supervisamos y desarrollaremos activamente nuestras soluciones para garantizar un enfoque continuo 
+                        en la salud y la seguridad de nuestros huéspedes y asociados.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item">
+                <div class="card-front">
+                    <img src="images/comida.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Platillos</h3>
+                    <p class="card-text">
+                        Comida Rika UwU.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item">
+                <div class="card-front">
+                    <img src="images/reservar.webp" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Reservación Flexible</h3>
+                    <p class="card-text">
+                        Inserte texto.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item">
+                <div class="card-front">
+                    <img src="images/atencion.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Atención de Alta Calidad</h3>
+                    <p class="card-text">
+                        Se me pegan los webooooooOoOOs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

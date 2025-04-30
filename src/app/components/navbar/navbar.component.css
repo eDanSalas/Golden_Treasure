@@ -1,0 +1,50 @@
+.myNav {
+    background-color: rgba(0, 0, 0, 0.405);
+    box-shadow: 0px 2px 6px rgb(0, 0, 0, 0.1);
+    padding: 0;
+    width: 100%;
+
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    transition: background-color 0.5s ease;
+}
+
+.myNav.scrolled {
+    background-color: #fff;
+}
+
+.nav-up {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-text {
+    color: goldenrod;
+    font-size: 2rem;
+}
+
+.separator {
+    height: 2px;
+    background-color: goldenrod;
+}
+
+li a {
+    color: goldenrod;
+
+}
+
+.bl1{
+    font-size: 20px;
+    align-self: center;
+}
+
+.bl2{
+    font-size: 28px;
+    align-self: center;
+}

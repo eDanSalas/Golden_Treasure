@@ -1,0 +1,45 @@
+<nav class="navbar navbar-dark navbar-expand-lg myNav" [class.scrolled]="isScrolled">
+    <div class="container-fluid d-flex flex-column">
+
+        <div class="nav-up w-100 d-flex align-items-center py-2">
+            <img src="images/logo.png" alt="Logo" width="80" height="80">
+            <div class="d-flex flex-column text-start div-text">
+                <span class="brand-line bl1">Golden</span>
+                <span class="brand-line bl2">Treasure</span>
+            </div>
+        </div>
+
+        <span class="separator w-100"></span>
+
+        <div class="w-100 d-flex flex-column">
+            <button class="navbar-toggler align-self-end mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse myDivNav" id="navbarNav">
+                <ul class="navbar-nav d-flex justify-content-center w-100">
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/inicio']">Inicio</a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/alojamiento']">Alojamiento</a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/ofertas']">Ofertas</a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/servicios']">Servicios</a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/eventos']">Eventos</a>
+                    </li>
+                    <li class="nav-item mx-5">
+                        <a class="nav-link" [routerLink]="['/comentarios']">Comentarios</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</nav>
