@@ -10,6 +10,17 @@ video {
     object-fit: cover;
 }
 
+.video-text button{
+    background-color: goldenrod;       
+    color: white;                    
+    padding: 10px 20px;              
+    font-size: 16px;                 
+    border: none;                    
+    border-radius: 8px;              
+    cursor: pointer;                 
+    transition: all 0.3s ease;
+}
+
 .hotel-text{
     display: flex;
     justify-content: space-around;

@@ -1,0 +1,29 @@
+.imagen-container{ 
+    position: relative;
+    display: block;
+}
+
+.imagen-container img {
+    height: 45vh;
+    object-fit: cover;
+    filter: brightness(55%);
+}
+
+.imagen-text{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    padding: 10px 20px;
+}
+
+.imagen-text h1 {
+    font-size: 8rem;
+    font-weight: bold;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    -webkit-text-stroke: 6px rgb(219, 186, 0);
+}

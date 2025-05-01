@@ -1,1 +1,22 @@
-<p>Alojamiento Funciona!!!</p>
+<div class="imagen-container">
+    <img src="images/alojamiento.png" class="img-fluid w-100" alt="Alojamiento">
+    <div class="imagen-text">
+        <h1>Alojamiento</h1>
+    </div>
+</div>
+
+@if (habitaciones.length > 0) {
+    <div class="habitaciones-container">
+      @for (habitacion of habitaciones; track habitacion.id) {
+        <div class="habitacion-card">
+          <h2>{{ habitacion.titulo }}</h2>
+          <p>{{ habitacion.descripcion }}</p>
+          <p><strong>Huéspedes:</strong> {{ habitacion.huespedes }}</p>
+          <p><strong>Precio por noche:</strong> ${{ habitacion.precio }}</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <p>Cargando habitaciones o no hay disponibles.</p>
+}
+  
