@@ -4,7 +4,7 @@
 }
 
 .imagen-container img {
-    height: 45vh;
+    height: 50vh;
     object-fit: cover;
     filter: brightness(55%);
 }
@@ -27,3 +27,140 @@
     text-align: center;
     -webkit-text-stroke: 6px rgb(219, 186, 0);
 }
+
+.cargando-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: goldenrod;
+    background-color: lightgray;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 10px;
+    width: 50%;
+    margin: 3rem auto 3rem auto;
+}
+
+mat-spiner circle{
+    stroke: goldenrod !important;
+}
+  
+@keyframes girar{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.texto-container{
+    width: 75%;
+    margin: 2rem auto 2rem auto;
+    text-align: justify;
+}
+
+.habitaciones-container{
+    width: 75%;
+    margin: auto auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+}
+  
+.hab{
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+  
+.carrusel{
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+  
+.imagen-principal{
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+  
+.miniaturas{
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+  
+.miniaturas img{
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+  
+.miniaturas img:hover{
+    transform: scale(1.15);
+}
+  
+.info{
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+  
+.info h2{
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    color: goldenrod;
+}
+  
+.iconos-servicios{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    color: #666;
+}
+  
+.iconos-servicios i{
+    margin-right: 6px;
+    color: #b4915d;
+}
+  
+.descripcion{
+    margin: 16px 0;
+    color: #555;
+}
+  
+.btn-vermas{
+    background-color: #b4915d;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    width: fit-content;
+    transition: background-color 0.3s;
+}
+  
+.btn-vermas:hover{
+    background-color: #977945;
+}
+  
+.precio{
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #222;
+}
+  

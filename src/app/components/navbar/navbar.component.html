@@ -1,12 +1,23 @@
 <nav class="navbar navbar-dark navbar-expand-lg myNav" [class.scrolled]="isScrolled">
     <div class="container-fluid d-flex flex-column">
 
-        <div class="nav-up w-100 d-flex align-items-center py-2">
+        <div class="nav-up w-100 d-flex align-items-center justify-content-between py-2 px-3">
             <img src="images/logo.png" alt="Logo" width="80" height="80">
             <div class="d-flex flex-column text-start div-text">
                 <span class="brand-line bl1">Golden</span>
                 <span class="brand-line bl2">Treasure</span>
             </div>
+
+            <div class="user-avatar position-relative">
+                <img src="images/avatar.png" alt="User Avatar" width="50" height="50" class="rounded-circle cursor-pointer" (click)="toggleMenu()">
+    
+                @if (menuOpen) {
+                    <div class="user-menu position-absolute end-0 mt-2 p-2 bg-light border rounded shadow-sm">
+                        Bienvenido ING Admin
+                    </div>
+                }
+            </div>
+
         </div>
 
         <span class="separator w-100"></span>
@@ -30,9 +41,6 @@
                     </li>
                     <li class="nav-item mx-5">
                         <a class="nav-link" [routerLink]="['/servicios']">Servicios</a>
-                    </li>
-                    <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/eventos']">Eventos</a>
                     </li>
                     <li class="nav-item mx-5">
                         <a class="nav-link" [routerLink]="['/comentarios']">Comentarios</a>

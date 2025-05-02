@@ -6,17 +6,52 @@
 </div>
 
 @if (habitaciones.length > 0) {
+    <div class="texto-container">
+      <p>
+        Deja que la comodidad te acompañe durante tu estancia. 
+        Disfruta en alguna de nuestras 140 habitaciones que te ofrecen elementos visuales clásicos de la arquitectura mexicana 
+        con un mobiliario sofisticado y confortable. 
+        Eleva tu estadía en una de nuestras sorprendentes master suites y 
+        obtén acceso a un espacio amplificado, con sala de estar, cocineta y confortables baños con tina de hidromasaje. 
+        ¡Déjate sorprender con nuestras increíbles vistas al mar y al atardecer! descubre todas las opciones que tenemos para ti.
+      </p>
+    </div>
+
+    <app-search (buscar)="onSearch($event)"></app-search>
+
     <div class="habitaciones-container">
-      @for (habitacion of habitaciones; track habitacion.id) {
-        <div class="habitacion-card">
-          <h2>{{ habitacion.titulo }}</h2>
-          <p>{{ habitacion.descripcion }}</p>
-          <p><strong>Huéspedes:</strong> {{ habitacion.huespedes }}</p>
-          <p><strong>Precio por noche:</strong> ${{ habitacion.precio }}</p>
+      @for (habitacion of habFiltradas; track habitacion.id; let i = $index) {
+        <div class="hab">
+          <div class="carrusel">
+            <img [src]="habImage[habitacion.id][0]" alt="Imagen de {{ habitacion.titulo }}" class="imagen-principal" />
+            <div class="miniaturas">
+              <img [src]="habImage[habitacion.id][1]" alt="Miniatura 1" />
+              <img [src]="habImage[habitacion.id][2]" alt="Miniatura 2" />
+            </div>
+          </div>
+          <div class="info">
+            <h2>{{ habitacion.titulo }}</h2>
+            <hr>
+            <div class="iconos-servicios">
+              @for (icon of amenidades[(habitacion.id - 1) % amenidades.length]; track icon) {
+                <div>
+                  <i class="fa-solid {{ icon }}"></i>
+                  {{ obtenerAmenidad(icon) }}
+                </div>
+              }
+            </div>
+            <p class="descripcion">{{ habitacion.descripcion }}</p>
+            <button class="btn-vermas">VER MÁS</button>
+            <p class="precio">Desde <strong>${{ habitacion.precio.toFixed(2) }}</strong> USD por noche</p>
+          </div>
         </div>
       }
     </div>
+    
   } @else {
-    <p>Cargando habitaciones o no hay disponibles.</p>
+    <div class="cargando-container">
+      <h1>Cargando habitaciones</h1>
+      <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+    </div>
 }
   

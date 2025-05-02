@@ -24,6 +24,15 @@
     align-items: center;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.user-menu {
+    min-width: 120px;
+    z-index: 1000;
+}
+
 .div-text {
     color: goldenrod;
     font-size: 2rem;
