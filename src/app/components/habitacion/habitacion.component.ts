@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
-import { HabitacionService } from '../../services/habitacion.service';
 import { Habitacion } from '../../habitacion';
-import { CommonModule } from '@angular/common';
+import { HabitacionService } from '../../services/habitacion.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SearchComponent } from '../search/search.component';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-alojamiento',
-  standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, SearchComponent, RouterModule],
-  templateUrl: './alojamiento.component.html',
-  styleUrl: './alojamiento.component.css'
+  selector: 'app-habitacion',
+  imports: [RouterModule, MatProgressSpinnerModule],
+  templateUrl: './habitacion.component.html',
+  styleUrl: './habitacion.component.css'
 })
-export class AlojamientoComponent {
-  habitaciones: Habitacion[] = [];
+export class HabitacionComponent {
+  habitacion!: Habitacion;
+  id!: number;
+
   habImage: {[key: number]: string[]} = {
     1: ["images/h1-1.jpg","images/h1-2.jpg","images/h1-3.jpg"],
     2: ["images/h2-1.jpg","images/h2-2.jpg","images/h2-3.jpg"],
@@ -39,47 +38,17 @@ export class AlojamientoComponent {
     ["fa-wifi", "fa-building-shield", "fa-phone", "fa-snowflake"],
     ["fa-wifi", "fa-wine-glass", "fa-snowflake", "fa-umbrella-beach"]
   ];
-  habFiltradas: Habitacion[] = [];
 
-
-  constructor(public habitacionService: HabitacionService) {}
+  constructor(private servicio: HabitacionService, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.recuperarHabitaciones();
-  }
-
-  recuperarHabitaciones(): void {
-    this.habitacionService.retornar().subscribe({
-      next: (response: { habitaciones: Habitacion[] }) => {
-        this.habitaciones = response.habitaciones;
-        this.habFiltradas = [...response.habitaciones];
-      },
-      error: (err) => console.error('Error cargando habitaciones:', err)
+    this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.servicio.retornar().subscribe(data => {
+      const hab = data.habitaciones.find(h => h.id === this.id);
+      if (hab) {
+        this.habitacion = hab;
+      }
     });
-  }
-
-  onSearch(termino: string): void {
-    if (!termino) {
-      this.habFiltradas = [...this.habitaciones];
-      return;
-    }
-    const normalizar = (texto: string) => texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    const terminoNormalizado = normalizar(termino);
-  
-    this.habFiltradas = this.habitaciones.filter(habitacion => {
-      const matchesTitle = normalizar(habitacion.titulo).includes(terminoNormalizado);
-      const amenityIndex = (habitacion.id - 1) % this.amenidades.length;
-      const matchesAmenities = this.amenidades[amenityIndex].some(icon =>
-        normalizar(this.obtenerAmenidad(icon)).includes(terminoNormalizado)
-      );
-      return matchesTitle || matchesAmenities;
-    });
-  }
-  
-
-  successRequest(data: any): void {
-    console.log(data);
-    this.habitaciones = data.habitaciones;
   }
 
   obtenerAmenidad(icon: string): string {
@@ -90,6 +59,7 @@ export class AlojamientoComponent {
       "fa-snowflake": "Aire Acondicionado",
       "fa-lightbulb": "Lámparas con USB",
       "fa-wine-glass": "Mini Bar",
+      "fa-thermometer-half": "Aire Acondicionado",
       "fa-umbrella-beach": "Balcón o Terraza",
       "fa-shower": "Detector de Humo",
       "fa-building-shield": "Edificio 100% libre de Humo",
@@ -99,5 +69,4 @@ export class AlojamientoComponent {
     };
     return nombres[icon] || "Amenidad";
   }
-  
 }

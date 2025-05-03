@@ -4,10 +4,12 @@ import { AlojamientoComponent } from './components/alojamiento/alojamiento.compo
 import { OfertasComponent } from './components/ofertas/ofertas.component';
 import { ServiciosComponent } from './components/servicios/servicios.component';
 import { ComentariosComponent } from './components/comentarios/comentarios.component';
+import { HabitacionComponent } from './components/habitacion/habitacion.component';
 
 export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
     {path: 'alojamiento', component: AlojamientoComponent},
+    {path: 'habitacion/:id', component: HabitacionComponent},
     {path: 'ofertas', component: OfertasComponent},
     {path: 'servicios', component: ServiciosComponent},
     {path: 'comentarios', component: ComentariosComponent},

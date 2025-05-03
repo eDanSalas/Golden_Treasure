@@ -1,0 +1,88 @@
+@if (habitacion) {
+    <div class="image-container">
+        <img src="{{habImage[habitacion.id][0]}}" alt="Imagen Principal" class="imgPrincipal">
+
+        <div class="image-content">
+            <h1>{{ habitacion.titulo }}</h1>
+            <div id="habitacionCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                  @for (img of habImage[habitacion.id]; track img; let i = $index) {
+                    <button type="button" data-bs-target="#habitacionCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Imagen ' + (i + 1)"></button>
+                  }
+                </div>
+                <div class="carousel-inner">
+                  @for (img of habImage[habitacion.id]; track img; let i = $index) {
+                    <div class="carousel-item" [class.active]="i === 0">
+                      <img [src]="img" class="d-block w-100 imgCarrusel" [alt]="'Imagen ' + (i + 1)">
+                    </div>
+                  }
+                </div>      
+                <button class="carousel-control-prev" type="button" data-bs-target="#habitacionCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#habitacionCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 class="mb-3 mt-3 text-center">{{ habitacion.titulo }}</h1>
+    <div class="main-container mb-5">
+        <div class="hab-texto">
+            <h3><strong>Descripcion.</strong></h3>
+            <p class="lead">{{ habitacion.descripcion }}</p>
+            <hr>
+            <h3><strong>Amenidades.</strong></h3>
+            <div class="row row-cols-2 row-cols-md-3 g-2 mt-2">
+                @for(icon of amenidades[habitacion.id - 1]; track icon) {
+                  <div class="col d-flex align-items-center">
+                    <i class="fa-solid {{ icon }}"></i>
+                    <span>{{ obtenerAmenidad(icon) }}</span>
+                  </div>
+                }
+            </div>
+        </div>
+        <div class="formulario">
+            <h2 style="font-size: 50px;">FORMULARIO</h2>
+        </div>
+    </div>
+} @else{
+    <div class="cargando-container">
+        <h1>Cargando habitacion</h1>
+        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+    </div>
+}
+
+
+<!-- <div class="container py-4">
+    <h2 class="mb-3 text-center">{{ habitacion.titulo }}</h2>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <img [src]="habImage[habitacion.id][0]" alt="Imagen principal de {{ habitacion.titulo }}" class="img-fluid rounded shadow">
+        <div class="d-flex justify-content-center gap-2 mt-2">
+          @for(img of habImage[habitacion.id].slice(1); track img) {
+            <img [src]="img" alt="Miniatura" class="img-thumbnail" style="width: 100px; height: auto;">
+          }
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <p class="lead">{{ habitacion.descripcion }}</p>
+        <p><strong>Capacidad:</strong> {{ habitacion.huespedes }} huésped(es)</p>
+        <p><strong>Precio por noche:</strong> ${{ habitacion.precio.toFixed(2) }} USD</p>
+
+        <h4 class="mt-4">Amenidades</h4>
+        <div class="row row-cols-2 row-cols-md-3 g-2 mt-2">
+          @for(icon of amenidades[habitacion.id - 1]; track icon) {
+            <div class="col d-flex align-items-center gap-2">
+              <i class="fa-solid {{ icon }}"></i>
+              <span>{{ obtenerAmenidad(icon) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div> -->

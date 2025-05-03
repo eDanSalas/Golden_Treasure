@@ -30,19 +30,27 @@
 }
 
 .oferts-section {
-    padding: 2rem 0;
-    width: 80%;
+    width: 90%;
     margin: 2rem auto;
 }
 
 .carousel-item img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 500px;
+    filter: brightness(85%);
+
 }
 
 .carousel-item {
     position: relative;
     text-align: center;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: goldenrod; 
+    width: 40px;
+    border-radius: 5px;
 }
 
 .info-box {

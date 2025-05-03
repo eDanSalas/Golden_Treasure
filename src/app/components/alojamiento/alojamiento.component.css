@@ -44,15 +44,6 @@
     margin: 3rem auto 3rem auto;
 }
 
-mat-spiner circle{
-    stroke: goldenrod !important;
-}
-  
-@keyframes girar{
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 .texto-container{
     width: 75%;
     margin: 2rem auto 2rem auto;

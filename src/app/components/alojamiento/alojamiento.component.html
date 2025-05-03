@@ -41,7 +41,7 @@
               }
             </div>
             <p class="descripcion">{{ habitacion.descripcion }}</p>
-            <button class="btn-vermas">VER MÁS</button>
+            <button class="btn-vermas" [routerLink]="['/habitacion', habitacion.id]">VER MÁS</button>
             <p class="precio">Desde <strong>${{ habitacion.precio.toFixed(2) }}</strong> USD por noche</p>
           </div>
         </div>
