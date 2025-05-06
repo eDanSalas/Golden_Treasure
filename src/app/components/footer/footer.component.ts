@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import * as L from 'leaflet';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })

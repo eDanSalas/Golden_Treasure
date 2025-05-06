@@ -1,8 +1,41 @@
 <footer class="footer text-center">
+    
+    <div class="footer-info">
+        <!-- Grid container -->
+        <div class="footer-section">
+            <h2>Ubicación</h2>
+            <div id="map"></div>            
+            <a href="#" class="destination-link">Conoce más del destino</a>
+        </div>
+        
+        <div class="footer-section">
+            <h2>Empresa</h2>
+            <ul class="footer-list">
+                <li><a href="#">Tesoro Resorts</a></li>
+                <li><a href="#">Tesoro Los Cabos</a></li>
+                <li><a href="#">Tesoro Manzanillo</a></li>
+                <li><a href="#">Tesoro Ixtapa</a></li>
+                <li><a href="#">Tesoro Rewards</a></li>
+                <li><a href="#">Club Tesoro</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h2>Links</h2>
+            <ul class="footer-list">
+                <li><a href="#">Todo Incluido</a></li>
+                <li><a href="#">Contactanos</a></li>
+                <li><a [routerLink]="['/desarrolladores']">Desarrolladores</a></li>
+                <li><a href="#">Aviso Legal</a></li>
+                <li><a href="#">Aviso de Privacidad</a></li>
+            </ul>
+        </div>
+        
+    </div>
     <!-- Grid container -->
     <div class="container p-4 pb-0">
       <!-- Section: Social media -->
-      <section class="mb-4">
+      <section class="botones-redes mb-4">
         <!-- Facebook -->
         <a
         data-mdb-ripple-init
@@ -64,40 +97,11 @@
       </section>
       <!-- Section: Social media -->
     </div>
-    
-    <div class="footer-info">
-        <!-- Grid container -->
-        <div class="footer-section">
-            <h2>Ubicación</h2>
-            <div id="map"></div>            
-            <a href="#" class="destination-link">Conoce más del destino</a>
-        </div>
-        
-        <div class="footer-section">
-            <h2>Empresa</h2>
-            <ul class="footer-list">
-                <li><a href="#">Tesoro Resorts</a></li>
-                <li><a href="#">Tesoro Los Cabos</a></li>
-                <li><a href="#">Tesoro Manzanillo</a></li>
-                <li><a href="#">Tesoro Ixtapa</a></li>
-                <li><a href="#">Tesoro Rewards</a></li>
-                <li><a href="#">Club Tesoro</a></li>
-            </ul>
-        </div>
-        
-        <div class="footer-section">
-            <h2>Links</h2>
-            <ul class="footer-list">
-                <li><a href="#">Todo Incluido</a></li>
-                <li><a href="#">Contactanos</a></li>
-                <li><a href="#">Aviso Legal</a></li>
-                <li><a href="#">Aviso de Privacidad</a></li>
-            </ul>
-        </div>
-        
-    </div>
+
     <div class="copyright">
         Proyecto Universitario. © 2025 Todos los Devechos Reservados
     </div>
+
+
 </footer>
 

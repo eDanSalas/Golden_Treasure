@@ -87,3 +87,19 @@
     height: 250px;
     object-fit: cover;
 }
+
+.cargando-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: goldenrod;
+    background-color: lightgray;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 10px;
+    width: 50%;
+    margin: 3rem auto 3rem auto;
+}

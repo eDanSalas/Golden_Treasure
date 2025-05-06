@@ -6,18 +6,27 @@
     </div>
 </div>
 
-<section class="services-section">
-    <div class="row">
-        @for (s of services; track s) {
-            <div class="col-md-4 mb-4 card-container">
-                <div class="card h-100">
-                    <img [src]="s.image" class="card-img-top c-img" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{s.title}}</h5>
-                        <p class="card-text">{{s.info}}</p>
-                    </div>
+@if (losServicios.length > 0) {
+    <section class="services-section">
+        <div class="row">
+            @for (s of losServicios; track s) {
+                <div class="col-md-4 mb-4 card-container">
+                    <a [routerLink]="['/servicio', s.id]" class="text-decoration-none">
+                        <div class="card h-100">
+                            <img [src]="s.image" class="card-img-top c-img" alt="Imagen de {{s.title}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{s.title}}</h5>
+                                <p class="card-text">{{s.info}}</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </div>
-        }
+            }            
+        </div>
+    </section>
+} @else {
+    <div class="cargando-container">
+        <h1>Obteniendo los mejores servicios para usted</h1>
+        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
     </div>
-</section>
+}

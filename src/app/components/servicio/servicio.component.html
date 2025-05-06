@@ -1,0 +1,10 @@
+@if (servicio) {
+    <div class="image-container">
+        <img [src]="serImage[servicio.id][0]" alt="Imagen" class="imgPrincipal">
+    </div>
+} @else {
+    <div class="cargando-container">
+        <h1>Cargando la información del Servicio</h1>
+        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+    </div>
+}

@@ -44,8 +44,45 @@
                 }
             </div>
         </div>
-        <div class="formulario">
-            <h2 style="font-size: 50px;">FORMULARIO</h2>
+        <div class="formulario-container">
+          <h2>Formulario de Reservación</h2>
+          <hr>
+            <form [formGroup]="miform" (ngSubmit)="enviar()">
+              <label for="nombre">Nombre:</label>
+              <input type="text" formControlName="nombre" id="nombre">
+              <br>
+              <label for="email">Email:</label>
+              <input id="email" type="email" formControlName="email" />
+              <br>
+              <label for="telefono">Teléfono (formato: 123 456 7890):</label>
+              <input id="telefono" type="text" formControlName="telefono" />
+              <br>
+              <label for="reserva">Tipo de reserva:</label>
+              <select id="reserva" formControlName="reserva">
+                <option value="">-- Selecciona una opción --</option>
+                @for(r of reservas; track r){
+                  <option value="{{r}}">{{r}}</option>
+                }
+              </select>
+
+              <label>Extras:</label>
+              <div formGroupName="extras" class="extras">
+                <label>
+                  <input type="checkbox" formControlName="Mascota" /> Mascota
+                </label>
+                <br>
+                <label>
+                  <input type="checkbox" formControlName="Limpieza" /> Limpieza
+                </label>
+                <br>
+                <label>
+                  <input type="checkbox" formControlName="Toallas" /> Toallas
+                </label>
+              </div>
+              <br>
+
+              <button type="submit">Reservar</button>
+            </form>
         </div>
     </div>
 } @else{
@@ -54,35 +91,3 @@
         <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
     </div>
 }
-
-
-<!-- <div class="container py-4">
-    <h2 class="mb-3 text-center">{{ habitacion.titulo }}</h2>
-
-    <div class="row g-3">
-      <div class="col-md-6">
-        <img [src]="habImage[habitacion.id][0]" alt="Imagen principal de {{ habitacion.titulo }}" class="img-fluid rounded shadow">
-        <div class="d-flex justify-content-center gap-2 mt-2">
-          @for(img of habImage[habitacion.id].slice(1); track img) {
-            <img [src]="img" alt="Miniatura" class="img-thumbnail" style="width: 100px; height: auto;">
-          }
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <p class="lead">{{ habitacion.descripcion }}</p>
-        <p><strong>Capacidad:</strong> {{ habitacion.huespedes }} huésped(es)</p>
-        <p><strong>Precio por noche:</strong> ${{ habitacion.precio.toFixed(2) }} USD</p>
-
-        <h4 class="mt-4">Amenidades</h4>
-        <div class="row row-cols-2 row-cols-md-3 g-2 mt-2">
-          @for(icon of amenidades[habitacion.id - 1]; track icon) {
-            <div class="col d-flex align-items-center gap-2">
-              <i class="fa-solid {{ icon }}"></i>
-              <span>{{ obtenerAmenidad(icon) }}</span>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-  </div> -->

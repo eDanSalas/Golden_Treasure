@@ -3,16 +3,20 @@ import { Habitacion } from '../../habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-habitacion',
-  imports: [RouterModule, MatProgressSpinnerModule],
+  imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule],
   templateUrl: './habitacion.component.html',
   styleUrl: './habitacion.component.css'
 })
 export class HabitacionComponent {
   habitacion!: Habitacion;
   id!: number;
+  miform: FormGroup;
 
   habImage: {[key: number]: string[]} = {
     1: ["images/h1-1.jpg","images/h1-2.jpg","images/h1-3.jpg"],
@@ -38,8 +42,22 @@ export class HabitacionComponent {
     ["fa-wifi", "fa-building-shield", "fa-phone", "fa-snowflake"],
     ["fa-wifi", "fa-wine-glass", "fa-snowflake", "fa-umbrella-beach"]
   ];
+  reservas: string[] = ['All-inclusive', 'Room Only', 'Bed and BreakFast', 'Full Board', 'Half Board'];
 
-  constructor(private servicio: HabitacionService, public route: ActivatedRoute) {}
+  constructor(private servicio: HabitacionService, public route: ActivatedRoute, private fb:FormBuilder){
+    this.miform = this.fb.group({
+      nombre: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{3} \d{3} \d{4}$/)]],
+      reserva: ['', Validators.required],
+      extras: this.fb.group({
+        Mascota: [false],
+        Limpieza: [false],
+        Toallas: [false]
+      }),
+
+    })
+  }
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
@@ -68,5 +86,42 @@ export class HabitacionComponent {
       "fa-phone": "Teléfono"
     };
     return nombres[icon] || "Amenidad";
+  }
+
+  enviar(){
+    if(this.miform.valid){
+      Swal.fire({
+        icon: 'success',
+        title: '¡Cuenta creada!',
+        text: 'Tu cuenta fue creada exitosamente.',
+        confirmButtonText: 'Aceptar'
+      });
+      this.miform.reset();
+    }else{
+      const errores: string[] = [];
+      const controles = this.miform.controls;
+      if (controles['nombre']?.errors) 
+        errores.push('- Nombre es obligatorio.');
+      if (controles['email']?.errors) {
+        if (controles['email'].errors['required']) 
+          errores.push('- Email es obligatorio.');
+        if (controles['email'].errors['email']) 
+          errores.push('- Email no tiene formato válido.');
+      }
+      if (controles['telefono']?.errors) {
+        if (controles['telefono'].errors['required']) 
+          errores.push('- Teléfono es obligatorio.');
+        if (controles['telefono'].errors['pattern']) 
+          errores.push('- Teléfono debe tener el formato 123 456 7890.');
+      }
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el formulario',
+        html: errores.join('<br>'),
+        confirmButtonText: 'Revisar'
+      });
+      this.miform.markAllAsTouched();
+    }
   }
 }
