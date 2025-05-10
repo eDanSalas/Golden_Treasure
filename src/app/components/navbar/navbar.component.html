@@ -9,7 +9,7 @@
             </div>
 
             <div class="user-avatar position-relative">
-                <img src="images/avatar.png" alt="User Avatar" width="50" height="50" class="rounded-circle cursor-pointer" (click)="toggleMenu()">
+                <img src="images/avatar.jpg" alt="User Avatar" width="50" height="50" class="rounded-circle cursor-pointer" [ngClass]="{'opacity-img': !isScrolled, 'no-opacity-img': isScrolled}" (click)="toggleMenu()">
     
                 @if (menuOpen) {
                     <div class="user-menu position-absolute end-0 mt-2 p-2 bg-light border rounded shadow-sm">

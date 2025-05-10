@@ -24,6 +24,14 @@
     align-items: center;
 }
 
+.opacity-img {
+    opacity: 0.5;
+}
+
+.no-opacity-img {
+    opacity: 1;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

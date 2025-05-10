@@ -1,10 +1,49 @@
 @if (servicio) {
-    <div class="image-container">
-        <img [src]="serImage[servicio.id][0]" alt="Imagen" class="imgPrincipal">
+<div class="servicio-background" [style.backgroundImage]="'url(' + serImage[servicio.id][0] + ')'">
+    <div class="overlay">
+        <div class="container text-white text-center py-5">
+            <h1 class="mb-4">{{ servicio.title }}</h1>
+
+            <div id="servicioCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    @for (img of serImage[servicio.id]; track img; let i = $index) {
+                    <button type="button" data-bs-target="#servicioCarousel" [attr.data-bs-slide-to]="i"
+                        [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
+                        [attr.aria-label]="'Imagen ' + (i + 1)">
+                    </button>
+                    }
+                </div>
+                <div class="carousel-inner rounded shadow">
+                    @for (img of serImage[servicio.id]; track img; let i = $index) {
+                    <div class="carousel-item" [class.active]="i === 0">
+                        <img [src]="img" class="d-block w-100 imgCarrusel" [alt]="'Imagen ' + (i + 1)">
+                    </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#servicioCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#servicioCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+
+            <div class="descripcion-card mb-4">
+                <p class="lead mb-0">{{ servicio.info }}</p>
+            </div>
+
+
+            <button class="btn btn-warning btn-lg" (click)="pedirInformacion()">Más información</button>
+        </div>
     </div>
+</div>
 } @else {
-    <div class="cargando-container">
-        <h1>Cargando la información del Servicio</h1>
-        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
-    </div>
+<div class="cargando-container">
+    <h1>Cargando la información del Servicio</h1>
+    <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+</div>
 }

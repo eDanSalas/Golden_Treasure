@@ -40,4 +40,9 @@ export class ServicioComponent {
     }
   }
 
+  pedirInformacion() {
+    alert('Gracias por su interés. Nos pondremos en contacto con usted para brindarle más información sobre este servicio.');
+  }
+
+
 }
