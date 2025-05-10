@@ -36,7 +36,6 @@
 
 .overlay {
     background: rgba(0, 0, 0, 0.5);
-    /* oscurece el fondo */
     width: 100%;
     height: 100%;
     position: absolute;
@@ -65,4 +64,122 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: white;
     font-weight: 500;
+}
+
+.formulario-container {
+    background-color: rgba(235, 235, 235, 0.4);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    color: #fff;
+    max-width: 600px;
+    margin: auto;
+}
+
+.formulario-container h2 {
+    color: #d4af37;
+    margin-bottom: 1.5rem;
+}
+
+mat-form-field {
+    --mat-mdc-form-field-label-color: #b8860b;
+    --mdc-outlined-text-field-outline-color: #b8860b;
+    --mdc-outlined-text-field-hover-outline-color: #daa520;
+    --mdc-outlined-text-field-focus-outline-color: #daa520;
+    --mdc-outlined-text-field-caret-color: #daa520;
+}
+
+mat-label {
+    color: #b8860b !important;
+}
+
+mat-checkbox {
+    color: #b8860b;
+}
+
+mat-checkbox.mat-accent .mat-checkbox-frame {
+    border-color: #b8860b;
+}
+
+mat-checkbox.mat-accent.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #b8860b;
+}
+
+.checkbox-container {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.mat-raised-button {
+    background: linear-gradient(45deg, #bfa437, #d4af37);
+    color: black;
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 0.7rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.mat-raised-button:hover {
+    background: linear-gradient(45deg, #d4af37, #bfa437);
+    box-shadow: 0 0 10px #d4af37;
+}
+
+.mat-icon {
+    vertical-align: middle;
+}
+
+button[mat-raised-button] {
+    background-color: #b8860b;
+    color: #000;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 0.75rem 2rem;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button[mat-raised-button] mat-icon {
+    vertical-align: middle;
+    font-size: 22px;
+    color: black;
+}
+
+button[mat-raised-button]:hover {
+    background-color: #daa520;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+button[mat-raised-button]:disabled {
+    background-color: rgba(184, 134, 11, 0.5);
+    color: #333;
+    cursor: not-allowed;
+}
+
+mat-error {
+    color: #ff6666;
+    font-size: 0.85rem;
+}
+
+textarea {
+    resize: none;
+}
+
+.resaltar-formulario {
+    box-shadow: 0 0 15px 3px rgba(212, 175, 55, 0.7);
+    border-radius: 15px;
+    transition: box-shadow 0.5s ease;
+}
+
+@media (max-width: 600px) {
+    .formulario-container {
+        padding: 1.2rem;
+    }
+
+    button[mat-raised-button] {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
 }

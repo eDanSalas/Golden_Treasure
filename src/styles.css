@@ -7,6 +7,13 @@
     --dark-gray: #777;
     --bg-color-footer: #1b1b1b;
     --text-color: #a48051;
+
+    --color-yellow: #FFD700;
+    --color-yellow-dark: #e6c200;
+    --color-black: #000000;
+    --color-gray-dark: #222222;
+    --color-gray-light: #333333;
+    --color-white: #FFFFFF;
 }
 body{
     margin: 0;

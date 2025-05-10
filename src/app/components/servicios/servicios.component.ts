@@ -20,5 +20,6 @@ export class ServiciosComponent {
 
   ngOnInit() {
     this.losServicios = this.service.getServicios();
+    window.scrollTo({ top: 0 });
   }
 }

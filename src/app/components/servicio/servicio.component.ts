@@ -1,20 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Servicios } from '../servicios/servicios.interface';
 import { ServicioService } from '../../services/servicio.service';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { FormsModule } from '@angular/forms';
+import { NgForm } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-servicio',
-  imports: [RouterModule, CommonModule, MatProgressSpinnerModule],
+  imports: [RouterModule, CommonModule, MatProgressSpinnerModule, FormsModule, MatFormFieldModule, MatInputModule, MatSnackBarModule, MatIconModule, MatCheckboxModule, MatButtonModule],
   templateUrl: './servicio.component.html',
   styleUrl: './servicio.component.css'
 })
 export class ServicioComponent {
   servicio!: Servicios;
   id!: number;
+  modelo = {
+    nombre: '',
+    email: '',
+    duda: '',
+    aceptaFAQ: false
+  };
+
+  @ViewChild('formulario') formularioElement!: ElementRef;
 
   serImage: {[key: number]: string[]} = {
     1: ["images/s1-1.jpg","images/s1-2.jpg","images/s1-3.jpg"],
@@ -28,7 +44,7 @@ export class ServicioComponent {
     9: ["images/s9-1.jpg","images/s9-2.jpg","images/s9-3.jpg"],
   };
 
-  constructor(public service: ServicioService, public route: ActivatedRoute) {
+  constructor(public service: ServicioService, public route: ActivatedRoute, private snackBar: MatSnackBar) {
 
   }
 
@@ -38,11 +54,37 @@ export class ServicioComponent {
     if (sEncontrado) {
       this.servicio = sEncontrado;
     }
+    window.scrollTo({ top: 0 });
   }
 
-  pedirInformacion() {
-    alert('Gracias por su interés. Nos pondremos en contacto con usted para brindarle más información sobre este servicio.');
+  scrollToFormulario() {
+    const navbar = document.querySelector('nav');
+    const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 80;
+
+    const yOffset = -navbarHeight;
+    const element = this.formularioElement.nativeElement;
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: 'smooth' });
+
+    element.classList.add('resaltar-formulario');
+
+    setTimeout(() => {
+      element.classList.remove('resaltar-formulario');
+    }, 1000);
   }
 
+  enviarInfo(form: NgForm) {
+    if (form.valid) {
+      console.log(this.modelo);
+
+      this.snackBar.open('Tu información se envió correctamente', 'Cerrar', {
+        duration: 4000,
+        panelClass: ['snackbar-success']
+      });
+
+      form.resetForm();
+    }
+  }
 
 }

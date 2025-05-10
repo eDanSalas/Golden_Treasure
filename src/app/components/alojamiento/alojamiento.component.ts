@@ -46,6 +46,7 @@ export class AlojamientoComponent {
 
   ngOnInit(): void {
     this.recuperarHabitaciones();
+    window.scrollTo({ top: 0 });
   }
 
   recuperarHabitaciones(): void {

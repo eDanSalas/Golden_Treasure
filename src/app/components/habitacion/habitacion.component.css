@@ -40,41 +40,107 @@
 }
 
 .formulario-container{
-    background-color: gray;
+    width: 45%;
+    background-color: white;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid goldenrod;
+
+}
+
+.formulario-container h2{
+    text-align: center;
+    color: goldenrod;
+    margin: 0;
 }
 
 .extras{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    text-align: center;
 }
 
 input, select{
     width: 100%;
+    padding: 8px;
+    border: 1px solid goldenrod;
+    border-radius: 4px;
 }
 
-form button{
+.form-info{
+    display: flex;
+    justify-content: center;
+    align-items:end;
+    gap: 2rem;
+}
+
+.info-cliente{
+    width: 45%;
+}
+
+.contador {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.contador button {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+}
+
+.info-reserva{
+    display: flex;
+    flex-direction: column;
+}
+
+form .btn-reserva{
     background-color: goldenrod;
     color: white;
-    border: none;
     padding: 0.8rem 2rem;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
 }
 
-form button:hover{
+form .btn-reserva:hover{
     background-color: gold;
+}
+
+small{
+    font-size: 12px;
+    color: gray;
 }
 
 label {
     font-weight: 600;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
+mat-form-field input{
+    border: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+mat-form-field{
+    margin: 1rem auto;
+}
+
+.total {
+    text-align: center;
+    font-weight: bold;
+    margin: 20px;
+    font-size: 16px;
+    color: goldenrod;
+}
 
 h1{
     color: goldenrod;

@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './ofertas.component.css'
 })
 export class OfertasComponent {
-
+  ngOnInit(){
+    window.scrollTo({ top: 0 });
+  }
 }

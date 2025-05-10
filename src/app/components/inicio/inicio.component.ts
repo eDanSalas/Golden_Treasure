@@ -19,6 +19,7 @@ export class InicioComponent {
     video.play().catch(error => {
       console.warn('Error al reproducir:', error);
     });
+    window.scrollTo({ top: 0 });
   }
   
   onRightClick(event: MouseEvent): void {

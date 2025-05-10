@@ -3,15 +3,21 @@ import { Habitacion } from '../../habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
+import {ChangeDetectionStrategy} from '@angular/core';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import Swal from 'sweetalert2';
 
 
 @Component({
   selector: 'app-habitacion',
-  imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatDatepickerModule],
   templateUrl: './habitacion.component.html',
-  styleUrl: './habitacion.component.css'
+  styleUrl: './habitacion.component.css',
+  providers: [provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class HabitacionComponent {
   habitacion!: Habitacion;
@@ -43,19 +49,43 @@ export class HabitacionComponent {
     ["fa-wifi", "fa-wine-glass", "fa-snowflake", "fa-umbrella-beach"]
   ];
   reservas: string[] = ['All-inclusive', 'Room Only', 'Bed and BreakFast', 'Full Board', 'Half Board'];
+  huespedes: number = 1;
+  noches: number = 1;
+  porHuesped: number = 50;
+  porNoche: number = 0;
+  precioTotal: number = 0;
+  hoy = new Date();
+
+  extras = [
+    {sec: 'Mascota', costo: 50, select: false},
+    {sec: 'VinoHab', costo: 30, select: false},
+    {sec: 'Toallas', costo: 5, select: false},
+  ]
+
+  reservaPrecios: { [key: string]: number } = {
+    'All-inclusive': 100,
+    'Room Only': 0,
+    'Bed and BreakFast': 20,
+    'Full Board': 60,
+    'Half Board': 40
+  };
 
   constructor(private servicio: HabitacionService, public route: ActivatedRoute, private fb:FormBuilder){
+    const extrasControls: { [key: string]: FormControl } = {};
+    this.extras.forEach(extra => {
+      extrasControls[extra.sec] = new FormControl(false);
+    });
+
     this.miform = this.fb.group({
       nombre: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{3} \d{3} \d{4}$/)]],
       reserva: ['', Validators.required],
-      extras: this.fb.group({
-        Mascota: [false],
-        Limpieza: [false],
-        Toallas: [false]
-      }),
-
+      extras: this.fb.group(extrasControls),
+      rango: this.fb.group({
+        inicio: ['', Validators.required],
+        fin: ['', Validators.required]
+      }, {validators: this.validarCal})
     })
   }
 
@@ -65,8 +95,45 @@ export class HabitacionComponent {
       const hab = data.habitaciones.find(h => h.id === this.id);
       if (hab) {
         this.habitacion = hab;
+        this.porNoche = hab.precio;
       }
     });
+  }
+
+  validarCal(control: AbstractControl): ValidationErrors | null {
+    const inicio = new Date(control.get('inicio')?.value);
+    const fin = new Date(control.get('fin')?.value);
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0); 
+    if (inicio && inicio < hoy) {
+      return { fechaInicioPasada: true };
+    }
+    if (fin && fin < hoy) {
+      return { fechaFinPasada: true };
+    }
+    return null;
+  }
+
+  get total(): number {
+    const base = this.huespedes * this.porHuesped + this.noches * this.porNoche;
+    const tipoReserva = this.miform.get('reserva')?.value || '';
+    const costoReserva = this.reservaPrecios[tipoReserva] || 0;
+    const reservaTotal = this.noches * costoReserva;
+    const extrasTotal = this.extras
+      .filter(extra => this.miform.get(['extras', extra.sec])?.value)
+      .reduce((sum, extra) => sum + extra.costo, 0);
+
+    return this.precioTotal = base + extrasTotal + reservaTotal;
+  }
+
+  aumentar(tipo: 'huespedes' | 'noches') {
+    this[tipo]++;
+  }
+
+  disminuir(tipo: 'huespedes' | 'noches') {
+    if (this[tipo] > 1) {
+      this[tipo]--;
+    }
   }
 
   obtenerAmenidad(icon: string): string {
@@ -92,14 +159,14 @@ export class HabitacionComponent {
     if(this.miform.valid){
       Swal.fire({
         icon: 'success',
-        title: '¡Cuenta creada!',
-        text: 'Tu cuenta fue creada exitosamente.',
+        title: '¡Reservacion Realizada!',
+        text: 'Su reservación fue creada con exito. ¡Nos vemos muy Pronto!',
         confirmButtonText: 'Aceptar'
       });
-      this.miform.reset();
     }else{
       const errores: string[] = [];
       const controles = this.miform.controls;
+      const grupoFechas = controles['rango'] as FormGroup;
       if (controles['nombre']?.errors) 
         errores.push('- Nombre es obligatorio.');
       if (controles['email']?.errors) {
@@ -114,10 +181,13 @@ export class HabitacionComponent {
         if (controles['telefono'].errors['pattern']) 
           errores.push('- Teléfono debe tener el formato 123 456 7890.');
       }
+      if (grupoFechas?.errors?.['fechaInicioPasada']) {
+        errores.push('- La fecha de inicio no puede ser anterior a hoy.');
+      }
 
       Swal.fire({
         icon: 'error',
-        title: 'Error en el formulario',
+        title: 'Error en la Reservación.',
         html: errores.join('<br>'),
         confirmButtonText: 'Revisar'
       });

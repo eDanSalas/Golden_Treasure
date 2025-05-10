@@ -45,43 +45,74 @@
             </div>
         </div>
         <div class="formulario-container">
-          <h2>Formulario de Reservación</h2>
+          <h2>Realiza Tu Reservación</h2>
+          <h2>¡AHORA!</h2>
           <hr>
             <form [formGroup]="miform" (ngSubmit)="enviar()">
-              <label for="nombre">Nombre:</label>
-              <input type="text" formControlName="nombre" id="nombre">
-              <br>
-              <label for="email">Email:</label>
-              <input id="email" type="email" formControlName="email" />
-              <br>
-              <label for="telefono">Teléfono (formato: 123 456 7890):</label>
-              <input id="telefono" type="text" formControlName="telefono" />
-              <br>
-              <label for="reserva">Tipo de reserva:</label>
-              <select id="reserva" formControlName="reserva">
-                <option value="">-- Selecciona una opción --</option>
-                @for(r of reservas; track r){
-                  <option value="{{r}}">{{r}}</option>
-                }
-              </select>
+              <div class="form-info">
+                <div class="info-cliente">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" formControlName="nombre" id="nombre">
+                  <br>
+                  <label for="email">Email:</label>
+                  <input id="email" type="email" formControlName="email" />
+                  <small>Formato: [cliente&#64;correo.com]</small>
+                  <br>
+                  <label for="telefono">Teléfono</label>
+                  <input id="telefono" type="text" formControlName="telefono" />
+                  <small>Formato: [123 456 7890]</small>
+                  <br>
+                </div>
+                <div class="info-reserva">
+                  <div class="contador">
+                    <label>Clientes: </label>
+                    <button type="button" (click)="disminuir('huespedes')">−</button>
+                    <span>{{ huespedes }}</span>
+                    <button type="button" (click)="aumentar('huespedes')">+</button>
+                    <label>+ ${{porHuesped}} USD</label>
+                  </div>
+                  <div class="contador">
+                    <label>Noches: </label>
+                    <button type="button" (click)="disminuir('noches')">−</button>
+                    <span>{{ noches }}</span>
+                    <button type="button" (click)="aumentar('noches')">+</button>
+                    <label>+ ${{porNoche}} USD</label>
+                  </div>
 
-              <label>Extras:</label>
-              <div formGroupName="extras" class="extras">
-                <label>
-                  <input type="checkbox" formControlName="Mascota" /> Mascota
-                </label>
-                <br>
-                <label>
-                  <input type="checkbox" formControlName="Limpieza" /> Limpieza
-                </label>
-                <br>
-                <label>
-                  <input type="checkbox" formControlName="Toallas" /> Toallas
-                </label>
+                  <label for="reserva">Tipo de reserva:</label>
+                  <select id="reserva" formControlName="reserva">
+                    <option value="">-- Selecciona una opción --</option>
+                    @for(r of reservas; track r){
+                      <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
+                    }
+                  </select>
+                  <label>Extras:</label>
+                  <div class="extras" formGroupName="extras">
+                    @for(extra of extras; track extra){
+                      <label>
+                        <input type="checkbox" [formControlName]="extra.sec" />
+                        {{ extra.sec }}: ${{ extra.costo }}
+                      </label>
+                    }
+                  </div>
+                  <br>
+                </div>
               </div>
-              <br>
-
-              <button type="submit">Reservar</button>
+              <mat-form-field [formGroupName]="'rango'">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input matStartDate placeholder="Start date" formControlName="inicio" [min]="hoy">
+                      <input matEndDate placeholder="End date" formControlName="fin" [min]="hoy">
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+              <div class="total">
+                TOTAL CON IMPUESTOS:
+                <span>${{ total }} USD</span>
+              </div>
+              <button type="submit" class="btn-reserva">Reservar</button>
             </form>
         </div>
     </div>
