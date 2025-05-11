@@ -1,3 +1,33 @@
+.hotel-text{
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin: 2rem auto;
+    gap: 25px;
+}
+
+.hotel-text img{
+    width: 40%;
+    height: auto;
+    border-radius: 15px;
+}
+
+.hotel-text h2, .hotel-text img{
+    transition: 0.5s ease;
+}
+
+.hotel-text img:hover, .hotel-text h2:hover{
+    transform: scale(1.05);
+}
+
+strong{
+    color: goldenrod;
+}
+
+.text .p-texto{
+    text-align: justify;
+}
+
 .oferts {
     position: relative;
     display: block;

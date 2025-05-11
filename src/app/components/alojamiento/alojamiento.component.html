@@ -5,7 +5,7 @@
     </div>
 </div>
 
-@if (habitaciones.length > 0) {
+@if (habitaciones.length > 0 && !sinRes) {
     <div class="texto-container">
       <p>
         Deja que la comodidad te acompañe durante tu estancia. 
@@ -23,7 +23,7 @@
       @for (habitacion of habFiltradas; track habitacion.id; let i = $index) {
         <div class="hab">
           <div class="carrusel">
-            <img [src]="habImage[habitacion.id][0]" alt="Imagen de {{ habitacion.titulo }}" class="imagen-principal" />
+            <img [src]="habImage[habitacion.id][0]" alt="{{ habitacion.titulo }}" class="imagen-principal" />
             <div class="miniaturas">
               <img [src]="habImage[habitacion.id][1]" alt="Miniatura 1" />
               <img [src]="habImage[habitacion.id][2]" alt="Miniatura 2" />
@@ -49,8 +49,14 @@
     </div>
     
   } @else {
-    <div class="cargando-container">
-      <h1>Cargando habitaciones</h1>
-      <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
-    </div>
+    @if(sinRes){
+      <div class="sinbusqueda-container">
+        <h1>Habitaciones</h1>
+      </div>
+    }@else {
+      <div class="cargando-container">
+        <h1>Cargando habitaciones</h1>
+        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+      </div>
+    }
 }

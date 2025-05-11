@@ -15,7 +15,7 @@
                     <div class="carousel-inner rounded shadow">
                         @for (img of serImage[servicio.id]; track img; let i = $index) {
                         <div class="carousel-item" [class.active]="i === 0">
-                            <img [src]="img" class="d-block w-100 imgCarrusel" [alt]="'Imagen ' + (i + 1)">
+                            <img [src]="img" class="d-block w-100 imgCarrusel" [alt]="'Servicio ' + (i + 1)">
                         </div>
                         }
                     </div>

@@ -3,22 +3,62 @@
 
         <div class="nav-up w-100 d-flex align-items-center justify-content-between py-2 px-3">
             <img src="images/logo.png" alt="Logo" width="80" height="80">
+        
             <div class="d-flex flex-column text-start div-text">
                 <span class="brand-line bl1">Golden</span>
                 <span class="brand-line bl2">Treasure</span>
             </div>
-
-            <div class="user-avatar position-relative">
-                <img src="images/avatar.jpg" alt="User Avatar" width="50" height="50" class="rounded-circle cursor-pointer" [ngClass]="{'opacity-img': !isScrolled, 'no-opacity-img': isScrolled}" (click)="toggleMenu()">
-    
-                @if (menuOpen) {
-                    <div class="user-menu position-absolute end-0 mt-2 p-2 bg-light border rounded shadow-sm">
-                        Bienvenido ING Admin
+        
+            <div class="user-avatar position-relative d-flex flex-column align-items-center">
+                <img src="images/avatar.jpg" alt="User Avatar" width="50" height="50" class="rounded-circle cursor-pointer"
+                    [ngClass]="{'opacity-img': !isScrolled, 'no-opacity-img': isScrolled}" (click)="toggleMenu()">
+            
+                @if (loggedAdminName) {
+                    <div class="mt-1 text-gold text-center small fw-bold">
+                        {{ loggedAdminName }}
+                    </div>
+                }
+            
+                @if (menuOpen && loggedAdminName) {
+                    <div class="user-menu bg-light border rounded shadow-sm animate-menu">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <button class="dropdown-item text-dark small" [routerLink]="['/dashboard', loggedAdminId]" (click)="menuOpen = false">
+                                    Dashboard
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-dark small" (click)="logout()">
+                                    Cerrar sesión
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 }
             </div>
 
+            @if (showLoginModal) {
+                <div class="modal-backdrop" (click)="closeLoginModal()"></div>
+                <div class="login-modal card shadow p-4">
+                    <h5 class="mb-3 text-center text-gold">Iniciar sesión</h5>
+                    <form (ngSubmit)="submitLogin()" #loginForm="ngForm">
+                        <div class="mb-3">
+                            <label class="form-label text-white">ID</label>
+                            <input type="number" class="form-control" [(ngModel)]="loginId" name="loginId" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white">Contraseña</label>
+                            <input type="password" class="form-control" [(ngModel)]="loginPassword" name="loginPassword" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="closeLoginModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-gold btn-sm" [disabled]="!loginForm.valid">Ingresar</button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
+
 
         <span class="separator w-100"></span>
 

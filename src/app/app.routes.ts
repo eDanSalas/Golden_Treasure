@@ -7,6 +7,7 @@ import { ServicioComponent } from './components/servicio/servicio.component';
 import { ComentariosComponent } from './components/comentarios/comentarios.component';
 import { HabitacionComponent } from './components/habitacion/habitacion.component';
 import { DesarrolladoresComponent } from './components/desarrolladores/desarrolladores.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
@@ -17,5 +18,6 @@ export const routes: Routes = [
     {path: 'servicio/:id', component: ServicioComponent},
     {path: 'comentarios', component: ComentariosComponent},
     {path: 'desarrolladores', component: DesarrolladoresComponent},
+    {path: 'dashboard/:id', component: DashboardComponent },
     {path: '', redirectTo: '/inicio', pathMatch: 'full'}
 ];

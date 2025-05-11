@@ -40,6 +40,7 @@ export class AlojamientoComponent {
     ["fa-wifi", "fa-wine-glass", "fa-snowflake", "fa-umbrella-beach"]
   ];
   habFiltradas: Habitacion[] = [];
+  sinRes: boolean = false;
 
 
   constructor(public habitacionService: HabitacionService) {}
@@ -62,6 +63,7 @@ export class AlojamientoComponent {
   onSearch(termino: string): void {
     if (!termino) {
       this.habFiltradas = [...this.habitaciones];
+      this.sinRes = this.habFiltradas.length === 0;
       return;
     }
     const normalizar = (texto: string) => texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
