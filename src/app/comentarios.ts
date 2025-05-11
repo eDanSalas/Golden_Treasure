@@ -7,7 +7,9 @@ export const COMENTARIOS: Comentario[] = [
       "title": "Una experiencia inolvidable",
       "lugar": "México",
       "rev_date": "2025-05-08T00:00:00Z",
-      "review": "El hotel Golden Treasure superó mis expectativas. La atención al cliente fue excepcional y las instalaciones son realmente de lujo. Sin duda volveré."
+      "review": "El hotel Golden Treasure superó mis expectativas. La atención al cliente fue excepcional y las instalaciones son realmente de lujo. Sin duda volveré.",
+      "imagen": "",
+      "rating": 5
     },
     {
       "nombre": "Sofía Rodríguez",
@@ -15,7 +17,9 @@ export const COMENTARIOS: Comentario[] = [
       "title": "El mejor hotel en la ciudad",
       "lugar": "España",
       "rev_date": "2025-05-07T00:00:00Z",
-      "review": "Las habitaciones son amplias y cómodas, con vistas espectaculares. La comida en el restaurante es deliciosa y el servicio es de primera clase."
+      "review": "Las habitaciones son amplias y cómodas, con vistas espectaculares. La comida en el restaurante es deliciosa y el servicio es de primera clase.",
+      "imagen": "",
+      "rating": 5
     },
     {
       "nombre": "Andrés López",
@@ -23,7 +27,9 @@ export const COMENTARIOS: Comentario[] = [
       "title": "Lujo y confort en cada detalle",
       "lugar": "Argentina",
       "rev_date": "2025-05-09T00:00:00Z",
-      "review": "Desde el momento en que llegas, te hacen sentir como en casa. La limpieza, la comodidad y el ambiente elegante hacen que la estancia sea increíble."
+      "review": "Desde el momento en que llegas, te hacen sentir como en casa. La limpieza, la comodidad y el ambiente elegante hacen que la estancia sea increíble.",
+      "imagen": "",
+      "rating": 5
     },
     {
       "nombre": "Emily Johnson",
@@ -31,7 +37,9 @@ export const COMENTARIOS: Comentario[] = [
       "title": "Perfecto para una escapada romántica",
       "lugar": "Estados Unidos",
       "rev_date": "2025-05-06T00:00:00Z",
-      "review": "Golden Treasure es el lugar ideal para relajarse. Mi pareja y yo disfrutamos cada momento, especialmente el spa y la piscina infinity."
+      "review": "Golden Treasure es el lugar ideal para relajarse. Mi pareja y yo disfrutamos cada momento, especialmente el spa y la piscina infinity.",
+      "imagen": "",
+      "rating": 5
     },
     {
       "nombre": "Luca Bianchi",
@@ -39,6 +47,8 @@ export const COMENTARIOS: Comentario[] = [
       "title": "Calidad y atención insuperables",
       "lugar": "Italia",
       "rev_date": "2025-05-10T00:00:00Z",
-      "review": "El staff es increíblemente amable y atento. Siempre están dispuestos a ayudar y la calidad de los servicios es impecable."
+      "review": "El staff es increíblemente amable y atento. Siempre están dispuestos a ayudar y la calidad de los servicios es impecable.",
+      "imagen": "",
+      "rating": 5
     }
   ]
