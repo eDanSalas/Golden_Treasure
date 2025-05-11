@@ -44,7 +44,20 @@
     </div>
 
     <div class="formulario-container mt-3 mb-3" #formulario>
-        <h2>Información de {{ servicio.title }}</h2>
+        <h2>Servicio seleccionado: {{ servicio.title }}</h2>
+        
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Selecciona un servicio sobre el cual quieras preguntar</mat-label>
+            <mat-select [(ngModel)]="servicio.title" name="servicioTitle">
+                @for (nombre of serName; track nombre) {
+                    <mat-option [value]="nombre">
+                        {{ nombre }}
+                    </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+
     
         <form #infoForm="ngForm" (ngSubmit)="enviarInfo(infoForm)" novalidate>
     
@@ -53,6 +66,15 @@
                 <input matInput name="nombre" required [(ngModel)]="modelo.nombre" #nombreCtrl="ngModel">
                 @if (nombreCtrl.invalid && nombreCtrl.touched) {
                     <mat-error>El nombre es obligatorio.</mat-error>
+                }
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Nombre Público</mat-label>
+                <input matInput name="nombrePublico" required [(ngModel)]="modelo.nombrePublico"
+                    #nombrePublicoCtrl="ngModel">
+                @if (nombrePublicoCtrl.invalid && nombrePublicoCtrl.touched) {
+                    <mat-error>El nombre público es obligatorio.</mat-error>
                 }
             </mat-form-field>
     
@@ -77,6 +99,20 @@
                 }
             </mat-form-field>
     
+            <p class="mt-2 mb-1 text-black"><strong>¿Alguna fecha en particular que requieras el servicio?</strong></p>
+    
+            <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Selecciona una fecha</mat-label>
+                <input matInput [matDatepicker]="picker" name="fechaParticular" [(ngModel)]="modelo.fechaParticular"
+                    #fechaCtrl="ngModel" [min]="minFecha" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+    
+                @if (fechaCtrl.invalid && fechaCtrl.touched) {
+                    <mat-error>Debes seleccionar una fecha válida (hoy o posterior).</mat-error>
+                }
+            </mat-form-field>
+    
             <div class="checkbox-container">
                 <mat-checkbox name="aceptaFAQ" required [(ngModel)]="modelo.aceptaFAQ" #aceptaCtrl="ngModel">
                     Acepto que mi duda se publique en la pestaña FAQ
@@ -89,10 +125,9 @@
             <button mat-raised-button color="accent" class="mt-4" type="submit" [disabled]="infoForm.invalid">
                 <mat-icon class="me-2">send</mat-icon> Enviar
             </button>
-
+    
         </form>
     </div>
-
 
 } @else {
     <div class="cargando-container">

@@ -173,6 +173,34 @@ textarea {
     transition: box-shadow 0.5s ease;
 }
 
+.mat-datepicker-content {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+}
+
+.mat-calendar {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+}
+
+.mat-calendar-table-header, .mat-calendar-body-label {
+    color: gold !important;
+}
+
+.mat-calendar-body-cell-content {
+    color: white;
+}
+
+.mat-calendar-body-selected, .mat-calendar-body-active {
+    background-color: gold !important;
+    color: black !important;
+}
+
+.mat-calendar-previous-button, .mat-calendar-next-button {
+    color: gold !important;
+}
+
+
 @media (max-width: 600px) {
     .formulario-container {
         padding: 1.2rem;
