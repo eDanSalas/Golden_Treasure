@@ -156,13 +156,15 @@ export class ServicioComponent {
     }
   }
   
-  invalidString(s: string): boolean {
+  invalidString(s: any): boolean {
     const pattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/;
-    return s.length > 0 && !pattern.test(s);
+    return typeof s !== 'string' || s.length === 0 || !pattern.test(s);
   }
 
-  minLength(s: string, l: number): boolean {
-    return s.length > 0 && s.length < l;
+
+  minLength(s: any, l: number): boolean {
+    return typeof s !== 'string' || (s.length > 0 && s.length < l);
   }
+
 
 }

@@ -86,7 +86,8 @@ export class DashboardComponent {
 
   editarReservacion(evento: {index: number, reservacion: any}) {
     this.storageService.editarReservaciones(evento.index, evento.reservacion);
-    this.reservaciones = [...this.storageService.getReservaciones()];
+    // this.reservaciones = [...this.storageService.getReservaciones()];
+    this.reservaciones = this.storageService.getReservaciones().slice(); 
     Swal.fire({
       title: 'Registro editado',
       icon: 'success',

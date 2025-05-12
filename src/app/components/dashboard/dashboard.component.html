@@ -27,18 +27,28 @@
   <img src="admins/admin{{id}}.jpg" alt="Admin" class="img-admin">
 </div>
 
-<div>
-  <h4 class="card-title mb-3 text-center">Tabla de <small style="color: gold; font-size: 24px;">Gestion de Servicio</small></h4>
-  <app-admin 
-    [servicios]="servicios" 
-    (eliminarServicio)="eliminarServicio($event)"
-    (editarServicio)="editarServicio($event)"
-  ></app-admin>
+<h4 class="card-title mb-3 text-center">Tabla de <small style="color: gold; font-size: 24px;">Gestion de Servicio</small></h4>
+@if(servicios.length > 0) {
+  <div class="tablaTemplate">
+    <app-admin 
+      [servicios]="servicios" 
+      (eliminarServicio)="eliminarServicio($event)"
+      (editarServicio)="editarServicio($event)"
+    ></app-admin>
+  </div>
+} @else {
+  <h4 class="card-title mb-3 text-center" style="color:dimgray; font-size: 24px;">No se encontraron servicios</h4>
+}
 
-  <h4 class="card-title mb-3 text-center">Tabla de <small style="color: gold; font-size: 24px;">Gestion de Reservas</small></h4>
-  <app-admin-reactive 
-    [reservaciones]="reservaciones" 
-    (eliminarReservacion)="eliminarReservacion($event)"
-    (editarReservacion)="editarReservacion($event)" 
-  ></app-admin-reactive>
-</div>
+<h4 class="card-title mb-3 text-center">Tabla de <small style="color: gold; font-size: 24px;">Gestion de Reservas</small></h4>
+@if (reservaciones.length > 0) {
+  <div class="tablaReactiva">
+    <app-admin-reactive 
+      [reservaciones]="reservaciones"
+      (eliminarReservacion)="eliminarReservacion($event)"
+      (editarReservacion)="editarReservacion($event)">
+    </app-admin-reactive>
+  </div>
+} @else {
+  <h4 class="card-title mb-3 text-center" style="color:dimgray; font-size: 24px;">No se encontraron reservaciones</h4>
+}

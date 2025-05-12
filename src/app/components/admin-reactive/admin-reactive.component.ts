@@ -5,7 +5,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { EditServicioDialogComponent } from '../edit-servicio-dialog/edit-servicio-dialog.component';
 import { EditReservasDialogComponent } from '../edit-reservas-dialog/edit-reservas-dialog.component';
 
 @Component({
@@ -51,6 +50,14 @@ export class AdminReactiveComponent {
     this.highlightedRowIndex = (this.highlightedRowIndex === index) ? null : index;
   }
 
+  // eliminarRegistro(index: number) {
+  //     if (index >= 0 && index < this.reservaciones.length) {
+  //       this.reservaciones.splice(index, 1);
+  //       localStorage.setItem('reservaciones', JSON.stringify(this.reservaciones));
+  //       this.eliminarReservacion.emit(index);
+  //     }
+  // }
+
   abrirDialogoEdicion(index: number) {
     const dialogRef = this.dialog.open(EditReservasDialogComponent, {
       width: '500px',
@@ -61,6 +68,7 @@ export class AdminReactiveComponent {
       if (result) {
         this.reservaciones[index] = result;
         localStorage.setItem('reservaciones', JSON.stringify(this.reservaciones));
+        this.editarReservacion.emit({ index, reservacion: result });
       }
     });
   }

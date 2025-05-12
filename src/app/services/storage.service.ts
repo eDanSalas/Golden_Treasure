@@ -28,6 +28,7 @@ export class StorageService {
 
   guardarServicio(servicio: any): void {
     const servicios = this.getServicios();
+    servicio.fechaParticular = servicio.fechaParticular.toISOString().split('T')[0];
     servicios.push(servicio);
     localStorage.setItem(this.LS_KEY, JSON.stringify(servicios));
   }
@@ -48,23 +49,24 @@ export class StorageService {
   getReservaciones() {
     const data = localStorage.getItem(this.LS_KEY_R);
     return data ? JSON.parse(data) : [];
+
   }
 
   guardarReservaciones(reservacion: any): void {
     const reservaciones = this.getReservaciones();
     reservaciones.push(reservacion);
-    localStorage.setItem(this.LS_KEY, JSON.stringify(reservacion));
+    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservacion));
   }
 
   eliminarReservaciones(index: number): void {
     const reservaciones = this.getReservaciones();
     reservaciones.splice(index, 1);
-    localStorage.setItem(this.LS_KEY, JSON.stringify(reservaciones));
+    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservaciones));
   }
 
   editarReservaciones(index: number, reservacion: any): void {
     const reservaciones = this.getReservaciones();
     reservaciones[index] = reservacion;
-    localStorage.setItem(this.LS_KEY, JSON.stringify(reservaciones));
+    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservaciones));
   }
 }

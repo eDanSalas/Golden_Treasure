@@ -18,7 +18,7 @@ export class NavbarComponent {
   admin: {[key: number]: string[]} = {
     1: ["Dany","Ángel Daniel Lopez Rodriguez", "ISC1_ad", "/admins/admin1.jpg"],
     2: ["Dan","Eric Daniel Salas Martínez", "ISC2_ed", "/admins/admin2.jpg"],
-    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da"]
+    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da", "/admins/admin3.jpg"]
   }
 
   showLoginModal = false;
@@ -53,14 +53,21 @@ export class NavbarComponent {
 
   ngOnInit() {
     const storedAdminId = localStorage.getItem('loggedAdminId');
-    if (storedAdminId) {
+    const storedAdminName = localStorage.getItem('loggedAdminName');
+    const storedAdminUs = localStorage.getItem('loggedAdminUs');
+    const storedAdminAvatar = localStorage.getItem('loggedAdminAvatar');
+
+    if (storedAdminId && storedAdminName && storedAdminUs && storedAdminAvatar) {
       const id = parseInt(storedAdminId, 10);
       if (id && this.admin[id]) {
+        this.loggedAdminId = id;
+        this.loggedAdminName = storedAdminName;
+        this.loggedAdminUs = storedAdminUs;
+        this.loggedAdminAvatar = storedAdminAvatar;
         this.adminInfo = {
           key: id,
-          nombre: this.admin[id][0]
+          nombre: storedAdminName
         };
-        this.loggedAdminAvatar = localStorage.getItem('loggedAdminAvatar');
       }
     }
   }
@@ -99,7 +106,7 @@ export class NavbarComponent {
       localStorage.setItem('loggedAdminName', nombre);
       localStorage.setItem('loggedAdminUs', this.admin[id][0]);
       localStorage.setItem('loggedAdminId', id.toString());
-      localStorage.setItem('loggedAdminAvatar', this.admin[id][2]);
+      localStorage.setItem('loggedAdminAvatar', this.admin[id][3]);
       this.closeLoginModal();
 
       Swal.fire({

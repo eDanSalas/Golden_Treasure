@@ -192,8 +192,8 @@ export class HabitacionComponent {
         extras: Object.entries(this.miform.value.extras)
                   .filter(([key, value]) => value)
                   .map(([key]) => key),
-        fechaInicio: this.miform.value.rango.inicio,
-        fechaFin: this.miform.value.rango.fin,
+        fechaInicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
+        fechaFin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
         total: this.total
       }
       const lsData = JSON.parse(localStorage.getItem('reservaciones') || '[]');

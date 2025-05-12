@@ -67,10 +67,10 @@
                 @if (nombreCtrl.invalid && nombreCtrl.touched) {
                     <div>El nombre es obligatorio.</div>
                 }
-                @if (invalidString(modelo.nombre)) {
+                @if (invalidString(modelo.nombre) && nombreCtrl.touched) {
                     <div>El nombre solo debe contener letras.</div>
                 }
-                @if (minLength(modelo.nombre, 4)) {
+                @if (minLength(modelo.nombre, 4) && nombreCtrl.touched) {
                     <div>Debe tener al menos 4 caracteres.</div>
                 }
             </div>
@@ -84,10 +84,10 @@
                 @if (nombrePublicoCtrl.invalid && nombrePublicoCtrl.touched) {
                     <div>El nombre público es obligatorio.</div>
                 }
-                @if (invalidString(modelo.nombrePublico)) {
+                @if (invalidString(modelo.nombrePublico) && nombrePublicoCtrl.touched) {
                     <div>El nombre publico solo debe contener letras.</div>
                 }
-                @if (minLength(modelo.nombrePublico, 3)) {
+                @if (minLength(modelo.nombrePublico, 3) && nombrePublicoCtrl.touched) {
                     <div>Debe tener al menos 3 caracteres.</div>
                 }
             </div>
@@ -114,7 +114,7 @@
                 @if (dudaCtrl.invalid && dudaCtrl.touched) {
                     <div>Este campo es obligatorio.</div>
                 }
-                @if (minLength(modelo.duda, 4)) {
+                @if (minLength(modelo.duda, 4) && dudaCtrl.touched) {
                     <div>Debes ingresar al menos 4 caracteres. Ejemplo: "Nada".</div>
                 }
             </div>
