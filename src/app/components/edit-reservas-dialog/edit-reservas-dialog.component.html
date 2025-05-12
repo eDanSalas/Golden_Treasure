@@ -1,107 +1,119 @@
-<form [formGroup]="miform" (ngSubmit)="enviar()">
+<!-- editar-servicio-dialog.component.html -->
+<h2 mat-dialog-title class="text-center p-2">Editar Reservación</h2>
+<mat-dialog-content>
+  <form [formGroup]="miform" (ngSubmit)="guardar()">
     <div class="form-info">
+      <!-- Sección de información del cliente -->
       <div class="info-cliente">
-        <label for="nombre">Nombre:</label>
-        <input type="text" formControlName="nombre" id="nombre">
-        @if (miform.get('nombre')?.touched && miform.get('nombre')?.invalid) {
-          <div class="error">
-            @if (miform.get('nombre')?.errors?.['required']) {
-              <div>Nombre es obligatorio.</div>
-            }
-            @if (miform.get('nombre')?.errors?.['minlength']) {
-              <div>El nombre debe contener mínimo 4 caracteres.</div>
-            }
-          </div>
-        }
-        
-        <label for="email">Email:</label>
-        <input id="email" type="email" formControlName="email" />
-        @if (miform.get('email')?.touched && miform.get('email')?.invalid) {
-          <div class="error">
-            @if (miform.get('email')?.errors?.['required']) {
-              <div>Email es obligatorio.</div>
-            }
-            @if (miform.get('email')?.errors?.['email']) {
-              <div>Formato: [cliente&#64;correo.com].</div>
-            }
-          </div>
-        }
-        
-        <label for="telefono">Teléfono</label>
-        <input id="telefono" type="text" formControlName="telefono" />
-        @if (miform.get('telefono')?.touched && miform.get('telefono')?.invalid) {
-          <div class="error">
-            @if (miform.get('telefono')?.errors?.['required']) {
-              <div>Teléfono es obligatorio.</div>
-            }
-            @if (miform.get('telefono')?.errors?.['pattern']) {
-              <div>Formato: [123 456 7890].</div>
-            }
-          </div>
-        }
-        
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre">
+          <mat-error *ngIf="miform.get('nombre')?.hasError('required')">
+            Nombre es obligatorio
+          </mat-error>
+          <mat-error *ngIf="miform.get('nombre')?.hasError('minlength')">
+            Mínimo 4 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email">
+          <mat-error *ngIf="miform.get('email')?.hasError('required')">
+            Email es obligatorio
+          </mat-error>
+          <mat-error *ngIf="miform.get('email')?.hasError('email')">
+            Formato inválido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="telefono" placeholder="123 456 7890">
+          <mat-error *ngIf="miform.get('telefono')?.hasError('required')">
+            Teléfono es obligatorio
+          </mat-error>
+          <mat-error *ngIf="miform.get('telefono')?.hasError('pattern')">
+            Formato: 123 456 7890
+          </mat-error>
+        </mat-form-field>
       </div>
+
+      <!-- Sección de reserva -->
       <div class="info-reserva">
         <div class="contador">
-          <label>Clientes: </label>
-          <button type="button" (click)="disminuir('huespedes')" class="btn-client">−</button>
-          <span>{{ huespedes }}</span>
-          <button type="button" (click)="aumentar('huespedes')" class="btn-client">+</button>
-          <label>+ ${{porHuesped}} USD c/u</label>
-        </div>
-        <div class="contador">
-          <label>Noches: </label>
-          <span>{{ noches }}</span>
-          <label>+ ${{ porNoche }} USD c/u</label>
+          <button mat-icon-button (click)="disminuir('huespedes')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ miform.get('huespedes')?.value }}</span>
+          <button mat-icon-button (click)="aumentar('huespedes')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-label>Huéspedes</mat-label>
         </div>
 
-        <label for="reserva">Tipo de reserva:</label>
-        <select id="reserva" formControlName="reserva">
-          <option value="">-- Selecciona una opción --</option>
-          @for(r of reservas; track r){
-            <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
-          }
-        </select>
-        @if (miform.get('reserva')?.touched && miform.get('reserva')?.invalid) {
-          <div class="error">Tipo de reserva es obligatorio.</div>
-        }
-        <label>Extras:</label>
-        <div class="extras" formGroupName="extras">
-          @for(extra of extras; track extra){
-            <label>
-              <input type="checkbox" [formControlName]="extra.sec" />
-              {{ extra.sec }}: ${{ extra.costo }}
-            </label>
-          }
+        <div class="contador">
+          <button mat-icon-button (click)="disminuir('noches')">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ miform.get('noches')?.value }}</span>
+          <button mat-icon-button (click)="aumentar('noches')">
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-label>Noches</mat-label>
         </div>
-        
+
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de reserva</mat-label>
+          <mat-select formControlName="reserva">
+            <option value="">-- Selecciona una opción --</option>
+            @for(r of reservas; track r){
+            <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
+            }
+          </mat-select>
+          <mat-error *ngIf="miform.get('reserva')?.hasError('required')">
+            Selecciona un tipo de reserva
+          </mat-error>
+        </mat-form-field>
+
+        <mat-label>Extras:</mat-label>
+        <div class="extras" formGroupName="extras">
+          <mat-checkbox *ngFor="let extra of extras" [formControlName]="extra.sec">
+            {{ extra.sec }} (+${{ extra.costo }})
+          </mat-checkbox>
+        </div>
       </div>
     </div>
+
+    <!-- Calendario -->
     <div class="calendario">
-      <mat-form-field [formGroupName]="'rango'">
-          <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Start date" formControlName="inicio" [min]="hoy">
-            <input matEndDate placeholder="End date" formControlName="fin" [min]="hoy">
-          </mat-date-range-input>
-          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-form-field appearance="fill">
+        <mat-label>Rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate formControlName="inicio" placeholder="Fecha inicio">
+          <input matEndDate formControlName="fin" placeholder="Fecha fin">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-error *ngIf="miform.get('rango')?.hasError('fechaInicioPasada')">
+          Fecha inicio no puede ser pasada
+        </mat-error>
+        <mat-error *ngIf="miform.get('rango')?.hasError('fechaFinPasada')">
+          Fecha fin no puede ser pasada
+        </mat-error>
       </mat-form-field>
-      @if (miform.get('rango')?.touched && miform.get('rango')?.invalid) {
-        <div class="error">
-          @if (miform.get('rango')?.errors?.['fechaInicioPasada']) {
-            <div>La fecha de inicio no puede ser anterior a hoy.</div>
-          }
-          @if (miform.get('rango')?.errors?.['fechaFinPasada']) {
-            <div>La fecha de fin no puede ser anterior a hoy.</div>
-          }
-        </div>
-      }
     </div>
+
     <div class="total">
-      TOTAL CON IMPUESTOS:
+      <mat-label>TOTAL CON IMPUESTOS:</mat-label>
       <span>${{ total }} USD</span>
     </div>
-    <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">Reservar</button>
   </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="miform.invalid">
+    Guardar Cambios
+  </button>
+</mat-dialog-actions>

@@ -16,15 +16,17 @@ export class NavbarComponent {
   hovered: boolean = false;
 
   admin: {[key: number]: string[]} = {
-    1: ["Ángel Daniel Lopez Rodriguez", "ISC1_ad", "/admins/admin1.jpg"],
-    2: ["Eric Daniel Salas Martínez", "ISC2_ed", "/admins/admin2.jpg"],
-    3: ["Diego Adriel Segura Ramírez", "ISC3_da"]
+    1: ["Dany","Ángel Daniel Lopez Rodriguez", "ISC1_ad", "/admins/admin1.jpg"],
+    2: ["Dan","Eric Daniel Salas Martínez", "ISC2_ed", "/admins/admin2.jpg"],
+    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da"]
   }
 
   showLoginModal = false;
   loginId: number | null = null;
+  loginUs: string | null = null;
   loginPassword: string = '';
   loggedAdminName: string | null = null;
+  loggedAdminUs: string | null = null;
   loggedAdminId: number | null = null;
   loggedAdminAvatar: string | null = null;
   adminInfo: { key: number, nombre: string } | null = null;
@@ -78,16 +80,19 @@ export class NavbarComponent {
 
   submitLogin() {
     const id = this.loginId;
+    const username = this.loginUs;
     const pass = this.loginPassword.trim();
 
-    if (id && this.admin[id] && this.admin[id][1] === pass) {
-      const nombre = this.admin[id][0];
+    if (id && this.admin[id] && this.admin[id][0] == username && this.admin[id][2] === pass) {
+      const nombre = this.admin[id][1];
       this.loggedAdminName = nombre;
       this.loggedAdminId = id;
-      this.loggedAdminAvatar = this.admin[id][2];
+      this.loggedAdminUs = this.admin[id][0];
+      this.loggedAdminAvatar = this.admin[id][3];
       this.adminInfo = { key: id, nombre };
 
       localStorage.setItem('loggedAdminName', nombre);
+      localStorage.setItem('loggedAdminUs', this.admin[id][0]);
       localStorage.setItem('loggedAdminId', id.toString());
       localStorage.setItem('loggedAdminAvatar', this.admin[id][2]);
       this.closeLoginModal();
@@ -130,10 +135,12 @@ export class NavbarComponent {
         this.loggedAdminName = null;
         this.loggedAdminId = null;
         this.loggedAdminAvatar = null;
+        this.loggedAdminUs = null;
         this.menuOpen = false;
         localStorage.removeItem('loggedAdminName');
         localStorage.removeItem('loggedAdminId');
         localStorage.removeItem('loggedAdminAvatar');
+        localStorage.removeItem('loggedAdminUs');
 
         Swal.fire({
           title: 'Sesión cerrada',
