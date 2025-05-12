@@ -16,9 +16,9 @@ export class NavbarComponent {
   hovered: boolean = false;
 
   admin: {[key: number]: string[]} = {
-    1: ["Dany","Ángel Daniel Lopez Rodriguez", "ISC1_ad", "/admins/admin1.jpg"],
-    2: ["Dan","Eric Daniel Salas Martínez", "ISC2_ed", "/admins/admin2.jpg"],
-    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da", "/admins/admin3.jpg"]
+    1: ["Dany","Ángel Daniel Lopez Rodriguez", "ISC1_ad", "admins/admin1.jpg"],
+    2: ["Dan","Eric Daniel Salas Martínez", "ISC2_ed", "admins/admin2.jpg"],
+    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da", "admins/admin3.jpg"]
   }
 
   showLoginModal = false;
