@@ -60,36 +60,35 @@
         <form #infoForm="ngForm" (ngSubmit)="enviarInfo(infoForm)" novalidate>
             <mat-form-field appearance="outline" class="w-100 mb-1">
                 <mat-label>Nombre</mat-label>
-                <input matInput name="nombre" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$" minlength="4"
+                <input matInput name="nombre" required
                     [(ngModel)]="modelo.nombre" #nombreCtrl="ngModel">
             </mat-form-field>
             <div class="text-danger small mb-2 ms-1">
                 @if (nombreCtrl.invalid && nombreCtrl.touched) {
-                    @if (nombreCtrl.errors?.['required']) {
-                        <div>El nombre es obligatorio.</div>
-                    }
-                    @if (nombreCtrl.errors?.['minlength']) {
-                        <div>Debe tener al menos 4 caracteres.</div>
-                    }
-                    @if (nombreCtrl.errors?.['pattern']) {
-                        <div>El nombre solo debe contener letras.</div>
-                    }
+                    <div>El nombre es obligatorio.</div>
+                }
+                @if (invalidString(modelo.nombre)) {
+                    <div>El nombre solo debe contener letras.</div>
+                }
+                @if (minLength(modelo.nombre, 4)) {
+                    <div>Debe tener al menos 4 caracteres.</div>
                 }
             </div>
     
             <mat-form-field appearance="outline" class="w-100 mb-1">
                 <mat-label>Nombre Público</mat-label>
-                <input matInput name="nombrePublico" required minlength="3" [(ngModel)]="modelo.nombrePublico"
+                <input matInput name="nombrePublico" required [(ngModel)]="modelo.nombrePublico"
                     #nombrePublicoCtrl="ngModel">
             </mat-form-field>
             <div class="text-danger small mb-2 ms-1">
                 @if (nombrePublicoCtrl.invalid && nombrePublicoCtrl.touched) {
-                    @if (nombrePublicoCtrl.errors?.['required']) {
-                        <div>El nombre público es obligatorio.</div>
-                    }
-                    @if (nombrePublicoCtrl.errors?.['minlength']) {
-                        <div>Debe tener al menos 3 caracteres.</div>
-                    }
+                    <div>El nombre público es obligatorio.</div>
+                }
+                @if (invalidString(modelo.nombrePublico)) {
+                    <div>El nombre publico solo debe contener letras.</div>
+                }
+                @if (minLength(modelo.nombrePublico, 3)) {
+                    <div>Debe tener al menos 3 caracteres.</div>
                 }
             </div>
     
@@ -99,28 +98,24 @@
             </mat-form-field>
             <div class="text-danger small mb-2 ms-1">
                 @if (emailCtrl.invalid && emailCtrl.touched) {
-                    @if (emailCtrl.errors?.['required']) {
-                        <div>El correo es obligatorio.</div>
-                    }
-                    @if (emailCtrl.errors?.['email']) {
-                        <div>Ingresa un correo válido.</div>
-                    }
+                    <div>El correo es obligatorio.</div>
+                }
+                @if (emailCtrl.errors?.['email']) {
+                    <div>Ingresa un correo válido.</div>
                 }
             </div>
     
             <mat-form-field appearance="outline" class="w-100 mb-1">
                 <mat-label>Información Adicional (situaciones especiales)</mat-label>
-                <textarea matInput name="duda" required minlength="4" rows="4" [(ngModel)]="modelo.duda"
+                <textarea matInput name="duda" required rows="4" [(ngModel)]="modelo.duda"
                     #dudaCtrl="ngModel"></textarea>
             </mat-form-field>
             <div class="text-danger small mb-2 ms-1">
                 @if (dudaCtrl.invalid && dudaCtrl.touched) {
-                    @if (dudaCtrl.errors?.['required']) {
-                        <div>Este campo es obligatorio.</div>
-                    }
-                    @if (dudaCtrl.errors?.['minlength']) {
-                        <div>Debes ingresar al menos 4 caracteres. Ejemplo: "Nada".</div>
-                    }
+                    <div>Este campo es obligatorio.</div>
+                }
+                @if (minLength(modelo.duda, 4)) {
+                    <div>Debes ingresar al menos 4 caracteres. Ejemplo: "Nada".</div>
                 }
             </div>
     

@@ -51,15 +51,16 @@ export class AdminReactiveComponent {
     this.highlightedRowIndex = (this.highlightedRowIndex === index) ? null : index;
   }
 
-  abrirDialogoEdicion(index: number): void {
+  abrirDialogoEdicion(index: number) {
     const dialogRef = this.dialog.open(EditReservasDialogComponent, {
-      width: '400px',
-      data: { reservacion: this.reservaciones[index] }
+      width: '500px',
+      data: { ...this.reservaciones[index] }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.editarReservacion.emit({ index, reservacion: result });
+        this.reservaciones[index] = result;
+        localStorage.setItem('reservaciones', JSON.stringify(this.reservaciones));
       }
     });
   }

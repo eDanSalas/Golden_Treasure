@@ -6,12 +6,12 @@
         
             <div class="d-flex flex-column text-start div-text">
                 <span class="brand-line bl1"
-                    [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {}"
+                    [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {'text-decoration': 'underline'}"
                     (mouseover)="hovered = true" (mouseleave)="hovered = false">
                     Golden
                 </span>
                 <span class="brand-line bl2"
-                    [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {}"
+                    [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {'text-decoration': 'underline'}"
                     (mouseover)="hovered = true" (mouseleave)="hovered = false">
                     Treasure
                 </span>
@@ -94,22 +94,88 @@
             <div class="collapse navbar-collapse myDivNav" id="navbarNav">
                 <ul class="navbar-nav d-flex justify-content-center w-100">
                     <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/inicio']">Inicio</a>
+                        <a class="nav-link" [routerLink]="['/inicio']" [ngStyle]="isActive('/inicio') ? 
+                            {
+                                'background-color': ' rgba(201, 164, 73, 0.6)',
+                                'color': 'rgba(0, 0, 0, 0.4)',
+                                'border-radius': '8px',
+                                'padding': '8px 12px',
+                                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                'font-weight': '500',
+                                'transition': 'all 0.3s ease',
+                                'display': 'inline-block',
+                                'line-height': '1.2'
+                            } : {}">
+                            Inicio
+                        </a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/alojamiento']">Alojamiento</a>
+                        <a class="nav-link" [routerLink]="['/alojamiento']" [ngStyle]="isActive('/alojamiento') ? 
+                        {
+                                'background-color': ' rgba(201, 164, 73, 0.6)',
+                                'color': 'rgba(0, 0, 0, 0.4)',
+                                'border-radius': '8px',
+                                'padding': '8px 12px',
+                                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                'font-weight': '500',
+                                'transition': 'all 0.3s ease',
+                                'display': 'inline-block',
+                                'line-height': '1.2'
+                            } : {}">
+                            Alojamiento
+                        </a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/ofertas']">Ofertas</a>
+                        <a class="nav-link" [routerLink]="['/ofertas']" [ngStyle]="isActive('/ofertas') ? 
+                        {
+                                'background-color': ' rgba(201, 164, 73, 0.6)',
+                                'color': 'rgba(0, 0, 0, 0.4)',
+                                'border-radius': '8px',
+                                'padding': '8px 12px',
+                                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                'font-weight': '500',
+                                'transition': 'all 0.3s ease',
+                                'display': 'inline-block',
+                                'line-height': '1.2'
+                            } : {}">
+                            Ofertas
+                        </a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/servicios']">Servicios</a>
+                        <a class="nav-link" [routerLink]="['/servicios']" [ngStyle]="isActive('/servicios') ? 
+                        {
+                                'background-color': ' rgba(201, 164, 73, 0.6)',
+                                'color': 'rgba(0, 0, 0, 0.4)',
+                                'border-radius': '8px',
+                                'padding': '8px 12px',
+                                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                'font-weight': '500',
+                                'transition': 'all 0.3s ease',
+                                'display': 'inline-block',
+                                'line-height': '1.2'
+                            } : {}">
+                            Servicios
+                        </a>
                     </li>
                     <li class="nav-item mx-5">
-                        <a class="nav-link" [routerLink]="['/comentarios']">Comentarios</a>
+                        <a class="nav-link" [routerLink]="['/comentarios']" [ngStyle]="isActive('/comentarios') ? 
+                        {
+                                'background-color': ' rgba(201, 164, 73, 0.6)',
+                                'color': 'rgba(0, 0, 0, 0.4)',
+                                'border-radius': '8px',
+                                'padding': '8px 12px',
+                                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                'font-weight': '500',
+                                'transition': 'all 0.3s ease',
+                                'display': 'inline-block',
+                                'line-height': '1.2'
+                            } : {}">
+                            Comentarios
+                        </a>
                     </li>
                 </ul>
             </div>
+
         </div>
 
     </div>

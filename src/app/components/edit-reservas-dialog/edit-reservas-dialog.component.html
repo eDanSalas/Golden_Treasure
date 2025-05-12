@@ -1,119 +1,72 @@
-<!-- editar-servicio-dialog.component.html -->
-<h2 mat-dialog-title class="text-center p-2">Editar Reservación</h2>
-<mat-dialog-content>
-  <form [formGroup]="miform" (ngSubmit)="guardar()">
-    <div class="form-info">
-      <!-- Sección de información del cliente -->
-      <div class="info-cliente">
-        <mat-form-field appearance="fill">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="nombre">
-          <mat-error *ngIf="miform.get('nombre')?.hasError('required')">
-            Nombre es obligatorio
-          </mat-error>
-          <mat-error *ngIf="miform.get('nombre')?.hasError('minlength')">
-            Mínimo 4 caracteres
-          </mat-error>
-        </mat-form-field>
+<h1 mat-dialog-title>Editar Reservación</h1>
+<div mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="nombre">
+  </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-error *ngIf="miform.get('email')?.hasError('required')">
-            Email es obligatorio
-          </mat-error>
-          <mat-error *ngIf="miform.get('email')?.hasError('email')">
-            Formato inválido
-          </mat-error>
-        </mat-form-field>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="telefono" placeholder="123 456 7890">
-          <mat-error *ngIf="miform.get('telefono')?.hasError('required')">
-            Teléfono es obligatorio
-          </mat-error>
-          <mat-error *ngIf="miform.get('telefono')?.hasError('pattern')">
-            Formato: 123 456 7890
-          </mat-error>
-        </mat-form-field>
-      </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Teléfono</mat-label>
+    <input matInput formControlName="telefono">
+  </mat-form-field>
 
-      <!-- Sección de reserva -->
-      <div class="info-reserva">
-        <div class="contador">
-          <button mat-icon-button (click)="disminuir('huespedes')">
-            <mat-icon>remove</mat-icon>
-          </button>
-          <span>{{ miform.get('huespedes')?.value }}</span>
-          <button mat-icon-button (click)="aumentar('huespedes')">
-            <mat-icon>add</mat-icon>
-          </button>
-          <mat-label>Huéspedes</mat-label>
-        </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Habitación</mat-label>
+    <input matInput formControlName="hab" readonly>
+  </mat-form-field>
 
-        <div class="contador">
-          <button mat-icon-button (click)="disminuir('noches')">
-            <mat-icon>remove</mat-icon>
-          </button>
-          <span>{{ miform.get('noches')?.value }}</span>
-          <button mat-icon-button (click)="aumentar('noches')">
-            <mat-icon>add</mat-icon>
-          </button>
-          <mat-label>Noches</mat-label>
-        </div>
+  <div class="flex gap-4">
+    <mat-form-field appearance="fill">
+      <mat-label>Huéspedes</mat-label>
+      <input matInput type="number" formControlName="huespedes">
+    </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Tipo de reserva</mat-label>
-          <mat-select formControlName="reserva">
-            <option value="">-- Selecciona una opción --</option>
-            @for(r of reservas; track r){
-            <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
-            }
-          </mat-select>
-          <mat-error *ngIf="miform.get('reserva')?.hasError('required')">
-            Selecciona un tipo de reserva
-          </mat-error>
-        </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Noches</mat-label>
+      <input matInput type="number" formControlName="noches">
+    </mat-form-field>
+  </div>
 
-        <mat-label>Extras:</mat-label>
-        <div class="extras" formGroupName="extras">
-          <mat-checkbox *ngFor="let extra of extras" [formControlName]="extra.sec">
-            {{ extra.sec }} (+${{ extra.costo }})
-          </mat-checkbox>
-        </div>
-      </div>
-    </div>
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Tipo de Reserva</mat-label>
+    <mat-select formControlName="tipoReserva">
+      <mat-option *ngFor="let tipo of reservaPrecios | keyvalue" [value]="tipo.key">
+        {{ tipo.key }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-    <!-- Calendario -->
-    <div class="calendario">
-      <mat-form-field appearance="fill">
-        <mat-label>Rango de fechas</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate formControlName="inicio" placeholder="Fecha inicio">
-          <input matEndDate formControlName="fin" placeholder="Fecha fin">
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-        <mat-error *ngIf="miform.get('rango')?.hasError('fechaInicioPasada')">
-          Fecha inicio no puede ser pasada
-        </mat-error>
-        <mat-error *ngIf="miform.get('rango')?.hasError('fechaFinPasada')">
-          Fecha fin no puede ser pasada
-        </mat-error>
-      </mat-form-field>
-    </div>
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Fecha de inicio</mat-label>
+    <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio">
+    <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+    <mat-datepicker #pickerInicio></mat-datepicker>
+  </mat-form-field>
 
-    <div class="total">
-      <mat-label>TOTAL CON IMPUESTOS:</mat-label>
-      <span>${{ total }} USD</span>
-    </div>
-  </form>
-</mat-dialog-content>
+  <mat-form-field appearance="fill" class="w-full mt-4">
+    <mat-label>Fecha de fin</mat-label>
+    <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin">
+    <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFin></mat-datepicker>
+  </mat-form-field>
 
-<mat-dialog-actions align="end">
+
+  <label class="mt-3">Extras:</label>
+  <div formGroupName="extras" class="mb-3">
+    <mat-checkbox *ngFor="let extra of extrasDisponibles" [formControlName]="extra.sec">
+      {{ extra.sec }} (+${{ extra.costo }})
+    </mat-checkbox>
+  </div>
+
+  <div class="mt-3"><strong>Total:</strong> ${{ total }}</div>
+</div>
+
+<div mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="miform.invalid">
-    Guardar Cambios
-  </button>
-</mat-dialog-actions>
+  <button mat-button color="primary" (click)="guardar()">Guardar</button>
+</div>

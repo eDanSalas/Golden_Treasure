@@ -31,13 +31,18 @@ export class NavbarComponent {
   loggedAdminAvatar: string | null = null;
   adminInfo: { key: number, nombre: string } | null = null;
   showDashboard: boolean = false;
+  currentRoute: string = '';
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled = window.scrollY > 200;
   }
 
-  constructor(private eRef: ElementRef, private router: Router) { }
+  constructor(private eRef: ElementRef, private router: Router) {
+    this.router.events.subscribe(() => {
+      this.currentRoute = this.router.url;
+    });
+  }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
@@ -156,5 +161,8 @@ export class NavbarComponent {
     });
   }
 
+  isActive(route: string): boolean {
+    return this.currentRoute === route;
+  }
 
 }

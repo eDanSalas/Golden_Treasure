@@ -156,4 +156,13 @@ export class ServicioComponent {
     }
   }
   
+  invalidString(s: string): boolean {
+    const pattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/;
+    return s.length > 0 && !pattern.test(s);
+  }
+
+  minLength(s: string, l: number): boolean {
+    return s.length > 0 && s.length < l;
+  }
+
 }

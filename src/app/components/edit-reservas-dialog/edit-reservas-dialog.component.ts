@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import {ChangeDetectionStrategy} from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import {DateAdapter, MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
@@ -37,99 +38,88 @@ import { MatRadioModule } from '@angular/material/radio';
 })
 
 export class EditReservasDialogComponent implements OnInit {
-  miform: FormGroup;
-  hoy = new Date();
-  
-  reservas: ('Estándar' | 'Premium' | 'VIP')[] = ['Estándar', 'Premium', 'VIP'];
-  reservaPrecios = { 'Estándar': 50, 'Premium': 100, 'VIP': 200 };
-  extras = [
-    { sec: 'Desayuno', costo: 15 },
-    { sec: 'Lavandería', costo: 10 },
-    { sec: 'Transporte', costo: 20 }
+  form: FormGroup;
+  reservaPrecios: { [key: string]: number } = {
+    'All-inclusive': 100,
+    'Room Only': 0,
+    'Bed and BreakFast': 20,
+    'Full Board': 60,
+    'Half Board': 40
+  };
+  extrasDisponibles = [
+    { sec: 'Mascota', costo: 50 },
+    { sec: 'VinoHab', costo: 30 },
+    { sec: 'Toallas', costo: 5 },
   ];
 
+  total: number = 0;
+
   constructor(
-    private fb: FormBuilder,
     public dialogRef: MatDialogRef<EditReservasDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dateAdapter: DateAdapter<Date>
+    private fb: FormBuilder
   ) {
-    this.dateAdapter.setLocale('en-US');
-    this.miform = this.createForm();
-  }
-
-  ngOnInit(): void {
-    if (this.data.servicio) {
-      this.miform.patchValue(this.data.servicio);
-    }
-  }
-
-  createForm(): FormGroup {
-    return this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(4)]],
-      email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d{3} \d{3} \d{4}$/)]],
-      reserva: ['', Validators.required],
-      rango: this.fb.group({
-        inicio: [null, [Validators.required, this.fechaNoPasadaValidator]],
-        fin: [null, [Validators.required, this.fechaNoPasadaValidator]]
-      }),
-      extras: this.fb.group({
-        Desayuno: [false],
-        Lavandería: [false],
-        Transporte: [false]
-      }),
-      huespedes: [1, Validators.min(1)],
-      noches: [1, Validators.min(1)]
+    this.form = this.fb.group({
+      nombre: [data.nombre, [Validators.required]],
+      email: [data.email, [Validators.required, Validators.email]],
+      telefono: [data.telefono, [Validators.required]],
+      hab: [data.hab, Validators.required],
+      huespedes: [data.huespedes, [Validators.required, Validators.min(1)]],
+      noches: [data.noches, [Validators.required, Validators.min(1)]],
+      tipoReserva: [data.tipoReserva, Validators.required],
+      fechaInicio: [new Date(this.data.fechaInicio), Validators.required],
+      fechaFin: [new Date(this.data.fechaFin), Validators.required],
+      extras: this.fb.group(
+        this.extrasDisponibles.reduce((acc, extra) => {
+          acc[extra.sec] = [data.extras.includes(extra.sec)];
+          return acc;
+        }, {} as any)
+      )
     });
   }
 
-  fechaNoPasadaValidator(control: FormControl) {
-    const fecha = control.value;
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-    return fecha < hoy ? { fechaPasada: true } : null;
+  ngOnInit(): void {
+    this.form.valueChanges.subscribe(() => this.calcularTotal());
+    this.calcularTotal();
   }
 
-  get total(): number {
-    const values = this.miform.value;
-    const base = 100;
-    
-    // Precio de reserva (solución 1)
-    const precioReserva = this.reservaPrecios[values.reserva as keyof typeof this.reservaPrecios] || 0;
-  
-    // Cálculo de extras (solución 1)
-    const extrasTotal = Object.keys(values.extras)
-      .filter(key => values.extras[key])
-      .reduce((acc, key) => {
-        const extra = this.extras.find(e => e.sec === key);
-        return acc + (extra?.costo || 0);
-      }, 0);
-  
-    return base + 
-      (values.huespedes * 20) + 
-      (values.noches * 50) + 
-      precioReserva + 
-      extrasTotal;
+  calcularTotal() {
+    const v = this.form.value;
+    const base = v.huespedes * 50 + v.noches * this.precioHabitacion(this.data.hab);
+    const reservaExtra = (this.reservaPrecios[v.tipoReserva] || 0) * v.noches;
+    const extrasTotal = this.extrasDisponibles.reduce((sum, e) => {
+      return sum + (this.form.get('extras')?.get(e.sec)?.value ? e.costo : 0);
+    }, 0);
+    this.total = base + reservaExtra + extrasTotal;
   }
 
-  aumentar(tipo: 'huespedes' | 'noches') {
-    const control = this.miform.get(tipo);
-    if (control) {
-      control.setValue(control.value + 1);
-    }
+  precioHabitacion(titulo: string): number {
+    const precios: Record<string, number> = {
+      'Suite Presidencial': 500, 
+      'Suite Deluxe': 300,
+      'Doble Estándar': 120,
+      'Familiar Premium': 200,
+      'Habitación Individual': 80,
+      'Doble con Balcón': 130,
+      'Junior Suite': 220,
+      'Triple Económica': 100,
+      'Suite Romántica': 170,
+      'Familiar Estándar': 160
+    };
+    return precios[titulo] || 80;
   }
 
-  disminuir(tipo: 'huespedes' | 'noches') {
-    const control = this.miform.get(tipo);
-    if (control && control.value > 1) {
-      control.setValue(control.value - 1);
-    }
-  }
 
   guardar() {
-    if (this.miform.valid) {
-      this.dialogRef.close(this.miform.value);
+    if (this.form.valid) {
+      const reservacionEditada = {
+        ...this.form.value,
+        extras: Object.entries(this.form.value.extras)
+                     .filter(([_, v]) => v)
+                     .map(([k]) => k),
+        total: this.total
+      };
+      this.dialogRef.close(reservacionEditada);
     }
   }
 
