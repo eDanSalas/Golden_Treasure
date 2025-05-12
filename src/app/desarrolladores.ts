@@ -2,7 +2,7 @@ import { Desarrollador } from "./desarrollador";
 
 export const DESARROLLADORES: Desarrollador[] = [
     {
-        img: 'https://i.imgur.com/6V9e4kq.jpg',
+        img: 'admins/admin1.jpg',
         name: "Angel Daniel Lopez Rodriguez",
         role: "Desarrollador Frontend",
         descripcion: "<Colocar Descripcion>",
@@ -10,7 +10,7 @@ export const DESARROLLADORES: Desarrollador[] = [
     },
 
     {
-        img: 'https://i.imgur.com/6V9e4kq.jpg',
+        img: 'admins/admin2.jpg',
         name: "Eric Daniel Salas Martinez",
         role: "Desarrollador Frontend",
         descripcion: "<Colocar Descripcion>",

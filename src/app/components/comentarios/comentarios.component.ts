@@ -16,6 +16,7 @@ export class ComentariosComponent {
 
   ngOnInit(): void {
     this.comentarios = this.comentarioService.getComments();
+    window.scrollTo({ top: 0 });
   }
 
   formatFecha(fechaStr: string): string {

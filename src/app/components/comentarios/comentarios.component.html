@@ -1,5 +1,5 @@
 <div class="imagen-container">
-    <img src="images/alojamiento.png" class="img-fluid w-100" alt="Alojamiento">
+    <img src="images/comentarios.webp" class="img-fluid w-100" alt="Comentarios">
     <div class="imagen-text">
         <h1>Comentarios</h1>
     </div>
@@ -41,50 +41,53 @@
 <div id="comentariosCarousel" class="carousel slide" data-bs-ride="carousel">
     <!-- Indicadores -->
     <div class="carousel-indicators">
-        <button *ngFor="let comentario of comentarios; let i = index" type="button"
-            data-bs-target="#comentariosCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
-            [attr.aria-label]="'Slide ' + (i + 1)"></button>
+        @for(comentario of comentarios; track comentario; let i = $index) {
+            <button type="button" data-bs-target="#comentariosCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+                [attr.aria-label]="'Slide ' + (i + 1)"></button>
+        }
     </div>
 
     <!-- Contenido del carrusel -->
     <div class="carousel-inner">
-        <div *ngFor="let comentario of comentarios; let i = index" class="carousel-item" [class.active]="i === 0">
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="card shadow">
-                            <div class="card-body p-4">
-                                <!-- Header del comentario -->
-                                <div class="d-flex align-items-center mb-4">
-                                    <img [src]="comentario.imagen || 'images/avatar.jpg'" class="rounded-circle me-3"
-                                        alt="Avatar" width="60" height="60">
-                                    <div>
-                                        <h5 class="card-title mb-1">{{ comentario.nombre }}</h5>
-                                        <small class="text-muted">
-                                            {{ formatFecha(comentario.rev_date) }}
-                                        </small>
+        @for(comentario of comentarios; track comentario; let i = $index) {
+            <div class="carousel-item" [class.active]="i === 0">
+                <div class="container py-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow">
+                                <div class="card-body p-4">
+                                    <!-- Header del comentario -->
+                                    <div class="d-flex align-items-center mb-4">
+                                        <img [src]="comentario.imagen || 'images/avatar.jpg'" class="rounded-circle me-3"
+                                            alt="Avatar" width="60" height="60">
+                                        <div>
+                                            <h5 class="card-title mb-1">{{ comentario.nombre }}</h5>
+                                            <small class="text-muted">
+                                                {{ formatFecha(comentario.rev_date) }}
+                                            </small>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Rating con estrellas -->
-                                <div class="mb-3">
-                                    <div class="star-rating">
-                                        <span *ngFor="let star of [1,2,3,4,5]" class="star"
-                                            [class.text-warning]="star <= comentario.rating"
-                                            [class.text-secondary]="star > comentario.rating">
-                                            ★
-                                        </span>
+    
+                                    <!-- Rating con estrellas -->
+                                    <div class="mb-3">
+                                        <div class="star-rating">
+                                            <span *ngFor="let star of [1,2,3,4,5]" class="star"
+                                                [class.text-warning]="star <= comentario.rating"
+                                                [class.text-secondary]="star > comentario.rating">
+                                                ★
+                                            </span>
+                                        </div>
                                     </div>
+    
+                                    <!-- Contenido del comentario -->
+                                    <p class="card-text text-muted">{{ comentario.review }}</p>
                                 </div>
-
-                                <!-- Contenido del comentario -->
-                                <p class="card-text text-muted">{{ comentario.review }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 
     <!-- Controles -->

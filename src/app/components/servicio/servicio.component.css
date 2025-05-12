@@ -200,6 +200,11 @@ textarea {
     color: gold !important;
 }
 
+.boton-deshabilitado {
+    opacity: 0.5;
+    color: white !important;
+    pointer-events: none;
+}
 
 @media (max-width: 600px) {
     .formulario-container {

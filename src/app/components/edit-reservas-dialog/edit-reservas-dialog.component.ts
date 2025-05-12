@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Habitacion } from '../../habitacion';
 import { HabitacionService } from '../../services/habitacion.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -11,46 +11,27 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-habitacion',
+  selector: 'app-edit-reservas-dialog',
   imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatDatepickerModule, MatProgressBarModule, CommonModule],
-  templateUrl: './habitacion.component.html',
-  styleUrl: './habitacion.component.css',
-  providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.Default,
+  templateUrl: './edit-reservas-dialog.component.html',
+  styleUrl: './edit-reservas-dialog.component.css'
 })
-export class HabitacionComponent {
+export class EditReservasDialogComponent {
   habitacion!: Habitacion;
   id!: number;
   miform: FormGroup;
-  progress: number = 0;
 
-  habImage: {[key: number]: string[]} = {
-    1: ["images/h1-1.jpg","images/h1-2.jpg","images/h1-3.jpg"],
-    2: ["images/h2-1.jpg","images/h2-2.jpg","images/h2-3.jpg"],
-    3: ["images/h3-1.jpg","images/h3-2.jpg","images/h3-3.jpg"],
-    4: ["images/h4-1.jpg","images/h4-2.jpg","images/h4-3.jpg"],
-    5: ["images/h5-1.jpg","images/h5-2.jpg","images/h5-3.jpg"],
-    6: ["images/h6-1.jpg","images/h6-2.jpg","images/h6-3.jpg"],
-    7: ["images/h7-1.jpg","images/h7-2.jpg","images/h7-3.jpg"],
-    8: ["images/h8-1.jpg","images/h8-2.jpg","images/h8-3.jpg"],
-    9: ["images/h9-1.webp","images/h9-2.webp","images/h9-3.webp"],
-    10:["images/h10-1.webp","images/h10-2.webp","images/h10-3.webp"], 
-  };
-  amenidades: string[][] =[
-    ["fa-wifi", "fa-lock", "fa-tv", "fa-snowflake", "fa-wine-glass", "fa-umbrella-beach", "fa-shower", "fa-building-shield", "fa-desktop", "fa-phone"],
-    ["fa-lock", "fa-tv", "fa-snowflake", "fa-wifi", "fa-phone"],
-    ["fa-lightbulb", "fa-wifi", "fa-building-shield", "fa-temperature-high"],
-    ["fa-wifi", "fa-shower", "fa-desktop", "fa-snowflake", "fa-lock"],
-    ["fa-wifi", "fa-lightbulb", "fa-wine-glass", "fa-phone"],
-    ["fa-wifi", "fa-snowflake", "fa-tv", "fa-desktop", "fa-umbrella-beach"],
-    ["fa-wifi", "fa-wine-glass", "fa-temperature-high", "fa-lightbulb"],
-    ["fa-lock", "fa-tv", "fa-shower", "fa-lightbulb"],
-    ["fa-wifi", "fa-building-shield", "fa-phone", "fa-snowflake"],
-    ["fa-wifi", "fa-wine-glass", "fa-snowflake", "fa-umbrella-beach"]
-  ];
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
+  onSave(): void {
+    this.dialogRef.close(this.servicio);
+  }
+
   reservas: string[] = ['All-inclusive', 'Room Only', 'Bed and BreakFast', 'Full Board', 'Half Board'];
   validators: string[] =['nombre', 'email', 'telefono', 'reserva', 'rango'];
   huespedes: number = 1;
@@ -74,7 +55,15 @@ export class HabitacionComponent {
     'Half Board': 40
   };
 
-  constructor(private servicio: HabitacionService, public route: ActivatedRoute, private fb:FormBuilder){
+  reservacion: any;
+
+  constructor(private servicio: HabitacionService, public route: ActivatedRoute, private fb:FormBuilder,
+    public dialogRef: MatDialogRef<EditReservasDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ){
+
+    this.reservacion = { ...data.reservacion}; // Copia del servicio original
+
     const extrasControls: { [key: string]: FormControl } = {};
     this.extras.forEach(extra => {
       extrasControls[extra.sec] = new FormControl(false);
@@ -110,15 +99,6 @@ export class HabitacionComponent {
         const diff = (fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24);
         this.noches = Math.max(Math.ceil(diff), 1);
       }
-    });
-
-    this.miform.valueChanges.subscribe(() => {
-      this.progress = 0;
-      this.validators.forEach(campo => {
-        if (this.miform.get(campo)?.valid) {
-          this.progress += 20;
-        }
-      });
     });
 
     window.scrollTo({ top: 0 });

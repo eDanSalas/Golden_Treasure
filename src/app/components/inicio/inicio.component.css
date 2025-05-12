@@ -2,9 +2,13 @@
     width: 99vw; 
     height: 100vh; 
     
+    position: relative;
+    display: grid;
+    place-items: center;
 }
 
 video {
+    grid-area: 1 / 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -19,6 +23,26 @@ video {
     border-radius: 8px;              
     cursor: pointer;                 
     transition: all 0.3s ease;
+}
+
+.descripcion-card {
+    grid-area: 1 / 1;
+    z-index: 2;
+    align-self: end;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid #d4af37;
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: gold;
+}
+
+.descripcion-card h1{
+    font-size: 32px;
 }
 
 .hotel-text{

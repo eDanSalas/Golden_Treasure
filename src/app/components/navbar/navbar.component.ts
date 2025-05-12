@@ -13,10 +13,11 @@ import Swal from 'sweetalert2';
 export class NavbarComponent {
   isScrolled = false;
   menuOpen: boolean = false;
+  hovered: boolean = false;
 
   admin: {[key: number]: string[]} = {
-    1: ["Ángel Daniel Lopez Rodriguez", "ISC1_ad"],
-    2: ["Eric Daniel Salas Martínez", "ISC2_ed"],
+    1: ["Ángel Daniel Lopez Rodriguez", "ISC1_ad", "/admins/admin1.jpg"],
+    2: ["Eric Daniel Salas Martínez", "ISC2_ed", "/admins/admin2.jpg"],
     3: ["Diego Adriel Segura Ramírez", "ISC3_da"]
   }
 
@@ -25,6 +26,7 @@ export class NavbarComponent {
   loginPassword: string = '';
   loggedAdminName: string | null = null;
   loggedAdminId: number | null = null;
+  loggedAdminAvatar: string | null = null;
   adminInfo: { key: number, nombre: string } | null = null;
   showDashboard: boolean = false;
 
@@ -33,7 +35,7 @@ export class NavbarComponent {
     this.isScrolled = window.scrollY > 200;
   }
 
-  constructor(private eRef: ElementRef) { }
+  constructor(private eRef: ElementRef, private router: Router) { }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
@@ -41,7 +43,6 @@ export class NavbarComponent {
       this.menuOpen = false;
     }
   }
-
 
   ngOnInit() {
     const storedAdminId = localStorage.getItem('loggedAdminId');
@@ -52,6 +53,7 @@ export class NavbarComponent {
           key: id,
           nombre: this.admin[id][0]
         };
+        this.loggedAdminAvatar = localStorage.getItem('loggedAdminAvatar');
       }
     }
   }
@@ -82,10 +84,12 @@ export class NavbarComponent {
       const nombre = this.admin[id][0];
       this.loggedAdminName = nombre;
       this.loggedAdminId = id;
+      this.loggedAdminAvatar = this.admin[id][2];
       this.adminInfo = { key: id, nombre };
 
       localStorage.setItem('loggedAdminName', nombre);
       localStorage.setItem('loggedAdminId', id.toString());
+      localStorage.setItem('loggedAdminAvatar', this.admin[id][2]);
       this.closeLoginModal();
 
       Swal.fire({
@@ -112,7 +116,7 @@ export class NavbarComponent {
   logout() {
     Swal.fire({
       title: '¿Cerrar sesión?',
-      text: '¿Estás seguro que deseas cerrar sesión?',
+      text: '¿Estás seguro que deseas cerrar sesión? Te va redirigir al Inicio',
       iconHtml: '<i class="fas fa-sign-out-alt"></i>',
       showCancelButton: true,
       confirmButtonText: 'Sí, cerrar sesión',
@@ -125,9 +129,11 @@ export class NavbarComponent {
       if (result.isConfirmed) {
         this.loggedAdminName = null;
         this.loggedAdminId = null;
+        this.loggedAdminAvatar = null;
         this.menuOpen = false;
         localStorage.removeItem('loggedAdminName');
         localStorage.removeItem('loggedAdminId');
+        localStorage.removeItem('loggedAdminAvatar');
 
         Swal.fire({
           title: 'Sesión cerrada',
@@ -136,6 +142,8 @@ export class NavbarComponent {
           confirmButtonColor: 'gold',
           background: '#1e1e1e',
           color: 'white'
+        }).then(() => {
+          this.router.navigate(['/']);
         });
       }
     });

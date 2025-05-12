@@ -5,7 +5,7 @@
     </div>
 </div>
 
-@if (habitaciones.length > 0 && !sinRes) {
+@if (habitaciones.length > 0) {
     <div class="texto-container">
       <p>
         Deja que la comodidad te acompañe durante tu estancia. 
@@ -19,44 +19,45 @@
 
     <app-search (buscar)="onSearch($event)"></app-search>
 
-    <div class="habitaciones-container">
-      @for (habitacion of habFiltradas; track habitacion.id; let i = $index) {
-        <div class="hab">
-          <div class="carrusel">
-            <img [src]="habImage[habitacion.id][0]" alt="{{ habitacion.titulo }}" class="imagen-principal" />
-            <div class="miniaturas">
-              <img [src]="habImage[habitacion.id][1]" alt="Miniatura 1" />
-              <img [src]="habImage[habitacion.id][2]" alt="Miniatura 2" />
-            </div>
-          </div>
-          <div class="info">
-            <h2>{{ habitacion.titulo }}</h2>
-            <hr>
-            <div class="iconos-servicios">
-              @for (icon of amenidades[(habitacion.id - 1) % amenidades.length]; track icon) {
-                <div>
-                  <i class="fa-solid {{ icon }}"></i>
-                  {{ obtenerAmenidad(icon) }}
-                </div>
-              }
-            </div>
-            <p class="descripcion">{{ habitacion.descripcion }}</p>
-            <button class="btn-vermas" [routerLink]="['/habitacion', habitacion.id]">VER MÁS</button>
-            <p class="precio">Desde <strong>${{ habitacion.precio.toFixed(2) }}</strong> USD por noche</p>
-          </div>
-        </div>
-      }
-    </div>
-    
-  } @else {
     @if(sinRes){
-      <div class="sinbusqueda-container">
-        <h1>Habitaciones</h1>
-      </div>
-    }@else {
       <div class="cargando-container">
-        <h1>Cargando habitaciones</h1>
-        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+        <h1>Habitacion Inexistente</h1>
+        <mat-icon>search_off</mat-icon>
+      </div> 
+    }@else{
+      <div class="habitaciones-container">
+        @for (habitacion of habFiltradas; track habitacion.id; let i = $index) {
+          <div class="hab">
+            <div class="carrusel">
+              <img [src]="habImage[habitacion.id][0]" alt="{{ habitacion.titulo }}" class="imagen-principal" />
+              <!-- <div class="miniaturas">
+                <img [src]="habImage[habitacion.id][1]" alt="Miniatura 1" />
+                <img [src]="habImage[habitacion.id][2]" alt="Miniatura 2" />
+              </div> -->
+            </div>
+            <div class="info">
+              <h2>{{ habitacion.titulo }}</h2>
+              <hr>
+              <div class="iconos-servicios">
+                @for (icon of amenidades[(habitacion.id - 1) % amenidades.length]; track icon) {
+                  <div>
+                    <i class="fa-solid {{ icon }}"></i>
+                    {{ obtenerAmenidad(icon) }}
+                  </div>
+                }
+              </div>
+              <p class="descripcion">{{ habitacion.descripcion }}</p>
+              <button class="btn-vermas" [routerLink]="['/habitacion', habitacion.id]">VER MÁS</button>
+              <p class="precio">Desde <strong>${{ habitacion.precio.toFixed(2) }}</strong> USD por noche</p>
+            </div>
+          </div>
+        }
       </div>
     }
+    
+  } @else {
+    <div class="cargando-container">
+      <h1>Cargando habitaciones</h1>
+      <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+    </div> 
 }

@@ -150,3 +150,7 @@ li a {
 .btn-gold:hover {
     background-color: #e6c200;
 }
+
+.span-error {
+    font-size: 0.85rem;
+}

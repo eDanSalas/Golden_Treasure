@@ -1,6 +1,10 @@
 <div class="video-container">
     <video #videoPlayer autoplay loop playsinline [src]="videoUrl | safeurl" (contextmenu)="onRightClick($event)"></video>
+    <div class="descripcion-card mb-4">
+        <h1 class="lead mb-0">"Descubre el Oro y vive el Tesoro."</h1>
+    </div>
 </div>
+
 
 <section class="hotel-text">
     <img src="images/hotel.png" alt="Hotel">

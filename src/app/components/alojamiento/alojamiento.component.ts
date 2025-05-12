@@ -3,13 +3,14 @@ import { HabitacionService } from '../../services/habitacion.service';
 import { Habitacion } from '../../habitacion';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from '../search/search.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-alojamiento',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, SearchComponent, RouterModule],
+  imports: [CommonModule, MatProgressSpinnerModule, SearchComponent, RouterModule, MatIconModule],
   templateUrl: './alojamiento.component.html',
   styleUrl: './alojamiento.component.css'
 })
@@ -77,6 +78,7 @@ export class AlojamientoComponent {
       );
       return matchesTitle || matchesAmenities;
     });
+    this.sinRes = this.habFiltradas.length === 0;
   }
   
 

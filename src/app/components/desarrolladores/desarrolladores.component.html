@@ -8,13 +8,14 @@
 <div class="team">
     @for (dev of desarrolladores; track dev; let i = $index) {
         <div class="member">
-            @if(i == 0) {
+            <!-- @if(i == 0) {
                 <div class="name text-center"><i class="fa-solid fa-crown"></i></div>
             } @else {
                 <div class="name text-center"><i class="fa-solid fa-dog"></i></div>
-            }
-            <!-- <img src="{{ dev.imagen }}" class="img-fluid w-100" alt="Alojamiento"> -->
-            <div class="avatar" aria-hidden="true">{{ dev.name[0] }}</div>
+            } -->
+            <div class="name text-center"><i class="fa-solid fa-crown"></i></div>
+            <img src="{{ dev.img }}" class="img-fluid w-100 img-dev" alt="Alojamiento">
+            <!-- <div class="avatar" aria-hidden="true">{{ dev.name[0] }}</div> -->
             <h2 id="name" class="name">{{ dev.name }}</h2>
             <p id="role" class="role">{{ dev.role }}</p>
             <p id="desc" class="description">{{ dev.descripcion }}</p>

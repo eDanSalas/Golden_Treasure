@@ -47,36 +47,62 @@
         <div class="formulario-container">
           <h2>Realiza Tu Reservación</h2>
           <h2>¡AHORA!</h2>
-          <hr>
+          <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
             <form [formGroup]="miform" (ngSubmit)="enviar()">
               <div class="form-info">
                 <div class="info-cliente">
                   <label for="nombre">Nombre:</label>
                   <input type="text" formControlName="nombre" id="nombre">
-                  <br>
+                  @if (miform.get('nombre')?.touched && miform.get('nombre')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('nombre')?.errors?.['required']) {
+                        <div>Nombre es obligatorio.</div>
+                      }
+                      @if (miform.get('nombre')?.errors?.['minlength']) {
+                        <div>El nombre debe contener mínimo 4 caracteres.</div>
+                      }
+                    </div>
+                  }
+                  
                   <label for="email">Email:</label>
                   <input id="email" type="email" formControlName="email" />
-                  <small>Formato: [cliente&#64;correo.com]</small>
-                  <br>
+                  @if (miform.get('email')?.touched && miform.get('email')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('email')?.errors?.['required']) {
+                        <div>Email es obligatorio.</div>
+                      }
+                      @if (miform.get('email')?.errors?.['email']) {
+                        <div>Formato: [cliente&#64;correo.com].</div>
+                      }
+                    </div>
+                  }
+                  
                   <label for="telefono">Teléfono</label>
                   <input id="telefono" type="text" formControlName="telefono" />
-                  <small>Formato: [123 456 7890]</small>
-                  <br>
+                  @if (miform.get('telefono')?.touched && miform.get('telefono')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('telefono')?.errors?.['required']) {
+                        <div>Teléfono es obligatorio.</div>
+                      }
+                      @if (miform.get('telefono')?.errors?.['pattern']) {
+                        <div>Formato: [123 456 7890].</div>
+                      }
+                    </div>
+                  }
+                  
                 </div>
                 <div class="info-reserva">
                   <div class="contador">
                     <label>Clientes: </label>
-                    <button type="button" (click)="disminuir('huespedes')">−</button>
+                    <button type="button" (click)="disminuir('huespedes')" class="btn-client">−</button>
                     <span>{{ huespedes }}</span>
-                    <button type="button" (click)="aumentar('huespedes')">+</button>
-                    <label>+ ${{porHuesped}} USD</label>
+                    <button type="button" (click)="aumentar('huespedes')" class="btn-client">+</button>
+                    <label>+ ${{porHuesped}} USD c/u</label>
                   </div>
                   <div class="contador">
                     <label>Noches: </label>
-                    <button type="button" (click)="disminuir('noches')">−</button>
                     <span>{{ noches }}</span>
-                    <button type="button" (click)="aumentar('noches')">+</button>
-                    <label>+ ${{porNoche}} USD</label>
+                    <label>+ ${{ porNoche }} USD c/u</label>
                   </div>
 
                   <label for="reserva">Tipo de reserva:</label>
@@ -86,6 +112,9 @@
                       <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
                     }
                   </select>
+                  @if (miform.get('reserva')?.touched && miform.get('reserva')?.invalid) {
+                    <div class="error">Tipo de reserva es obligatorio.</div>
+                  }
                   <label>Extras:</label>
                   <div class="extras" formGroupName="extras">
                     @for(extra of extras; track extra){
@@ -95,10 +124,11 @@
                       </label>
                     }
                   </div>
-                  <br>
+                  
                 </div>
               </div>
-              <mat-form-field [formGroupName]="'rango'">
+              <div class="calendario">
+                <mat-form-field [formGroupName]="'rango'">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                       <input matStartDate placeholder="Start date" formControlName="inicio" [min]="hoy">
@@ -107,12 +137,23 @@
                     <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
+                </mat-form-field>
+                @if (miform.get('rango')?.touched && miform.get('rango')?.invalid) {
+                  <div class="error">
+                    @if (miform.get('rango')?.errors?.['fechaInicioPasada']) {
+                      <div>La fecha de inicio no puede ser anterior a hoy.</div>
+                    }
+                    @if (miform.get('rango')?.errors?.['fechaFinPasada']) {
+                      <div>La fecha de fin no puede ser anterior a hoy.</div>
+                    }
+                  </div>
+                }
+              </div>
               <div class="total">
                 TOTAL CON IMPUESTOS:
                 <span>${{ total }} USD</span>
               </div>
-              <button type="submit" class="btn-reserva">Reservar</button>
+              <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">Reservar</button>
             </form>
         </div>
     </div>
