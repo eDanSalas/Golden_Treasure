@@ -78,6 +78,7 @@ export class ServicioComponent {
     'Transportes',
   ];
 
+  selectedServicio: string = '';
   
   constructor(
     public service: ServicioService,
@@ -92,6 +93,9 @@ export class ServicioComponent {
       .find((s) => s.id == this.id);
     if (sEncontrado) {
       this.servicio = sEncontrado;
+    }
+    if (this.serName.includes(this.servicio.title)) {
+      this.selectedServicio = this.servicio.title;
     }
     window.scrollTo({ top: 0 });
   }

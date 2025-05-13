@@ -48,11 +48,11 @@
     
         <mat-form-field appearance="outline" class="w-100 mb-3">
             <mat-label>Selecciona un servicio sobre el cual quieras preguntar</mat-label>
-            <mat-select [(ngModel)]="servicio.title" name="servicioTitle">
+            <mat-select [(ngModel)]="selectedServicio" name="servicioTitle">
                 @for (nombre of serName; track nombre) {
-                    <mat-option [value]="nombre">
-                        {{ nombre }}
-                    </mat-option>
+                <mat-option [value]="nombre">
+                    {{ nombre }}
+                </mat-option>
                 }
             </mat-select>
         </mat-form-field>
