@@ -147,3 +147,130 @@ strong{
     font-size: 0.9rem;
     line-height: 1.5;
 }
+
+/* Secciones nuevas agregadas por Brandon */
+.faq-section h2 {
+    font-style: 'Playfair Display', serif;
+    font-weight: bold;
+    color: #212529;
+  }
+  
+.faq {
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+  
+mat-panel-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: black;
+    font-style: 'Playfair Display', serif;
+}
+
+.answer{
+    font-style: 'Playfair Display', serif;
+    color: black;
+}
+
+/* Responsive para Celulares y Ipads si algo se descuadra favor de avisar a brandon*/
+
+@media (max-width:992px) {
+  .hotel-text {
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .hotel-text img {
+    width:90%;
+  }
+
+  .text .p-texto {
+    text-align:justify;
+    padding:0 10px;
+  }
+
+  .cards-container {
+    width:90%;
+  }
+
+  .card-item {
+    height:300px;
+  }
+
+  .card-icon {
+    height:300px;
+  }
+
+  .descripcion-card h1 {
+    font-size:24px;
+    text-align:center;
+  }
+}
+
+@media (max-width:768px) {
+  .video-container {
+    height:80vh;
+  }
+
+  .descripcion-card {
+    padding:15px;
+    font-size:14px;
+  }
+
+  .descripcion-card h1 {
+    font-size:20px;
+  }
+
+  .card-item {
+    height:280px;
+    margin-bottom:1rem;
+  }
+
+  .card-icon {
+    height:280px;
+  }
+
+  .faq-section {
+    padding:0 1rem;
+  }
+
+  mat-panel-title {
+    font-size:1rem;
+  }
+}
+
+@media (max-width:576px) {
+  .video-container {
+    height:70vh;
+  }
+
+  .hotel-text {
+    width:100%;
+    gap:1rem;
+  }
+
+  .card-item {
+    height:260px;
+  }
+
+  .card-icon {
+    height:260px;
+  }
+
+  .descripcion-card {
+    padding:10px;
+    font-size:12px;
+  }
+
+  .descripcion-card h1 {
+    font-size:18px;
+  }
+
+  .text .p-texto,
+  .text .p-reserva {
+    padding:0 10px;
+  }
+}

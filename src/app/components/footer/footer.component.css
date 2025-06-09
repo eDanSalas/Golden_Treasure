@@ -106,6 +106,7 @@
     background: var(--bg-color-footer);
     color: var(--text-color);
     width: 100%;
+    z-index: -1;
 }
 
 .footer-info {
@@ -117,6 +118,7 @@
     padding: 40px 20px;
     max-width: 1200px;
     margin: 0 auto;
+    
 }
 
 .footer-section {
@@ -200,4 +202,5 @@
 #map {
     height: 200px; 
     width: 100%;
+    z-index: 10;
 }

@@ -49,7 +49,7 @@
                     <h3 class="card-title">Platillos</h3>
                     <p class="card-text">
                         Disfrute de una variada selección de platillos cuidadosamente preparados para ofrecer 
-                        sabores de distntos lugares del mundo, reconocidos por su gran astronomia como Italia y Francia.
+                        sabores refinados de otro mundo, reconocidos por sus platillos de Italia y Francia.
                     </p>
                 </div>
             </div>
@@ -81,4 +81,19 @@
             </div>
         </div>
     </div>
+</section>
+
+<!-- Secciones nuevas agregadas por Brandon cualquier duda o cambio estetico que quieran que haga favor de avisar -->
+<section class="faq-section my-5 px-4">
+ <h2 class="text-center mb-4">Preguntas <span style="color: #daa520;">Frecuentes</span></h2> 
+  <mat-accordion multi>
+    @for (lista of preguntas; track lista) {
+      <mat-expansion-panel class="faq animate__animated animate__fadeInUp">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{lista.pregunta}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="answer" [innerHTML]="lista.respuesta"></p>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
 </section>

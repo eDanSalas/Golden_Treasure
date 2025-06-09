@@ -62,3 +62,19 @@
         </a>
     </div>
 </section>
+
+<!-- Estas secciones de aqui para abajo son nuevos agregados de Brandon, cualquier duda o aclaracion directamente conmigo -->
+<section class="cupones-descuento">
+  <h2>Cupones exclusivos para ti</h2>
+  <div class="cupones-container">
+    @for (cupon of cupones; track cupon.id) {
+      <div class="cupon">
+        <h3>{{ cupon.titulo }}</h3>
+        <p class="codigo" id="{{ cupon.id }}">{{ cupon.codigo }}</p>
+        <button (click)="copiarAlPortapapeles(cupon.id)">Copiar código</button>
+      </div>
+    }
+  </div>
+  <h3>los cupones solo podran utilizarse una vez hayas hecho tu reservacion y se entregan personalmente a los empleados</h3>
+  <h3>Los cupones cambian periodicamente</h3>
+</section>
