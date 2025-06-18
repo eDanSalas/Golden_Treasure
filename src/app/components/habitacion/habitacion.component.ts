@@ -11,6 +11,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { signal, computed } from '@angular/core';
 
 
 @Component({
@@ -53,12 +54,15 @@ export class HabitacionComponent {
   ];
   reservas: string[] = ['All-inclusive', 'Room Only', 'Bed and BreakFast', 'Full Board', 'Half Board'];
   validators: string[] =['nombre', 'email', 'telefono', 'reserva', 'rango'];
-  huespedes: number = 1;
-  noches: number = 1;
-  porHuesped: number = 50;
-  porNoche: number = 0;
   precioTotal: number = 0;
   hoy = new Date();
+
+  huespedes = signal<number>(1);
+  noches = signal<number>(1);
+  extrasSeleccionados = signal<Record<string, boolean>>({});
+  reservaSeleccionada = signal<string>('');
+  porHuesped: number = 50;
+  porNoche = signal<number>(0);
 
   extras = [
     {sec: 'Mascota', costo: 50, select: false},
@@ -91,6 +95,10 @@ export class HabitacionComponent {
         fin: ['', Validators.required]
       }, {validators: this.validarCal})
     })
+
+    this.miform.get('extras')?.valueChanges.subscribe(extras => {
+      this.extrasSeleccionados.set(extras);
+    });
   }
 
   ngOnInit(): void {
@@ -99,7 +107,7 @@ export class HabitacionComponent {
       const hab = data.habitaciones.find(h => h.id === this.id);
       if (hab) {
         this.habitacion = hab;
-        this.porNoche = hab.precio;
+        this.porNoche.set(hab.precio);
       }
     });
 
@@ -108,8 +116,12 @@ export class HabitacionComponent {
       const fin = new Date(rango.fin);
       if (inicio && fin && !isNaN(inicio.getTime()) && !isNaN(fin.getTime())) {
         const diff = (fin.getTime() - inicio.getTime()) / (1000 * 60 * 60 * 24);
-        this.noches = Math.max(Math.ceil(diff), 1);
+        this.noches.set(Math.max(Math.ceil(diff), 1));
       }
+    });
+
+    this.miform.get('reserva')?.valueChanges.subscribe(value => {
+      this.reservaSeleccionada.set(value);
     });
 
     this.miform.valueChanges.subscribe(() => {
@@ -142,26 +154,32 @@ export class HabitacionComponent {
     return Object.keys(errors).length ? errors : null;
   }
 
-  get total(): number {
-    const base = this.huespedes * this.porHuesped + this.noches * this.porNoche;
-    const tipoReserva = this.miform.get('reserva')?.value || '';
+  total = computed(() => {                                                                //Señal de Angular tipo: Computed
+    const base = this.huespedes() * this.porHuesped + this.noches() * this.porNoche();
+    const tipoReserva = this.reservaSeleccionada();
     const costoReserva = this.reservaPrecios[tipoReserva] || 0;
-    const reservaTotal = this.noches * costoReserva;
+    
     const extrasTotal = this.extras
-      .filter(extra => this.miform.get(['extras', extra.sec])?.value)
+      .filter(extra => this.extrasSeleccionados()[extra.sec])
       .reduce((sum, extra) => sum + extra.costo, 0);
 
-    return this.precioTotal = base + extrasTotal + reservaTotal;
-  }
+    return base + extrasTotal + costoReserva;
+  });
 
   aumentar(tipo: 'huespedes' | 'noches') {
-    this[tipo]++;
+    this[tipo].update(cant => cant + 1);
   }
 
   disminuir(tipo: 'huespedes' | 'noches') {
-    if (this[tipo] > 1) {
-      this[tipo]--;
+    if (this[tipo]() > 1) {
+      this[tipo].update(cant => cant - 1);
     }
+  }
+
+  actualizarReserva() {
+    const tipoReserva = this.miform.get('reserva')?.value;
+    this.reservaSeleccionada.set(tipoReserva);
+    console.log('Reserva seleccionada:', tipoReserva);
   }
 
   obtenerAmenidad(icon: string): string {
@@ -190,19 +208,23 @@ export class HabitacionComponent {
         nombre: this.miform.value.nombre,
         email: this.miform.value.email,
         telefono: this.miform.value.telefono,
-        huespedes: this.huespedes,
-        noches: this.noches,
+        huespedes: this.huespedes(),
+        noches: this.noches(),
         tipoReserva: this.miform.value.reserva,
         extras: Object.entries(this.miform.value.extras)
                   .filter(([key, value]) => value)
                   .map(([key]) => key),
         fechaInicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
         fechaFin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
-        total: this.total
+        total: this.total()
       }
       const lsData = JSON.parse(localStorage.getItem('reservaciones') || '[]');
       lsData.push(data);
       localStorage.setItem('reservaciones',JSON.stringify(lsData));
+
+      this.huespedes.set(1);
+      this.noches.set(1);
+      this.extrasSeleccionados.set({});
       
       this.miform.reset();
       Swal.fire({

@@ -95,18 +95,18 @@
                   <div class="contador">
                     <label>Clientes: </label>
                     <button type="button" (click)="disminuir('huespedes')" class="btn-client">−</button>
-                    <span>{{ huespedes }}</span>
+                    <span>{{ huespedes() }}</span>
                     <button type="button" (click)="aumentar('huespedes')" class="btn-client">+</button>
                     <label>+ ${{porHuesped}} USD c/u</label>
                   </div>
                   <div class="contador">
                     <label>Noches: </label>
-                    <span>{{ noches }}</span>
-                    <label>+ ${{ porNoche }} USD c/u</label>
+                    <span>{{ noches() }}</span>
+                    <label>+ ${{ porNoche() }} USD c/u</label>
                   </div>
 
                   <label for="reserva">Tipo de reserva:</label>
-                  <select id="reserva" formControlName="reserva">
+                  <select id="reserva" formControlName="reserva" (change)="actualizarReserva()">
                     <option value="">-- Selecciona una opción --</option>
                     @for(r of reservas; track r){
                       <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
@@ -154,7 +154,7 @@
               </div>
               <div class="total">
                 TOTAL CON IMPUESTOS:
-                <span>{{ total | currency:'USD':'symbol':'1.2-2' }}</span>    <!--Pipe Predetermiando-->
+                <span>{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>    <!--Pipe Predetermiando-->
               </div>
               <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">{{ 'Reservar' | uppercase }}</button> <!--Pipe Predeterminado-->
             </form>

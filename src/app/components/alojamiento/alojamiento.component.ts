@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from '../search/search.component';
 import { RouterModule } from '@angular/router';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-alojamiento',
@@ -43,12 +44,22 @@ export class AlojamientoComponent {
   habFiltradas: Habitacion[] = [];
   sinRes: boolean = false;
 
+  loading = signal<boolean>(true);    //Señal de Angular 
 
   constructor(public habitacionService: HabitacionService) {}
 
   ngOnInit(): void {
     this.recuperarHabitaciones();
     window.scrollTo({ top: 0 });
+
+    this.loading.set(true); // Activamos Cargando al iniciar
+    
+    this.habitacionService.retornar().subscribe({
+      next: (data) => {
+        this.habitaciones = data.habitaciones;
+        this.loading.set(false);    //Al encontrar Habitaciones desactivamos Cargando
+      },
+    });
   }
 
   recuperarHabitaciones(): void {
