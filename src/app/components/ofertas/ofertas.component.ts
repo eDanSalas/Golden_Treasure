@@ -1,10 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ofertas',
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './ofertas.component.html',
   styleUrl: './ofertas.component.css'
 })
@@ -14,11 +15,11 @@ export class OfertasComponent {
   }
 
    cupones = [
-    { id: 'cupon1', titulo: '10% en Spa', codigo: 'SPA10' },
-    { id: 'cupon2', titulo: '2x1 en bebidas', codigo: 'BEBIDA2X1' },
-    { id: 'cupon3', titulo: '25% en tours', codigo: 'TOUR25' },
-    { id: 'cupon4', titulo: '20% en Zona Kids', codigo: 'KIDS20' },
-    { id: 'cupon5', titulo: 'Cena romántica gratis', codigo: 'LOVE100' }
+    { id: 'cupon1', titulo: '10% en Spa', codigo: 'spa10' },
+    { id: 'cupon2', titulo: '2x1 en bebidas', codigo: 'bebida2x1' },
+    { id: 'cupon3', titulo: '25% en tours', codigo: 'tour25' },
+    { id: 'cupon4', titulo: '20% en Zona Kids', codigo: 'kids20' },
+    { id: 'cupon5', titulo: 'Cena romántica gratis', codigo: 'love100' }
   ];
 
   copiarAlPortapapeles(id: string) {

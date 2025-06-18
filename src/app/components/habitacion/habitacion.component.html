@@ -134,7 +134,7 @@
                       <input matStartDate placeholder="Start date" formControlName="inicio" [min]="hoy">
                       <input matEndDate placeholder="End date" formControlName="fin" [min]="hoy">
                     </mat-date-range-input>
-                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-hint>{{ miform.get('rango.inicio')?.value | date:'MM/dd/yyyy' }} – {{ miform.get('rango.fin')?.value | date:'MM/dd/yyyy' }}</mat-hint>   <!--Pipe predeterminado-->
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
@@ -146,14 +146,17 @@
                     @if (miform.get('rango')?.errors?.['fechaFinPasada']) {
                       <div>La fecha de fin no puede ser anterior a hoy.</div>
                     }
+                    @if (miform.get('rango')?.errors?.['fechaFinAnteriorInicio']) {
+                      <div class="error">La fecha de fin debe ser posterior a la de inicio.</div>
+                    }
                   </div>
                 }
               </div>
               <div class="total">
                 TOTAL CON IMPUESTOS:
-                <span>${{ total }} USD</span>
+                <span>{{ total | currency:'USD':'symbol':'1.2-2' }}</span>    <!--Pipe Predetermiando-->
               </div>
-              <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">Reservar</button>
+              <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">{{ 'Reservar' | uppercase }}</button> <!--Pipe Predeterminado-->
             </form>
         </div>
     </div>

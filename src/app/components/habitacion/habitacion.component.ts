@@ -86,7 +86,7 @@ export class HabitacionComponent {
       telefono: ['', [Validators.required, Validators.pattern(/^\d{3} \d{3} \d{4}$/)]],
       reserva: ['', Validators.required],
       extras: this.fb.group(extrasControls),
-      rango: this.fb.group({
+      rango: this.fb.group({                    //Validator Personalizado
         inicio: ['', Validators.required],
         fin: ['', Validators.required]
       }, {validators: this.validarCal})
@@ -128,14 +128,18 @@ export class HabitacionComponent {
     const inicio = new Date(control.get('inicio')?.value);
     const fin = new Date(control.get('fin')?.value);
     const hoy = new Date();
-    hoy.setHours(0,0,0,0); 
+    hoy.setHours(0, 0, 0, 0);
+    const errors: ValidationErrors = {};
     if (inicio && inicio < hoy) {
-      return { fechaInicioPasada: true };
+      errors['fechaInicioPasada'] = true;
     }
     if (fin && fin < hoy) {
-      return { fechaFinPasada: true };
+      errors['fechaFinPasada'] = true;
     }
-    return null;
+    if (inicio && fin && fin <= inicio) {
+      errors['fechaFinAnteriorInicio'] = true;
+    }
+    return Object.keys(errors).length ? errors : null;
   }
 
   get total(): number {

@@ -30,10 +30,6 @@
           <div class="hab">
             <div class="carrusel">
               <img [src]="habImage[habitacion.id][0]" alt="{{ habitacion.titulo }}" class="imagen-principal" />
-              <!-- <div class="miniaturas">
-                <img [src]="habImage[habitacion.id][1]" alt="Miniatura 1" />
-                <img [src]="habImage[habitacion.id][2]" alt="Miniatura 2" />
-              </div> -->
             </div>
             <div class="info">
               <h2>{{ habitacion.titulo }}</h2>
@@ -48,7 +44,7 @@
               </div>
               <p class="descripcion">{{ habitacion.descripcion }}</p>
               <button class="btn-vermas" [routerLink]="['/habitacion', habitacion.id]">VER MÁS</button>
-              <p class="precio">Desde <strong>${{ habitacion.precio.toFixed(2) }}</strong> USD por noche</p>
+              <p class="precio">Desde <strong>{{ habitacion.precio | currency:'USD':'symbol':'1.2-2' }}</strong> por noche</p>   <!-- Pipe Predeterminado -->
             </div>
           </div>
         }

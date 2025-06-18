@@ -133,19 +133,6 @@ export class ServicioComponent {
   enviarInfo(form: NgForm) {
     if (form.valid) {
 
-      // const data = {
-      //   nombre: this.modelo.nombre,
-      //   nombrePublico: this.modelo.nombrePublico,
-      //   email: this.modelo.email,
-      //   duda: this.modelo.duda,
-      //   aceptaFAQ: this.modelo.aceptaFAQ,
-      //   fechaParticular: this.modelo.fechaParticular,
-      //   cuentaReservacion: this.modelo.cuentaReservacion
-      // };
-      // const lsData = JSON.parse(localStorage.getItem('serviciosReservados') || '[]');
-      // lsData.push(data);
-      // localStorage.setItem('serviciosReservados',JSON.stringify(lsData));
-
       this.storageService.guardarServicio(this.modelo);
       this.servicioCreado.emit(this.modelo);
 

@@ -70,7 +70,7 @@
     @for (cupon of cupones; track cupon.id) {
       <div class="cupon">
         <h3>{{ cupon.titulo }}</h3>
-        <p class="codigo" id="{{ cupon.id }}">{{ cupon.codigo }}</p>
+        <p class="codigo" id="{{ cupon.id }}">{{ cupon.codigo | uppercase }}</p>    <!-- Pipe Predeterminado -->
         <button (click)="copiarAlPortapapeles(cupon.id)">Copiar código</button>
       </div>
     }
