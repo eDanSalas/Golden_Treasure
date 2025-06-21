@@ -55,13 +55,13 @@ const createReservation = async (userData) => {
     }
 
     // If doesn't exist, we add it
-    const userRef = await db.collection('users').add(userData);
+    const userRef = await db.collection('reservations').add(userData);
     return { id: userRef.id };
 };
 
 const loginWithCredentials = async (id, contra) => {
     const snapshot = await db
-        .collection('Clientes')
+        .collection('users')
         .where('ID', '==', id)
         .limit(1)
         .get();
