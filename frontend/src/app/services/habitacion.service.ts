@@ -7,7 +7,7 @@ import { Habitacion } from '../habitacion';
   providedIn: 'root'
 })
 export class HabitacionService {
-  apiURL = 'https://run.mocky.io/v3/51205701-32cd-4e27-b660-17ec61012cb0';
+  apiURL = 'https://goldentreasure.free.beeceptor.com';
 
   constructor(private http: HttpClient) { }
 
