@@ -1,3 +1,4 @@
+const { FieldValue } = require('firebase-admin/firestore');
 const db = require('../config/firebaseConfig');
 const bcrypt = require('bcrypt');
 
@@ -25,8 +26,18 @@ const loginWithAdminCredentials = async (id, username, contra) => {
     const doc = snapshot.docs[0];
     const data = doc.data();
 
+    if(data.intentos == 3){
+        throw new Error('BLOCKED_ACCOUNT');
+    }
+
     const passwordMatch = await bcrypt.compare(contra, data.contra);
-    if (!passwordMatch) return null;
+    if (!passwordMatch) {
+        await doc.ref.update({ intentos: FieldValue.increment(1) });
+
+        return null;
+    }
+
+    await doc.ref.update({ intentos: 0 });
 
     return data;
 };

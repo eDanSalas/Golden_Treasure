@@ -12,7 +12,7 @@ const addClient = async (req, res) => {
         res.status(201).json({
         message: 'Cliente agregado correctamente',
         cliente: {
-            ID: result.ID,
+            id: result.id,
             nombre: result.nombre,
             correo: result.correo
         }
@@ -44,25 +44,28 @@ const addReservation = async (req, res) => {
 };
 
 const loginClient = async (req, res) => {
-    const { ID, contra } = req.body;
+    const { id, contra } = req.body;
 
-    if (!ID || !contra) {
+    if (!id || !contra) {
         return res.status(400).json({ message: 'Faltan ID o contraseña' });
     }
 
     try {
-        const cliente = await loginWithCredentials(ID, contra);
+        const cliente = await loginWithCredentials(id, contra);
         if (!cliente) {
         return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
-        const { ID, nombre, correo } = cliente;
+        const { id, nombre, correo } = cliente;
 
         res.status(200).json({
         message: 'Login exitoso',
-        cliente: { ID, nombre, correo }
+        cliente: { id, nombre, correo }
         });
     } catch (error) {
+        if (error.message === 'BLOCKED_ACCOUNT') {
+            return res.status(501).json({ message: 'Cuenta bloqueada' });
+        }
         console.error('Error en login:', error);
         res.status(500).json({ message: 'Error en el login' });
     }

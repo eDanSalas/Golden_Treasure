@@ -1,3 +1,4 @@
+const { FieldValue } = require('firebase-admin/firestore');
 const db = require('../config/firebaseConfig');
 const bcrypt = require('bcrypt');
 
@@ -20,10 +21,11 @@ const createClient = async (clienteData) => {
 
     // 3. Make the object to insert
     const newCliente = {
-        ID: nextId,
+        id: nextId,
         nombre: clienteData.nombre,
         correo: clienteData.correo,
-        contra: hashedPassword
+        contra: hashedPassword,
+        intentos: 0
     };
 
     // 4. Insert the new client in the database
@@ -51,7 +53,7 @@ const createReservation = async (userData) => {
 const loginWithCredentials = async (id, contra) => {
     const snapshot = await db
         .collection('users')
-        .where('ID', '==', id)
+        .where('id', '==', id)
         .limit(1)
         .get();
 
@@ -60,8 +62,16 @@ const loginWithCredentials = async (id, contra) => {
     const doc = snapshot.docs[0];
     const data = doc.data();
 
+    if(data.intentos == 3){
+        throw new Error('BLOCKED_ACCOUNT');
+    }
+
     const passwordMatch = await bcrypt.compare(contra, data.contra);
-    if (!passwordMatch) return null;
+    if (!passwordMatch) {
+        await doc.ref.update({ intentos: FieldValue.increment(1) });
+
+        return null;
+    }
 
     return data;
 };
