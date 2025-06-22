@@ -24,11 +24,11 @@ const loginAdmin = async (req, res) => {
         return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
-        const { id, nombre } = admin;
+        const { id: adminId, nombre } = admin;
 
         res.status(200).json({
         message: 'Login exitoso',
-        admin: { id, nombre }
+        admin: { id: adminId, nombre }
         });
     } catch (error) {
         console.error('Error en login de admin:', error);
