@@ -1,4 +1,14 @@
-const { loginWithAdminCredentials } = require('../services/adminService');
+const { loginWithAdminCredentials, getAllAdmins } = require('../services/adminService');
+
+const getAdmins = async (req, res) => {
+    try {
+        const admins = await getAllAdmins();
+        res.status(200).json(admins);
+    } catch (error) {
+        console.error('Error al obtener admins:', error);
+        res.status(500).send('Error al obtener admins');
+    }
+};
 
 const loginAdmin = async (req, res) => {
     const { id, username, contra } = req.body;
@@ -27,5 +37,6 @@ const loginAdmin = async (req, res) => {
 };
 
 module.exports = {
+    getAdmins,
     loginAdmin
 };

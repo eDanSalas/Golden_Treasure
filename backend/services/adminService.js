@@ -1,6 +1,17 @@
 const db = require('../config/firebaseConfig');
 const bcrypt = require('bcrypt');
 
+const getAllAdmins = async () => {
+    const snapshot = await db.collection('users').get();
+    const admins = [];
+
+    snapshot.forEach(doc => {
+        admins.push({ id: doc.id, ...doc.data() });
+    });
+
+    return admins;
+};
+
 const loginWithAdminCredentials = async (id, username, contra) => {
     const snapshot = await db
         .collection('admins')
@@ -21,5 +32,6 @@ const loginWithAdminCredentials = async (id, username, contra) => {
 };
 
 module.exports = {
+    getAllAdmins,
     loginWithAdminCredentials
 };
