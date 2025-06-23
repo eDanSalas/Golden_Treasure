@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { AdminReactiveComponent } from '../admin-reactive/admin-reactive.component';
+import { DataBaseService } from '../../services/data-base.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,24 +21,51 @@ export class DashboardComponent {
   id!: number;  
   isActive = false;
 
+  adminName: string = '';
+
   admin: {[key: number]: string} = {
     1: "Ángel Daniel Lopez Rodriguez",
     2: "Eric Daniel Salas Martínez",
     3: "Diego Adriel Segura Ramírez"
   }
 
+
   servicios: any[] = [];
   reservaciones: any[] = [];
 
-  constructor(public route: ActivatedRoute, private storageService: StorageService) {
+  constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService) {
     this.servicios = this.storageService.getServicios();
     this.reservaciones = this.storageService.getReservaciones();
   }
 
   ngOnInit(): void {
     this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.loadAdminData();
     this.actualizarLista();
     window.scrollTo({ top: 0 });
+  }
+
+  loadAdminData() {
+    this.dbService.getAllAdmins().subscribe({
+      next: (admins) => {
+        const foundAdmin = admins.find((admin: any) => admin.id === this.id);
+        if (foundAdmin) {
+          this.adminName = foundAdmin.nombre;
+        }
+        this.actualizarLista();
+      },
+      error: (err) => {
+        console.error('Error al cargar admin:', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo cargar la información del administrador',
+          icon: 'error',
+          confirmButtonColor: 'gold',
+          background: '#1e1e1e',
+          color: 'white'
+        });
+      }
+    });
   }
 
   actualizarLista() {

@@ -33,7 +33,6 @@ const loginWithAdminCredentials = async (id, username, contra) => {
     const passwordMatch = await bcrypt.compare(contra, data.contra);
     if (!passwordMatch) {
         await doc.ref.update({ intentos: FieldValue.increment(1) });
-
         return null;
     }
 

@@ -3,6 +3,7 @@ import { Component, ElementRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DataBaseService } from '../../services/data-base.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +16,7 @@ export class NavbarComponent {
   menuOpen: boolean = false;
   hovered: boolean = false;
 
-  admin: {[key: number]: string[]} = {
-    1: ["Dany","Ángel Daniel Lopez Rodriguez", "ISC1_ad", "admins/admin1.jpg"],
-    2: ["Dan","Eric Daniel Salas Martínez", "ISC2_ed", "admins/admin2.jpg"],
-    3: ["Daizer","Diego Adriel Segura Ramírez", "ISC3_da", "admins/admin3.jpg"]
-  }
+  admin : any = null;
 
   showLoginModal = false;
   loginId: number | null = null;
@@ -38,7 +35,7 @@ export class NavbarComponent {
     this.isScrolled = window.scrollY > 200;
   }
 
-  constructor(private eRef: ElementRef, private router: Router) {
+  constructor(private eRef: ElementRef, private router: Router, private bdservice: DataBaseService ) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
     });
@@ -52,6 +49,25 @@ export class NavbarComponent {
   }
 
   ngOnInit() {
+    this.loadAdminData();
+    this.checkLoggedAdmin();
+  }
+
+  loadAdminData() {
+    this.bdservice.getAllAdmins().subscribe({
+      next: (admins) => {
+        this.admin = admins.reduce((acc: any, admin: any) => {
+          acc[admin.id] = [admin.username, admin.nombre, admin.contra, admin.imagen];
+          return acc;
+        }, {});
+      },
+      error: (err) => {
+        console.error('Error al cargar admins:', err);
+      }
+    });
+  }
+
+  checkLoggedAdmin() {
     const storedAdminId = localStorage.getItem('loggedAdminId');
     const storedAdminName = localStorage.getItem('loggedAdminName');
     const storedAdminUs = localStorage.getItem('loggedAdminUs');
@@ -59,17 +75,95 @@ export class NavbarComponent {
 
     if (storedAdminId && storedAdminName && storedAdminUs && storedAdminAvatar) {
       const id = parseInt(storedAdminId, 10);
-      if (id && this.admin[id]) {
-        this.loggedAdminId = id;
-        this.loggedAdminName = storedAdminName;
-        this.loggedAdminUs = storedAdminUs;
-        this.loggedAdminAvatar = storedAdminAvatar;
-        this.adminInfo = {
-          key: id,
-          nombre: storedAdminName
-        };
-      }
+      this.loggedAdminId = id;
+      this.loggedAdminName = storedAdminName;
+      this.loggedAdminUs = storedAdminUs;
+      this.loggedAdminAvatar = storedAdminAvatar;
+      this.adminInfo = {
+        key: id,
+        nombre: storedAdminName
+      };
     }
+  }
+
+  submitLogin() {
+    const id = this.loginId;
+    const username = this.loginUs;
+    const pass = this.loginPassword.trim();
+
+    if (!id || !username || !pass) {
+      this.showError('Todos los campos son requeridos');
+      return;
+    }
+
+    this.bdservice.login(id, username, pass).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta completa:', response);
+      
+        // Ajusta según la estructura real de tu respuesta
+        if (response && response.message === 'Login exitoso' && response.admin) {
+          const adminData = response.admin;
+          this.handleSuccessfulLogin(
+            adminData.id, 
+            adminData.nombre,
+            adminData.username,
+            adminData.imagen || this.getAdminAvatar(adminData.id)
+          );
+        } else {
+          this.showError('Credenciales incorrectas');
+        }
+      },
+      error: (error) => {
+        console.error('Error completo:', error);
+        if (error.status === 404) {
+          this.showError('Endpoint no encontrado. Verifica la URL');
+        } else if (error.status === 401) {
+          this.showError('Credenciales incorrectas');
+        } else if (error.status === 501) {
+          this.showError('Cuenta Bloqueada');
+        } else {
+          this.showError(`El error es: ${error.message || 'Error desconocido'}`);
+        }
+      }
+    });
+  }
+
+  private getAdminAvatar(adminId: number): string {
+    return `admins/admin${adminId}.jpg`;
+  }
+
+  private handleSuccessfulLogin(id: number, nombre: string, username: string, avatar: string) {
+    this.loggedAdminName = nombre;
+    this.loggedAdminId = id;
+    this.loggedAdminUs = username;
+    this.loggedAdminAvatar = avatar;
+    this.adminInfo = { key: id, nombre };
+
+    localStorage.setItem('loggedAdminName', nombre);
+    localStorage.setItem('loggedAdminUs', username);
+    localStorage.setItem('loggedAdminId', id.toString());
+    localStorage.setItem('loggedAdminAvatar', avatar);
+    this.closeLoginModal();
+
+    Swal.fire({
+      title: '¡Bienvenido!',
+      text: `Hola ${nombre}, acceso concedido.`,
+      icon: 'success',
+      confirmButtonColor: 'gold',
+      background: '#1e1e1e',
+      color: 'white'
+    });
+  }
+
+  private showError(message: string) {
+    Swal.fire({
+      title: 'Error',
+      text: message,
+      icon: 'error',
+      confirmButtonColor: 'gold',
+      background: '#1e1e1e',
+      color: 'white'
+    });
   }
 
   openLoginModal() {
@@ -89,46 +183,6 @@ export class NavbarComponent {
       this.openLoginModal();
     }
   }
-
-  submitLogin() {
-    const id = this.loginId;
-    const username = this.loginUs;
-    const pass = this.loginPassword.trim();
-
-    if (id && this.admin[id] && this.admin[id][0] == username && this.admin[id][2] === pass) {
-      const nombre = this.admin[id][1];
-      this.loggedAdminName = nombre;
-      this.loggedAdminId = id;
-      this.loggedAdminUs = this.admin[id][0];
-      this.loggedAdminAvatar = this.admin[id][3];
-      this.adminInfo = { key: id, nombre };
-
-      localStorage.setItem('loggedAdminName', nombre);
-      localStorage.setItem('loggedAdminUs', this.admin[id][0]);
-      localStorage.setItem('loggedAdminId', id.toString());
-      localStorage.setItem('loggedAdminAvatar', this.admin[id][3]);
-      this.closeLoginModal();
-
-      Swal.fire({
-        title: '¡Bienvenido!',
-        text: `Hola ${nombre}, acceso concedido.`,
-        icon: 'success',
-        confirmButtonColor: 'gold',
-        background: '#1e1e1e',
-        color: 'white'
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        text: 'ID o contraseña incorrectos',
-        icon: 'error',
-        confirmButtonColor: 'gold',
-        background: '#1e1e1e',
-        color: 'white'
-      });
-    }
-  }
-
 
   logout() {
     Swal.fire({

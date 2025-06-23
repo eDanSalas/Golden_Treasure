@@ -47,9 +47,9 @@ p.subtitle {
 .team {
   display: flex;
   justify-content: space-around;
-  gap: 2rem;
+  gap: 5rem;
   flex-wrap: wrap;
-  padding: 3rem;
+  padding: 2rem 12rem 2rem 12rem;
   background-color: var(--color-black);
 }
 
@@ -57,7 +57,7 @@ p.subtitle {
   background: var(--bg-color-footer);
   border: 2px solid var(--color-yellow);
   border-radius: 15px;
-  width: 280px;
+  width: 300px;
   padding: 1.5rem;
   box-shadow: 0 0 12px var(--color-yellow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -72,6 +72,7 @@ p.subtitle {
 .img-dev {
   width: 250px;
   height: 250px;
+  object-fit: cover;
   margin: 0 auto 1rem auto;
   border-radius: 50%;
   background-color: var(--color-yellow);

@@ -23,5 +23,29 @@ export const DESARROLLADORES: Desarrollador[] = [
         role: "Desarrollador Frontend", 
         descripcion: "Gusto por la seguridad y la optimizacion de codigo, con una extrema fijacion en el diseño de las paginas y su desarrollo con las mejores practicas", 
         github: "https://github.com/DaiserNet"
+    },
+
+    {
+        img: 'admins/admin4.jpg', 
+        name: "Luis Alberto Hernandez Velasco", 
+        role: "Desarrollador Frontend", 
+        descripcion: "Gusto por la seguridad y la optimizacion de codigo, con una extrema fijacion en el diseño de las paginas y su desarrollo con las mejores practicas", 
+        github: "https://github.com/Harb3rt0"
+    },
+
+    {
+        img: 'admins/admin5.jpg', 
+        name: "Brandon Ruiz Morales", 
+        role: "Desarrollador Frontend", 
+        descripcion: "Gusto por la seguridad y la optimizacion de codigo, con una extrema fijacion en el diseño de las paginas y su desarrollo con las mejores practicas", 
+        github: "https://github.com/Wawa4442"
+    },
+
+    {
+        img: 'admins/admin6.jpg', 
+        name: "Jose Luis Espinoza Sanchez", 
+        role: "Desarrollador Frontend", 
+        descripcion: "Gusto por la seguridad y la optimizacion de codigo, con una extrema fijacion en el diseño de las paginas y su desarrollo con las mejores practicas", 
+        github: "https://github.com/PPolux21"
     }
 ]

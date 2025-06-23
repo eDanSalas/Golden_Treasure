@@ -11,6 +11,6 @@ router.post('/reservation', addReservation);
 
 //Admins
 router.get('/admins', getAdmins);
-router.get('/admins/login', loginAdmin);
+router.post('/admins/login', loginAdmin);
 
 module.exports = router;
