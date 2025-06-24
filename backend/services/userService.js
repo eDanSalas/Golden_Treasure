@@ -88,8 +88,22 @@ const changePassword = async (id, nombre, contra, nuevaContra) => {
     return data;
 }
 
+const obtenerClienteId = async (id) => {
+    const snapshot = await db
+        .collection('users')
+        .where('id', '==', id)
+        .limit(1)
+        .get();
+
+    if (snapshot.empty) return null;
+
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
+};
+
 module.exports = {
     createClient,
     loginWithCredentials,
-    changePassword
+    changePassword,
+    obtenerClienteId
 };

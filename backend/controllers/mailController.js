@@ -1,18 +1,26 @@
-const { sendThankYouEmail } = require('../services/mailService');
+const { sendUnlockEmail  } = require('../services/mailService');
+const { obtenerClienteId } = require('../services/userService');
 
 const sendMail = async (req, res) => {
-    const { to } = req.body;
+    const { id } = req.body;
 
-    if (!to) {
-        return res.status(400).json({ message: 'Falta el correo de destino' });
-    }
+    if (!id) return res.status(400).json({ message: 'ID requerido' });
 
     try {
-        await sendThankYouEmail(to);
-        res.status(200).json({ message: 'Correo enviado exitosamente' });
+        const cliente = await obtenerClienteId(id);
+        if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
+
+        if (cliente.intentos < 3) {
+            return res.status(400).json({ message: 'La cuenta no está bloqueada' });
+        }
+
+        await sendUnlockEmail(cliente.correo, cliente.nombre, cliente.id);
+
+        res.status(200).json({ message: 'Correo enviado correctamente' });
+
     } catch (error) {
-        console.error('Error al enviar el correo:', error);
-        res.status(500).json({ message: 'Error al enviar el correo' });
+        console.error('Error al enviar correo:', error);
+        res.status(500).json({ message: 'Error interno al enviar el correo' });
     }
 };
 
