@@ -10,10 +10,20 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { AdminReactiveComponent } from '../admin-reactive/admin-reactive.component';
 import { DataBaseService } from '../../services/data-base.service';
+import { NgxEchartsModule, NGX_ECHARTS_CONFIG  } from 'ngx-echarts';
+import * as echarts from 'echarts';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AdminComponent, AdminReactiveComponent, CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule],
+  imports: [AdminComponent, AdminReactiveComponent, CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, NgxEchartsModule],
+  providers: [
+    {
+      provide: NGX_ECHARTS_CONFIG,
+      useValue: {
+        echarts
+      }
+    }
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -32,6 +42,52 @@ export class DashboardComponent {
 
   servicios: any[] = [];
   reservaciones: any[] = [];
+  chartData: any[] = [
+    {value:0, name: "Suite Presidencial"},
+    {value:0, name: "Suite Deluxe"},
+    {value:0, name: "Habitación Temática"},
+    {value:0, name: "Habitación con Piscina"},
+    {value:0, name: "Mini Departamento"},
+    {value:0, name: "Loft Moderno"},
+    {value:0, name: "Habitación con Vista a la Playa"},
+    {value:0, name: "Habitación Estándar"},
+    {value:0, name: "Habitación Romántica"},
+    {value:0, name: "Habitación Familiar"}
+  ];
+
+  //configuración del gráfico
+  chartOptions = {
+    color: ['#F2CE00', '#E6C717', '#D9BB16', '#CCB429', '#BFA826', '#B3A036', '#A69432', '#998B3D', '#8C8038', '#807640'],
+    title: {
+      text: 'Distribución de habitaciones',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    legend: {
+      orient: 'horizontal',
+      bottom: '0%',
+      left: 'center',
+    },
+    series: [
+      {
+        name: 'Habitaciones',
+        type: 'pie',
+        radius: [30, 120],
+        roseType: 'area',
+        data: this.chartData,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  };
 
   constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService) {
     this.servicios = this.storageService.getServicios();
@@ -71,6 +127,7 @@ export class DashboardComponent {
   actualizarLista() {
     this.servicios = this.storageService.getServicios();
     this.reservaciones = this.storageService.getReservaciones();
+    this.updateChart();
   }
 
   eliminarServicio(index: number) {
@@ -128,5 +185,14 @@ export class DashboardComponent {
 
   toggleActive() {
     this.isActive = !this.isActive;
+  }
+  
+  updateChart(){
+    if (this.reservaciones.length > 0) {
+      this.chartData.forEach(item => {
+        const nombreNormalizado = item.name.toLowerCase();
+        item.value = this.reservaciones.filter(r => r.habitacion.toLowerCase() === nombreNormalizado).length;
+      });
+    }
   }
 }

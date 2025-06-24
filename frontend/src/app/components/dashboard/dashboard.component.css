@@ -79,3 +79,8 @@
 .cardBienvenida{
     border-bottom: 1px solid gold;
 }
+
+.chart{
+    width: 70%;
+    justify-self: center;
+}
