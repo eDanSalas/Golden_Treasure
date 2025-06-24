@@ -306,6 +306,9 @@ export class HabitacionComponent {
         fechaFin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
         total: this.total()
       }
+
+      this.dataTotales = data;
+
       const lsData = JSON.parse(localStorage.getItem('reservaciones') || '[]');
       lsData.push(data);
       localStorage.setItem('reservaciones',JSON.stringify(lsData));

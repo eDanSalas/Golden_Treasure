@@ -201,3 +201,9 @@ i{
     width: 50%;
     margin: 10rem auto 3rem auto;
 }
+
+.paypal-buttons {
+    position: relative;
+    margin-top: 1rem;
+    z-index: 0;
+}

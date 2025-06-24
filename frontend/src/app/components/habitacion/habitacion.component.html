@@ -157,7 +157,7 @@
                 <span>{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>    <!--Pipe Predetermiando-->
               </div>
               <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">{{ 'Reservar' | uppercase }}</button> <!--Pipe Predeterminado-->
-              <div class="paypal-buttons " >
+              <div class="paypal-buttons" >
                 @if (mostrarBotonesPayPal && payPalConfig) {
                   <ngx-paypal [config]="payPalConfig"></ngx-paypal>
                 }
