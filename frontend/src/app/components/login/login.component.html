@@ -84,7 +84,7 @@
           }
         </div>
 
-        <button class="btn btn-gold w-100" type="submit" [disabled]="registerForm.invalid">Registrarse</button>
+        <button class="btn btn-gold w-100" type="button" (click)="openCaptchaModal('register')" [disabled]="registerForm.invalid">Registrarse</button>
       </form>
 
       <div class="text-center mt-3">
@@ -92,4 +92,28 @@
       </div>
     </div>
   }
+
+  <!-- Modal Captcha -->
+  @if (showCaptchaModal){
+    <div class="captcha-modal">
+      <div class="captcha-box">
+        <h3>Verifica que no eres un robot</h3>
+        <div class="captcha-display">
+          @for (char of captchaArray; track $index) {
+            <span [ngStyle]="captchaStyles[$index]">{{ char }}</span>
+          }
+          <div class="captcha-strikethrough"></div>
+        </div>
+        <input
+          type="text"
+          placeholder="Escribe el captcha aquí"
+          [(ngModel)]="userInput"
+        />
+        <div class="captcha-buttons">
+          <button (click)="verificarCaptcha()">Verificar</button>
+          <button (click)="generateCaptcha()">Refrescar</button>
+        </div>
+      </div>
+    </div>
+}
 </div>

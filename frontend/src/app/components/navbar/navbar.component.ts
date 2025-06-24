@@ -30,6 +30,11 @@ export class NavbarComponent {
   showDashboard: boolean = false;
   currentRoute: string = '';
 
+  // navbar.component.ts
+  loggedUserName: string | null = localStorage.getItem('loggedUserName');
+  loggedUserId: number | null = null;
+
+
   @HostListener('window:scroll', [])
   onWindowScroll() {
     this.isScrolled = window.scrollY > 200;
@@ -51,6 +56,7 @@ export class NavbarComponent {
   ngOnInit() {
     this.loadAdminData();
     this.checkLoggedAdmin();
+    this.checkLoggedUser();
   }
 
   loadAdminData() {
@@ -65,6 +71,16 @@ export class NavbarComponent {
         console.error('Error al cargar admins:', err);
       }
     });
+  }
+
+  checkLoggedUser() {
+    const storedUserName = localStorage.getItem('loggedUserName');
+    const storedUserId = localStorage.getItem('loggedUserId');
+
+    if (storedUserName && storedUserId) {
+      this.loggedUserName = storedUserName;
+      this.loggedUserId = parseInt(storedUserId, 10);
+    }
   }
 
   checkLoggedAdmin() {
@@ -184,46 +200,129 @@ export class NavbarComponent {
     }
   }
 
-  logout() {
-    Swal.fire({
-      title: '¿Cerrar sesión?',
-      text: '¿Estás seguro que deseas cerrar sesión? Te va redirigir al Inicio',
-      iconHtml: '<i class="fas fa-sign-out-alt"></i>',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, cerrar sesión',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: 'gold',
-      cancelButtonColor: '#6c757d',
-      background: '#1e1e1e',
-      color: 'white'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.loggedAdminName = null;
-        this.loggedAdminId = null;
-        this.loggedAdminAvatar = null;
-        this.loggedAdminUs = null;
-        this.menuOpen = false;
-        localStorage.removeItem('loggedAdminName');
-        localStorage.removeItem('loggedAdminId');
-        localStorage.removeItem('loggedAdminAvatar');
-        localStorage.removeItem('loggedAdminUs');
+  // logoutUser() {
+  //   Swal.fire({
+  //     title: '¿Cerrar sesión?',
+  //     text: "¿Estás seguro que quieres salir de tu cuenta?",
+  //     icon: 'question',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#d33',
+  //     cancelButtonColor: '#3085d6',
+  //     confirmButtonText: 'Sí, salir',
+  //     cancelButtonText: 'Cancelar'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.loggedUserName = null;
+  //       this.loggedUserId = null;
+  //       localStorage.removeItem('loggedUserName');
+  //       localStorage.removeItem('loggedUserId');
 
-        Swal.fire({
-          title: 'Sesión cerrada',
-          text: 'Has cerrado sesión correctamente.',
-          icon: 'info',
-          confirmButtonColor: 'gold',
-          background: '#1e1e1e',
-          color: 'white'
-        }).then(() => {
-          this.router.navigate(['/']);
-        });
-      }
-    });
-  }
+  //       Swal.fire(
+  //         'Sesión cerrada',
+  //         'Has salido correctamente.',
+  //         'success'
+  //       ).then(() => {
+  //         this.router.navigate(['/']);
+  //       });
+  //     }
+  //   });
+  // }
+
+  logout() {
+  Swal.fire({
+    title: '¿Cerrar sesión?',
+    text: '¿Estás seguro que quieres salir de tu cuenta?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, salir',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Borrar datos del usuario
+      this.loggedUserName = null;
+      this.loggedUserId = null;
+      localStorage.removeItem('loggedUserName');
+      localStorage.removeItem('loggedUserId');
+
+      // Borrar datos del admin
+      this.loggedAdminName = null;
+      this.loggedAdminUs = null;
+      this.loggedAdminId = null;
+      this.loggedAdminAvatar = null;
+      this.adminInfo = null;
+      localStorage.removeItem('loggedAdminName');
+      localStorage.removeItem('loggedAdminUs');
+      localStorage.removeItem('loggedAdminId');
+      localStorage.removeItem('loggedAdminAvatar');
+
+      Swal.fire(
+        'Sesión cerrada',
+        'Has salido correctamente.',
+        'success'
+      ).then(() => {
+        this.router.navigate(['/']); // Redirigir al inicio
+      });
+    }
+  });
+}
+
+
 
   isActive(route: string): boolean {
     return this.currentRoute === route;
   }
+
+  showCaptchaModal = false;
+  captchaArray: string[] = [];
+  captchaStyles: { [key: string]: string }[] = [];
+  userInput = '';
+  captchaMode: 'admin' | null = null;
+
+  generateCaptcha() {
+    this.userInput = '';
+    this.captchaArray = [];
+    this.captchaStyles = [];
+
+    const longitud = 5;
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < longitud; i++) {
+      const char = caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+      this.captchaArray.push(char);
+      this.captchaStyles.push(this.randomCharStyle());
+    }
+  }
+
+  // Estilos para las letras y que se vea piola
+  randomCharStyle(): { [key: string]: string } {
+    const size = 16 + Math.floor(Math.random() * 12); // entre 16 y 28px
+    const color = `hsl(${Math.floor(Math.random() * 360)}, 80%, 40%)`;
+    return {
+      'font-size': `${size}px`,
+      color
+    };
+  }
+
+  openCaptchaModal(mode: 'admin') {
+    this.captchaMode = mode;
+    this.showCaptchaModal = true;
+    this.generateCaptcha();
+  }
+
+
+  verificarCaptcha() {
+  const generated = this.captchaArray.join('');
+  if (this.userInput === generated) {
+    this.showCaptchaModal = false;
+    if (this.captchaMode === 'admin') {
+      this.submitLogin();
+    }
+  } else {
+    alert('Captcha incorrecto, inténtalo de nuevo');
+    this.generateCaptcha();
+  }
+}
+
 
 }
