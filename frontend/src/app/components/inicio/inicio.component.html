@@ -5,8 +5,15 @@
     </div>
 </div>
 
+<app-accesibility-menu 
+  [position]="'bottom-right'"
+  (contrastToggled)="handleContrastToggle($event)"
+  (colorFilterChanged)="applyColorFilter($event)"
+  (fontSizeChanged)="handleFontSizeChange($event)"
+  (fontChanged)="handleFontChange($event)">
+</app-accesibility-menu>
 
-<section class="hotel-text">
+<section class="hotel-text" id="main-content">
     <img src="images/hotel.png" alt="Hotel">
     <div class="text">
         <h2>Bienvenido a <strong>Golden Treasure</strong></h2>
@@ -27,7 +34,7 @@
 <section class="cards-container">
     <div class="row">
         <div class="col-lg-3 col-6">
-            <div class="card-item">
+            <div class="card-item" (click)="leerCard('Limpieza', 'Supervisamos y desarrollaremos activamente nuestras soluciones para garantizar un enfoque continuo en la salud y la seguridad de nuestros huéspedes y asociados.')">
                 <div class="card-front">
                     <img src="images/limpieza.jpg" alt="Limpieza" class="card-icon">
                 </div>
@@ -41,7 +48,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="card-item">
+            <div class="card-item" (click)="leerCard('Platillos', 'Disfrute de una variada selección de platillos cuidadosamente preparados para ofrecer sabores refinados de otro mundo, reconocidos por sus platillos de Italia y Francia.')">
                 <div class="card-front">
                     <img src="images/comida.jpg" alt="Limpieza" class="card-icon">
                 </div>
@@ -55,7 +62,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="card-item">
+            <div class="card-item" (click)="leerCard('Reservación Flexible', 'Adaptamos nuestras políticas para que pueda modificar o cancelar su estancia con mayor libertad y tranquilidad.')">
                 <div class="card-front">
                     <img src="images/reservar.webp" alt="Limpieza" class="card-icon">
                 </div>
@@ -68,7 +75,7 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="card-item">
+            <div class="card-item" (click)="leerCard('Atención de Alta Calidad', 'Desde el primer contacto hasta su despedida, trabajamos para que su experiencia sea cómoda y memorable.')">
                 <div class="card-front">
                     <img src="images/atencion.jpg" alt="Limpieza" class="card-icon">
                 </div>
@@ -88,7 +95,7 @@
  <h2 class="text-center mb-4">Preguntas <span style="color: #daa520;">Frecuentes</span></h2> 
   <mat-accordion multi>
     @for (lista of preguntas; track lista) {
-      <mat-expansion-panel class="faq animate__animated animate__fadeInUp">
+      <mat-expansion-panel class="faq animate__animated animate__fadeInUp" (opened)="leerPregunta(lista.pregunta, lista.respuesta)">
         <mat-expansion-panel-header>
           <mat-panel-title>{{lista.pregunta}}</mat-panel-title>
         </mat-expansion-panel-header>

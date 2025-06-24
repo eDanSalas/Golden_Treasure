@@ -12,11 +12,12 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { signal, computed } from '@angular/core';
+import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
 
 
 @Component({
   selector: 'app-habitacion',
-  imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatDatepickerModule, MatProgressBarModule, CommonModule],
+  imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatDatepickerModule, MatProgressBarModule, CommonModule, NgxPayPalModule],
   templateUrl: './habitacion.component.html',
   styleUrl: './habitacion.component.css',
   providers: [provideNativeDateAdapter()],
@@ -78,6 +79,11 @@ export class HabitacionComponent {
     'Half Board': 40
   };
 
+  public payPalConfig?: IPayPalConfig;
+  mostrarBotonesPayPal = false
+  datosCredenciales: any = [];
+  dataTotales: any = [];
+
   constructor(private servicio: HabitacionService, public route: ActivatedRoute, private fb:FormBuilder){
     const extrasControls: { [key: string]: FormControl } = {};
     this.extras.forEach(extra => {
@@ -101,7 +107,10 @@ export class HabitacionComponent {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
+    await this.obtenerDatosCredenciales();
+
     this.id = +this.route.snapshot.paramMap.get('id')!;
     this.servicio.retornar().subscribe(data => {
       const hab = data.habitaciones.find(h => h.id === this.id);
@@ -134,6 +143,85 @@ export class HabitacionComponent {
     });
 
     window.scrollTo({ top: 0 });
+  }
+
+  private async obtenerDatosCredenciales() {
+    const credenciales = await fetch('http://localhost:8080/api/cliente_paypal', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if(!credenciales) console.error("No se obtuvieron las credenciales");
+    this.datosCredenciales = await credenciales.json();
+  }
+
+  private initConfig(): void {
+    const clientId = this.datosCredenciales.credencialClient;
+    // const precio = `${this.total()}.00`;
+    const precio = `${this.dataTotales.total}.00`;
+    console.log(clientId);
+    console.log(this.habitacion.titulo);
+    console.log(this.habitacion.descripcion);
+    console.log(precio);
+    
+    this.payPalConfig = {
+      currency: 'USD',
+      clientId: clientId,
+      createOrderOnClient: (data) => <ICreateOrderRequest>{
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: 'USD',
+              value: precio,
+              breakdown: {
+                item_total: {
+                  currency_code: 'USD',
+                  value: precio
+                }
+              }
+            },
+            items: [
+              {
+                name: this.habitacion.titulo,
+                quantity: '1',
+                category: 'PHYSICAL_GOODS',
+                unit_amount: {
+                  currency_code: 'USD',
+                  value: precio,
+                },
+              }
+            ]
+          }
+        ]
+      },
+      advanced: {
+        commit: 'true'
+      },
+      style: {
+        label: 'paypal',
+        layout: 'vertical'
+      },
+      onApprove: (data, actions) => {
+        console.log('onApprove - transaction was approved, but not authorized', data, actions);
+        actions.order.get().then((details: any) => {
+          console.log('onApprove - you can get full order details inside onApprove: ', details);
+        });
+      },
+      onClientAuthorization: (data) => {
+        console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+      },
+      onError: err => {
+        console.log('OnError', err);
+      },
+      onClick: (data, actions) => {
+        console.log('onClick', data, actions);
+      },
+    };
   }
 
   validarCal(control: AbstractControl): ValidationErrors | null {
@@ -222,17 +310,20 @@ export class HabitacionComponent {
       lsData.push(data);
       localStorage.setItem('reservaciones',JSON.stringify(lsData));
 
-      this.huespedes.set(1);
-      this.noches.set(1);
-      this.extrasSeleccionados.set({});
+      this.mostrarBotonesPayPal = true;
+      this.initConfig();
+
+      // this.huespedes.set(1);
+      // this.noches.set(1);
+      // this.extrasSeleccionados.set({});
       
-      this.miform.reset();
-      Swal.fire({
-        icon: 'success',
-        title: '¡Reservación Realizada!',
-        text: 'Su reservación fue creada con éxito. ¡Nos vemos muy pronto!',
-        confirmButtonText: 'Aceptar'
-      });
+      // this.miform.reset();
+      // Swal.fire({
+      //   icon: 'success',
+      //   title: '¡Reservación Realizada!',
+      //   text: 'Su reservación fue creada con éxito. ¡Nos vemos muy pronto!',
+      //   confirmButtonText: 'Aceptar'
+      // });
     } else {
       this.miform.markAllAsTouched();
     }
