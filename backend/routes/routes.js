@@ -1,22 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const { sendMail } = require('../controllers/mailController');
-const { addReservation, addClient, loginClient, changePass } = require('../controllers/userController');
+const { addClient, loginClient, changePass } = require('../controllers/userController');
 const { loginAdmin, getAdmins, changePassAdmin } = require('../controllers/adminController');
 const { obtenerCredencialesPaypal } = require('../controllers/paypalController');
+const { addReservation, obtenerTodas, actualizar, eliminar } = require('../controllers/reservacionController');
 
-router.post('/mail', sendMail);
+// FireBase API REST
+router.post('/reservaciones/crear', addReservation);
+router.get('/reservaciones/todas', obtenerTodas);
+router.put('/reservaciones/editar/:id', actualizar);
+router.delete('/reservaciones/eliminar/:id', eliminar);
+
+// Clientes FireBase API 
 router.post('/client', addClient);
 router.get('/client/login', loginClient);
-router.post('/reservation', addReservation);
 router.post('/client/changepass', changePass);
 
-// Admins
+// Nodemailer API
+router.post('/mail', sendMail);
+
+// Admins FireBase API
 router.get('/admins', getAdmins);
 router.post('/admins/login', loginAdmin);
 router.post('/admins/changepass', changePassAdmin);
 
-// Paypal
+// Paypal API
 router.get('/cliente_paypal', obtenerCredencialesPaypal);
 
 module.exports = router;

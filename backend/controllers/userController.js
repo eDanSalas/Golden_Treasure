@@ -1,4 +1,4 @@
-const { createReservation, createClient, changePassword, loginWithCredentials } = require('../services/userService');
+const { createClient, changePassword, loginWithCredentials } = require('../services/userService');
 
 const addClient = async (req, res) => {
     const { nombre, correo, contra } = req.body;
@@ -20,26 +20,6 @@ const addClient = async (req, res) => {
     } catch (error) {
         console.error('Error al agregar cliente:', error);
         res.status(500).json({ message: 'Error al agregar cliente' });
-    }
-};
-
-const addReservation = async (req, res) => {
-    const { numero_reservacion, nombre, correo, cantidad_personas } = req.body;
-
-    if (!numero_reservacion || !nombre || !correo || !cantidad_personas) {
-        return res.status(400).json({ message: 'Faltan datos obligatorios' });
-    }
-
-    try {
-        const newUser = await createReservation({ numero_reservacion, nombre, correo, cantidad_personas });
-        res.status(201).json({ message: 'Reservacion agregada correctamente', id: newUser.id });
-    } catch (error) {
-        if (error.message === 'DUPLICATE_RESERVATION') {
-        return res.status(409).json({ message: 'Ya existe un usuario con ese número de reservación' });
-        }
-
-        console.error('Error al agregar usuario:', error);
-        res.status(500).json({ message: 'Error al agregar usuario' });
     }
 };
 
@@ -93,7 +73,6 @@ const changePass = async (req, res) => {
 
 module.exports = {
     addClient,
-    addReservation,
     loginClient,
     changePass
 };

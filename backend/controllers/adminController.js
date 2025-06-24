@@ -59,6 +59,8 @@ const changePassAdmin = async (req, res) => {
     }
 }
 
+
+
 module.exports = {
     getAdmins,
     loginAdmin,

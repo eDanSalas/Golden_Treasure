@@ -33,23 +33,6 @@ const createClient = async (clienteData) => {
     return { id: docRef.id, ...newCliente };
 };
 
-const createReservation = async (userData) => {
-    const { numero_reservacion } = userData;
-
-    // Search if that reservation number exist
-    const snapshot = await db.collection('reservations')
-        .where('numero_reservacion', '==', numero_reservacion)
-        .get();
-
-    if (!snapshot.empty) {
-        throw new Error('DUPLICATE_RESERVATION');
-    }
-
-    // If doesn't exist, we add it
-    const userRef = await db.collection('reservations').add(userData);
-    return { id: userRef.id };
-};
-
 const loginWithCredentials = async (id, contra) => {
     const snapshot = await db
         .collection('users')
@@ -107,7 +90,6 @@ const changePassword = async (id, nombre, contra, nuevaContra) => {
 
 module.exports = {
     createClient,
-    createReservation,
     loginWithCredentials,
     changePassword
 };
