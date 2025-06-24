@@ -36,10 +36,15 @@
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
 
         <div class="mb-3">
-          <label class="form-label">Correo Electronico</label>
-          <input type="text" class="form-control" formControlName="correo" placeholder="Tu correo electronico aqui">
-          @if (registerForm.get('correo')?.invalid && registerForm.get('correo')?.touched) {
-            <small class="text-danger">correo electronico requerido</small>
+          <label class="form-label">Correo Electrónico</label>
+          <input type="text" class="form-control" formControlName="correo" placeholder="Tu correo electrónico aquí">
+
+          @if (registerForm.get('correo')?.errors?.['required'] && registerForm.get('correo')?.touched) {
+            <small class="text-danger">Correo electrónico requerido</small>
+          }
+
+          @if (registerForm.get('correo')?.errors?.['email'] && registerForm.get('correo')?.touched) {
+            <small class="text-danger">Correo electrónico inválido<br> Usa el formato usuario&#64;dominio.com</small>
           }
         </div>
 
@@ -53,9 +58,29 @@
 
         <div class="mb-3">
           <label class="form-label">Contraseña</label>
-          <input type="password" class="form-control" formControlName="contra" placeholder="Crea una contraseña">
-          @if (registerForm.get('contra')?.invalid && registerForm.get('contra')?.touched) {
-            <small class="text-danger">Contraseña requerida (mín. 6 caract.)</small>
+          <input type="password" class="form-control" formControlName="contra" placeholder="Tu contraseña">
+
+          @if (registerForm.get('contra')?.errors?.['required'] && registerForm.get('contra')?.touched) {
+            <small class="text-danger">Contraseña requerida<br></small>
+          }
+
+          @if (registerForm.get('contra')?.errors?.['invalidPassword'] && registerForm.get('contra')?.touched) {
+            <small class="text-danger">
+              La contraseña debe tener de 6 a 15 caracteres, incluir al menos una mayúscula, un número y solo usar letras, números y guión bajo.
+            </small>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Confirma tu Contraseña</label>
+          <input type="password" class="form-control" formControlName="confcontra" placeholder="Confirma tu contraseña">
+
+          @if (registerForm.get('confcontra')?.errors?.['required'] && registerForm.get('confcontra')?.touched) {
+            <small class="text-danger">Confirmación requerida<br></small>
+          }
+
+          @if (registerForm.errors?.['passwordMismatch'] && registerForm.get('confcontra')?.touched) {
+            <small class="text-danger">Las contraseñas no coinciden</small>
           }
         </div>
 

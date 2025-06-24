@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder,FormGroup,Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder,FormGroup,Validators, AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -25,10 +24,11 @@ export class LoginComponent {
 
     // Formulario de registro
     this.registerForm=this.fb.group({
-      correo:['',[Validators.required]],
+      correo:['',[Validators.required, Validators.email]],
       username:['',[Validators.required]],
-      contra:['',[Validators.required, Validators.minLength(6)]]
-    });
+      contra: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), this.passwordPatternValidator]],
+      confcontra: ['', [Validators.required]]
+    }, { validators: this.matchPasswordValidator });
   }
 
   toggleMode() {
@@ -70,5 +70,22 @@ export class LoginComponent {
       console.log('Intentando registro con', { correo, nombre, contra });
     }
   }
+
+  // Validators extra
+  passwordPatternValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+
+    const valid = /^[A-Za-z0-9_]{6,15}$/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value);
+
+    return valid ? null : { invalidPassword: true };
+  }
+
+  matchPasswordValidator: ValidatorFn = (formGroup: AbstractControl): ValidationErrors | null => {
+    const password = formGroup.get('contra')?.value;
+    const confirmPassword = formGroup.get('confcontra')?.value;
+
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  };
 
 }
