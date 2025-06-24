@@ -1,4 +1,4 @@
-const { createReservation, createClient, changePassword } = require('../services/userService');
+const { createReservation, createClient, changePassword, loginWithCredentials } = require('../services/userService');
 
 const addClient = async (req, res) => {
     const { nombre, correo, contra } = req.body;
@@ -56,11 +56,11 @@ const loginClient = async (req, res) => {
         return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
-        const { id, nombre, correo } = cliente;
+        const { id: clienteId, nombre, correo } = cliente;
 
         res.status(200).json({
         message: 'Login exitoso',
-        cliente: { id, nombre, correo }
+        cliente: { id: clienteId, nombre, correo }
         });
     } catch (error) {
         if (error.message === 'BLOCKED_ACCOUNT') {

@@ -54,7 +54,7 @@ export class LoginComponent {
       const info = await fetch('http://localhost:8080/api/client', {
         method : 'POST', 
         headers: { 
-          'Content-Type': 'aplication/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ nombre, correo, contra })
       });
