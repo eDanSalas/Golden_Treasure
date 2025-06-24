@@ -329,6 +329,8 @@ export class HabitacionComponent {
           text: `Su reservación fue creada con éxito. Número: ${respuesta.no_reservacion}`,
           confirmButtonText: 'Aceptar'
         });
+        this.mostrarBotonesPayPal = true;
+        this.initConfig();
       })
       .catch(error => {
         console.error('Error al enviar reservación:', error);
@@ -339,9 +341,6 @@ export class HabitacionComponent {
           confirmButtonText: 'Aceptar'
         });
       });
-
-      this.mostrarBotonesPayPal = true;
-      this.initConfig();
 
       // this.huespedes.set(1);
       // this.noches.set(1);

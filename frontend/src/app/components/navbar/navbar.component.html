@@ -55,7 +55,7 @@
         }
 
         <!-- Menú cuando es usuario normal -->
-        @if (menuOpen && loggedUserName && !loggedAdminName) {
+        @if (loggedUserName && loggedAdminName === null) {
           <div class="user-menu bg-light border rounded shadow-sm animate-menu">
             <ul class="list-unstyled mb-0">
               <li>

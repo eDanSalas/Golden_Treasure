@@ -73,14 +73,16 @@ export class LoginComponent {
     }
 
     if (info.status === 200) {
+      console.log(info);
       const data = await info.json();
       // Aquí asumimos que el backend retorna algo como { id: ..., nombre: ... }
-      localStorage.setItem('loggedUserId', data.id); 
-      localStorage.setItem('loggedUserName', data.nombre);
+      localStorage.setItem('loggedUserId', data.cliente.id); 
+      localStorage.setItem('loggedUserName', data.cliente.nombre);
 
-      alert(`Bienvenido ${data.nombre}`);
+      alert(`Bienvenido ${data.cliente.nombre}`);
       // Recarga para que el navbar detecte los cambios
       window.location.reload();
+      
     } else {
       alert('Error en las credenciales');
     }
