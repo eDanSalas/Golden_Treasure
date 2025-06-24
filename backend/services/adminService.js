@@ -41,7 +41,37 @@ const loginWithAdminCredentials = async (id, username, contra) => {
     return data;
 };
 
+const changePasswordAdmin = async (id, username, contra, nuevaContra) => {
+    const snapshot = await db
+        .collection('admins')
+        .where('id', '==', id)
+        .where('username', '==', username)
+        .limit(1)
+        .get();
+
+    if (snapshot.empty) return null;
+
+    const doc = snapshot.docs[0];
+    const data = doc.data();
+
+    const passwordMatch = await bcrypt.compare(contra, data.contra);
+    if (passwordMatch && contra == nuevaContra) {
+        throw new Error('SAME_PASSWORD');
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(nuevaContra, saltRounds);
+
+    await doc.ref.update({
+        contra: hashedPassword,
+        intentos: 0
+    });
+
+    return data;
+}
+
 module.exports = {
     getAllAdmins,
-    loginWithAdminCredentials
+    loginWithAdminCredentials,
+    changePasswordAdmin
 };

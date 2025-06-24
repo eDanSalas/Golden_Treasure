@@ -1,4 +1,4 @@
-const { createReservation, createClient } = require('../services/userService');
+const { createReservation, createClient, changePassword } = require('../services/userService');
 
 const addClient = async (req, res) => {
     const { nombre, correo, contra } = req.body;
@@ -71,8 +71,29 @@ const loginClient = async (req, res) => {
     }
 };
 
+const changePass = async (req, res) => {
+    const { id, nombre, contra, nuevaContra } = req.body;
+    
+    try {
+        const cliente = await changePassword(id, nombre, contra, nuevaContra);
+
+        if (!cliente) {
+            return res.status(401).json({ message: 'Error al cambiar contraseña' });
+        }
+
+        res.status(200).json({ message: 'Cambio de contraseña exitoso' });
+    } catch (error) {
+        if (error.message === 'SAME_PASSWORD') {
+            return res.status(502).json({ message: 'La contraseña no puede ser igual al anterior' });
+        }
+        console.error('Error al cambiar contraseña de usuario:', error);
+        res.status(500).json({ message: 'Error al cambiar contraseña de usuario' });
+    }
+}
+
 module.exports = {
     addClient,
     addReservation,
-    loginClient
+    loginClient,
+    changePass
 };

@@ -1,4 +1,4 @@
-const { loginWithAdminCredentials, getAllAdmins } = require('../services/adminService');
+const { loginWithAdminCredentials, getAllAdmins, changePasswordAdmin } = require('../services/adminService');
 
 const getAdmins = async (req, res) => {
     try {
@@ -39,7 +39,28 @@ const loginAdmin = async (req, res) => {
     }
 };
 
+const changePassAdmin = async (req, res) => {
+    const { id, username, contra, nuevaContra } = req.body;
+    
+    try {
+        const admin = await changePasswordAdmin(id, username, contra, nuevaContra);
+
+        if (!admin) {
+            return res.status(401).json({ message: 'Error al cambiar contraseña' });
+        }
+
+        res.status(200).json({ message: 'Cambio de contraseña exitoso' });
+    } catch (error) {
+        if (error.message === 'SAME_PASSWORD') {
+            return res.status(502).json({ message: 'La contraseña no puede ser igual al anterior' });
+        }
+        console.error('Error al cambiar contraseña de admin:', error);
+        res.status(500).json({ message: 'Error al cambiar contraseña del administrador' });
+    }
+}
+
 module.exports = {
     getAdmins,
-    loginAdmin
+    loginAdmin,
+    changePassAdmin
 };
