@@ -35,12 +35,37 @@ export class LoginComponent {
     this.showLogin=!this.showLogin;
   }
 
-  onLogin(){
+  async onLogin(){
     if (this.loginForm.valid){
       const id=this.loginForm.get('id')?.value;
       const contra=this.loginForm.get('contra')?.value;
-      // aca pondremos la logica para mandar la informacion 
-      console.log('Intentando login con', { id, contra });
+
+      const info = await fetch('http://localhost:8080/api/client/login', {
+        method : 'POST', 
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, contra })
+      });
+
+      if (info.status === 501) {
+        alert('Cuenta bloqueada, se te va a envíar un correo');
+        const data = await fetch('http://localhost:8080/api/mail', {
+          method : 'POST', 
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
+        });
+        if (data.status === 200) {
+          alert('Se envio un correo correctamente');
+        }
+      }
+
+      if (info.status === 200) {
+        alert('Bienvenido');
+      }
+
     }
   }
 

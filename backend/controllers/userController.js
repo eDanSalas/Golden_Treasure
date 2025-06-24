@@ -1,4 +1,4 @@
-const { createClient, changePassword, loginWithCredentials } = require('../services/userService');
+const { createClient, createClientGoogle,changePassword, loginWithCredentials } = require('../services/userService');
 
 const addClient = async (req, res) => {
     const { nombre, correo, contra } = req.body;
@@ -9,6 +9,29 @@ const addClient = async (req, res) => {
 
     try {
         const result = await createClient({ nombre, correo, contra });
+        res.status(201).json({
+        message: 'Cliente agregado correctamente',
+        cliente: {
+            id: result.id,
+            nombre: result.nombre,
+            correo: result.correo
+        }
+        });
+    } catch (error) {
+        console.error('Error al agregar cliente:', error);
+        res.status(500).json({ message: 'Error al agregar cliente' });
+    }
+};
+
+const addClientGoogle = async (req, res) => {
+    const { nombre, correo } = req.body;
+
+    if (!nombre || !correo) {
+        return res.status(400).json({ message: 'Faltan datos obligatorios' });
+    }
+
+    try {
+        const result = await createClientGoogle({ nombre, correo });
         res.status(201).json({
         message: 'Cliente agregado correctamente',
         cliente: {
@@ -73,6 +96,7 @@ const changePass = async (req, res) => {
 
 module.exports = {
     addClient,
+    addClientGoogle,
     loginClient,
     changePass
 };

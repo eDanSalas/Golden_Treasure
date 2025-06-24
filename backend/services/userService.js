@@ -6,12 +6,12 @@ const createClient = async (clienteData) => {
     const clientesRef = db.collection('users');
 
     // 1. Search the last inserted ID
-    const snapshot = await clientesRef.orderBy('ID', 'desc').limit(1).get();
+    const snapshot = await clientesRef.orderBy('id', 'desc').limit(1).get();
 
     let nextId = 1;
     if (!snapshot.empty) {
         const lastDoc = snapshot.docs[0];
-        const lastId = lastDoc.data().ID;
+        const lastId = lastDoc.data().id;
         nextId = lastId + 1;
     }
 
@@ -29,6 +29,29 @@ const createClient = async (clienteData) => {
     };
 
     // 4. Insert the new client in the database
+    const docRef = await clientesRef.add(newCliente);
+    return { id: docRef.id, ...newCliente };
+};
+
+const createClientGoogle = async (clienteData) => {
+    const clientesRef = db.collection('users');
+
+    const snapshot = await clientesRef.orderBy('id', 'desc').limit(1).get();
+
+    let nextId = 1;
+    if (!snapshot.empty) {
+        const lastDoc = snapshot.docs[0];
+        const lastId = lastDoc.data().id;
+        nextId = lastId + 1;
+    }
+
+    const newCliente = {
+        id: nextId,
+        nombre: clienteData.nombre,
+        correo: clienteData.correo,
+        intentos: 0
+    };
+
     const docRef = await clientesRef.add(newCliente);
     return { id: docRef.id, ...newCliente };
 };

@@ -14,7 +14,7 @@ router.delete('/reservaciones/eliminar/:id', eliminar);
 
 // Clientes FireBase API 
 router.post('/client', addClient);
-router.get('/client/login', loginClient);
+router.post('/client/login', loginClient);
 router.post('/client/changepass', changePass);
 
 // Nodemailer API
