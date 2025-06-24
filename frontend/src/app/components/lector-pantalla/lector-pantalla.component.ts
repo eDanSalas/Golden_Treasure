@@ -23,11 +23,17 @@ export class LectorPantallaComponent {
   iniciar() {
     this.iniciarLectura.emit(this.sectionId);
     const section = document.getElementById(this.sectionId);
-    if(section) {
+    if (section) {
       const text = section.innerText;
       this.reader.speak(text);
     }
     this.estado = 'leyendo';
+  }
+
+  iniciarLecturaSeccion() {
+    if (this.sectionId) {
+      this.iniciarLectura.emit(this.sectionId);
+    }
   }
 
   pausar() {

@@ -45,6 +45,8 @@ export class InicioComponent {
     {pregunta: "¿Qué sucede si se presenta algún accidente en la piscina?", respuesta: "Dependiendo del nivel del accidente se realizarán acciones para mantener la integridad y la salud de las personas involucradas. En caso de algún daño al área de la piscina puede repercutir en una sanción económica."},
   ]
 
+  // Funciones para accesibilidad
+
   leerCard(titulo: string, texto: string) {
     const mensaje = `${titulo}. ${texto}`;
     this.reader.speak(mensaje);

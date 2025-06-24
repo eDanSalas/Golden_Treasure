@@ -97,6 +97,10 @@ mat-spinner circle {
   filter: url(#tritanopia);
 }
 
+app-accesibility-menu {
+  filter: none !important;
+}
+
 svg.acc-filters {
   position: absolute;
   width: 0;
