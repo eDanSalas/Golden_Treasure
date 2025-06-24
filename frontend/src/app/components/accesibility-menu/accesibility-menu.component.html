@@ -1,21 +1,3 @@
-<!-- <button (click)="toggleMenu()" aria-haspopup="true" [attr.aria-expanded]="menuOpen">
-    <i class="fa-brands fa-accessible-icon">Accesibilidad</i>
-</button>
-
-@if (menuOpen) {
-<div role="menu" class="menu">
-    <button role="menuitem" (click)="toggleScreenReader()">🗣️ Lector de pantalla</button>
-    @if (activarLectorPantalla) {
-        <app-lector-pantalla class="d-flex justify-content-center align-items-center"></app-lector-pantalla>
-    }
-    <button role="menuitem" (click)="toggleContrast()">🎨 Contraste</button>
-    <button role="menuitem" (click)="adjustFontSize(1)">🔎 Aumentar texto</button>
-    <button role="menuitem" (click)="adjustFontSize(-1)">🔽 Disminuir texto</button>
-    <button role="menuitem" (click)="cycleFont()">🔤 Cambiar fuente</button>
-</div>
-}
- -->
-
 <div class="accessibility-container" [ngClass]="getPositionClass()">
   <button class="accessibility-button" (click)="toggleMenu()" aria-haspopup="true" [attr.aria-expanded]="menuOpen">
     <i class="fa-solid fa-universal-access"></i> Accesibilidad
