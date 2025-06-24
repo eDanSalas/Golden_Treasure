@@ -1,0 +1,96 @@
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.85); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.1); 
+  border: 2px solid goldenrod;
+  border-radius: 15px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  backdrop-filter: blur(8px);
+  color: white;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: scale(1.02);
+}
+
+.card-title {
+  color: gold;
+  font-style: italic;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid goldenrod;
+  border-radius: 8px;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: gold;
+  box-shadow: 0 0 8px rgba(218, 165, 32, 0.5);
+  color: white;
+}
+
+.text-danger {
+  color: #ff7f7f !important;
+  font-size: 0.8rem;
+}
+
+.btn-gold {
+  background-color: goldenrod;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-color: gold;
+  color: black;
+}
+
+.btn-link.text-gold {
+  color: goldenrod;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0;
+  border: none;
+  background: none;
+  transition: color 0.3s ease;
+}
+
+.btn-link.text-gold:hover {
+  color: gold;
+  text-decoration: underline;
+}

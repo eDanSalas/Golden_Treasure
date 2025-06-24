@@ -8,6 +8,7 @@ import { ComentariosComponent } from './components/comentarios/comentarios.compo
 import { HabitacionComponent } from './components/habitacion/habitacion.component';
 import { DesarrolladoresComponent } from './components/desarrolladores/desarrolladores.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
@@ -19,5 +20,6 @@ export const routes: Routes = [
     {path: 'comentarios', component: ComentariosComponent},
     {path: 'desarrolladores', component: DesarrolladoresComponent},
     {path: 'dashboard/:id', component: DashboardComponent },
+    {path: 'login', component: LoginComponent },
     {path: '', redirectTo: '/inicio', pathMatch: 'full'}
 ];
