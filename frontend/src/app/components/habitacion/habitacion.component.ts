@@ -292,26 +292,53 @@ export class HabitacionComponent {
   enviar(){
     if (this.miform.valid){
       const data = {
-        hab: this.habitacion.titulo,
+        habitacion: this.habitacion.titulo,
         nombre: this.miform.value.nombre,
-        email: this.miform.value.email,
+        correo: this.miform.value.email,
         telefono: this.miform.value.telefono,
         huespedes: this.huespedes(),
         noches: this.noches(),
-        tipoReserva: this.miform.value.reserva,
+        reserva: this.miform.value.reserva,
         extras: Object.entries(this.miform.value.extras)
                   .filter(([key, value]) => value)
                   .map(([key]) => key),
-        fechaInicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
-        fechaFin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
+        inicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
+        fin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
         total: this.total()
       }
 
-      this.dataTotales = data;
-
-      const lsData = JSON.parse(localStorage.getItem('reservaciones') || '[]');
-      lsData.push(data);
-      localStorage.setItem('reservaciones',JSON.stringify(lsData));
+      fetch('http://localhost:8080/api/reservaciones/crear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(async response => {
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.message);
+        }
+        return response.json();
+      })
+      .then(respuesta => {
+        console.log('Reservación creada con número:', respuesta.no_reservacion);
+        Swal.fire({
+          icon: 'success',
+          title: '¡Reservación Realizada!',
+          text: `Su reservación fue creada con éxito. Número: ${respuesta.no_reservacion}`,
+          confirmButtonText: 'Aceptar'
+        });
+      })
+      .catch(error => {
+        console.error('Error al enviar reservación:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo crear la reservación',
+          confirmButtonText: 'Aceptar'
+        });
+      });
 
       this.mostrarBotonesPayPal = true;
       this.initConfig();
