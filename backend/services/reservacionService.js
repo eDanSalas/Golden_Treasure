@@ -1,21 +1,26 @@
 const db = require('../config/firebaseConfig');
 const collection = db.collection('firebase');
 
-const createReservation = async (userData) => {
-    const { numero_reservacion } = userData;
-
-    // Search if that reservation number exist
-    const snapshot = await db.collection('reservations')
-        .where('numero_reservacion', '==', numero_reservacion)
+const createReservation = async (reservationData) => {
+    const snapshot = await db.collection('formulario_habitacion')
+        .orderBy('no_reservacion', 'desc')
+        .limit(1)
         .get();
 
+    let newNoReservacion = 1;
     if (!snapshot.empty) {
-        throw new Error('DUPLICATE_RESERVATION');
+        const lastDoc = snapshot.docs[0];
+        const lastNo = lastDoc.data().no_reservacion;
+        newNoReservacion = lastNo + 1;
     }
 
-    // If doesn't exist, we add it
-    const userRef = await db.collection('reservations').add(userData);
-    return { id: userRef.id };
+    const finalReservationData = {
+        ...reservationData,
+        no_reservacion: newNoReservacion
+    };
+
+    const docRef = await db.collection('formulario_habitacion').add(finalReservationData);
+    return { id: docRef.id, no_reservacion: newNoReservacion };
 };
 
 const getAllReservaciones = async () => {
