@@ -42,12 +42,12 @@ export class ServicioComponent {
   id!: number;
   modelo = {
     nombre: '',
-    nombrePublico: '',
-    email: '',
-    duda: '',
-    aceptaFAQ: false,
-    fechaParticular: null as Date | null,
-    cuentaReservacion: ''
+    nombre_publico: '',
+    correo: '',
+    info: '',
+    aceptacion: false,
+    fecha: null as Date | null,
+    reservacion: ''
   };
   minFecha = new Date();
   fechaInvalida: boolean = false;
@@ -121,8 +121,8 @@ export class ServicioComponent {
   }
 
   fechaEsDomingoSinReservacion(): boolean {
-    const fecha = this.modelo.fechaParticular;
-    const reservacion = this.modelo.cuentaReservacion;
+    const fecha = this.modelo.fecha;
+    const reservacion = this.modelo.reservacion;
     if (!fecha || !reservacion) return false;
 
     const esDomingo = (fecha instanceof Date) && fecha.getDay() === 0;
