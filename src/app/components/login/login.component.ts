@@ -76,7 +76,7 @@ export class LoginComponent {
       body: JSON.stringify({ id, contra })
     });
 
-    if (info.status === 501) {
+    if (info.status === 423) {
       Swal.fire({
           title: "Cuenta Bloqueada",
           text: "Tu cuenta ha sido bloqueada por multiples inicios de sesion",
