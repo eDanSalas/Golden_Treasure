@@ -135,8 +135,18 @@ export class ServicioComponent {
   enviarInfo(form: NgForm) {
     if (form.valid) {
 
-      this.storageService.guardarServicio(this.modelo);
-      this.servicioCreado.emit(this.modelo);
+      let auxServ = {
+        servicio: this.selectedServicio, 
+        nombre:this.modelo.nombre, 
+        nombre_publico:this.modelo.nombre_publico, 
+        correo:this.modelo.correo, 
+        info:this.modelo.info, 
+        fecha:this.modelo.fecha, 
+        reservacion:this.modelo.reservacion, 
+        aceptacion:this.modelo.aceptacion 
+      }
+
+      this.servicioCreado.emit(auxServ);
 
       Swal.fire({
         icon: 'success',

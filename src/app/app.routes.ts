@@ -10,6 +10,7 @@ import { DesarrolladoresComponent } from './components/desarrolladores/desarroll
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { PagReservacionComponent } from './components/pag-reservacion/pag-reservacion.component';
+import { CambiarContraComponent } from './components/cambiar-contra/cambiar-contra.component';
 
 export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
@@ -23,5 +24,6 @@ export const routes: Routes = [
     {path: 'dashboard/:id', component: DashboardComponent },
     {path: 'login', component: LoginComponent },
     {path: 'reservaciones/:id', component: PagReservacionComponent },
+    {path: 'cambiarContra', component: CambiarContraComponent },
     {path: '', redirectTo: '/inicio', pathMatch: 'full'}
 ];

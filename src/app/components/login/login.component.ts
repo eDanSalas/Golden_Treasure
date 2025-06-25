@@ -120,7 +120,11 @@ export class LoginComponent {
         color: 'white'
       });
       // Recarga para que el navbar detecte los cambios
-      this.router.navigate(['/inicio']);
+      this.router.navigate(['/inicio']).then(() => {
+        if (window.location.pathname === '/inicio') {
+          window.location.reload();
+        }
+      });
       
     } else {
       Swal.fire({
