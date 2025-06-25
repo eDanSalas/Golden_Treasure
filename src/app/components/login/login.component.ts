@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { NgOtpInputComponent } from 'ng-otp-input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent {
   otp: string = '';
   verify: any = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 
     // Formulario de login
     this.loginForm=this.fb.group({
@@ -156,8 +157,9 @@ export class LoginComponent {
         text: `Bienvenido ${data.cliente.nombre}`,
         icon: 'success'
       }).then(() => {
-        // Recarga para que el navbar detecte los cambios
-        window.location.reload();
+        this.router.navigate(['/inicio']).then(() => {
+            window.location.reload(); // recarga luego de navegar
+        });
       });
       
     } else {
@@ -185,20 +187,38 @@ export class LoginComponent {
     this.otp = otpCode;
   }
 
-  handleClick(){
+  async handleClick(){
     this.authService.credential(this.verify, this.otp);
     if (localStorage.getItem('user_data')) {
-      localStorage.setItem('isPhoneAccount', 'true');
-      localStorage.setItem('loggedUserId', '8'); 
-      localStorage.setItem('loggedUserName', this.userSMS);
-      // Swal.fire({
-      //   title: 'Inicio de sesión exitoso',
-      //   text: `Bienvenido ${data.cliente.nombre}`,
-      //   icon: 'success'
-      // }).then(() => {
-      //   // Recarga para que el navbar detecte los cambios
-      //   window.location.reload();
-      // });
+      const info = await fetch('http://localhost:8080/api/client/loginPhone', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre: this.userSMS, telefono: this.phoneSMS })
+      });
+      if(info.status === 201 || info.status === 200){
+        console.log(info);
+        const data = await info.json();
+        localStorage.setItem('isPhoneAccount', 'true');
+        localStorage.setItem('loggedUserId', data.cliente.id); 
+        localStorage.setItem('loggedUserName', data.cliente.nombre);
+        Swal.fire({
+          title: 'Inicio de sesión exitoso',
+          text: `Bienvenido ${data.cliente.nombre}`,
+          icon: 'success'
+        }).then(() => {
+          this.router.navigate(['/inicio']).then(() => {
+            window.location.reload(); // recarga luego de navegar
+          });
+        });
+      }else{
+        Swal.fire({
+          title: 'Error',
+          text: 'Error en las credenciales',
+          icon: 'error'
+        });
+      }
     }
   }
 
