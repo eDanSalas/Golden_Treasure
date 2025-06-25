@@ -1,4 +1,4 @@
-const { createReservation, getAllReservaciones, updateReservacion, deleteReservacion } = require('../services/reservacionService');
+const { createReservation, getAllReservaciones, getReservacionId, updateReservacion, deleteReservacion } = require('../services/reservacionService');
 
 const addReservation = async (req, res) => {
     const { nombre, correo, extras, fin, habitacion, huespedes, inicio, noches, reserva, telefono, total } = req.body;
@@ -34,6 +34,22 @@ const obtenerTodas = async (req, res) => {
     }
 };
 
+const obtenerReservacion = async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Faltan el id que es obligatorio' });
+    }
+
+    try {
+        const datos = await getReservacionId(id);
+        res.status(200).json(datos);
+    } catch (err) {
+        console.log("Error en obtener reservaciones: ", err);
+        res.status(500).json({ message: 'Error al obtener reservaciones' });
+    }
+}
+
 const actualizar = async (req, res) => {
     try {
         const { id } = req.params;
@@ -60,6 +76,7 @@ const eliminar = async (req, res) => {
 module.exports = {
     addReservation,
     obtenerTodas,
+    obtenerReservacion,
     actualizar,
     eliminar
 };

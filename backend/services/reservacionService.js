@@ -1,5 +1,6 @@
+const admin = require('firebase-admin');
 const db = require('../config/firebaseConfig');
-const collection = db.collection('firebase');
+const collection = db.collection('formulario_habitacion');
 
 const createReservation = async (reservationData) => {
     const snapshot = await db.collection('formulario_habitacion')
@@ -23,6 +24,15 @@ const createReservation = async (reservationData) => {
     return { id: docRef.id, no_reservacion: newNoReservacion };
 };
 
+const getReservacionId = async (id) => {
+    const snapshot = await collection.where('id', '==', id).limit(1).get();
+
+    if (snapshot.empty) return null;
+
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
+}
+
 const getAllReservaciones = async () => {
     const snapshot = await collection.get();
     const datos = [];
@@ -33,16 +43,30 @@ const getAllReservaciones = async () => {
 };
 
 const updateReservacion = async (id, nuevosDatos) => {
-    const docRef = collection.doc(id);
+    const snapshot = await collection.where('id', '==', id).limit(1).get();
+
+    if (snapshot.empty) {
+        throw new Error('No se encontró la reservación con ese id');
+    }
+
+    const docRef = snapshot.docs[0].ref;
     await docRef.update(nuevosDatos);
 };
 
 const deleteReservacion = async (id) => {
-    await collection.doc(id).delete();
+    const snapshot = await collection.where('id', '==', id).limit(1).get();
+
+    if (snapshot.empty) {
+        throw new Error('No se encontró la reservación con ese id');
+    }
+
+    const docRef = snapshot.docs[0].ref;
+    await docRef.delete();
 };
 
 module.exports = {
     createReservation,
+    getReservacionId,
     getAllReservaciones,
     updateReservacion,
     deleteReservacion
