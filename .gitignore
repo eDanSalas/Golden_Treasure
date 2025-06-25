@@ -34,7 +34,6 @@
 /backend/build
 /backend/npm-debug.log
 /backend/yarn-error.log
-/backend/golden-treasure-dcd10-firebase-adminsdk-fbsvc-c32f29d77e.json
 
 # System Files
 .DS_Store
