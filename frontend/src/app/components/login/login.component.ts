@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder,FormGroup,Validators, AbstractControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FormsModule } from '@angular/forms'; 
+import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,7 @@ export class LoginComponent {
   userInput = '';
   captchaMode: 'login' | 'register' | null = null; 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
 
     // Formulario de login
     this.loginForm=this.fb.group({
@@ -88,6 +90,39 @@ export class LoginComponent {
     }
   }
 }
+
+  async onLoginGoogle(){
+    const user = await this.authService.logInGoogle();
+    const info = await fetch('http://localhost:8080/api/client/loginGoogle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre: user.displayName, correo: user.email })
+      });
+    if (info.status === 201 || info.status == 200) {
+      console.log(info);
+      const data = await info.json();
+      // Aquí asumimos que el backend retorna algo como { id: ..., nombre: ... }
+      localStorage.setItem('loggedUserId', data.cliente.id); 
+      localStorage.setItem('loggedUserName', data.cliente.nombre);
+
+      Swal.fire({
+        title: 'Inicio de Sesión exitoso',
+        text: `Bienvenido ${data.cliente.nombre}`,
+        icon: 'success'
+      });
+      // Recarga para que el navbar detecte los cambios
+      window.location.reload();
+      
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Error en las credenciales',
+        icon: 'error'
+      });
+    }
+  }
 
 
   async onRegister(){
