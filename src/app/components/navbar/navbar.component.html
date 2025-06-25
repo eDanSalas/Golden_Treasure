@@ -36,28 +36,17 @@
           </div>
         }
 
-        <!-- Menú cuando es admin -->
-        @if (menuOpen && loggedAdminName) {
+        <!-- Desplegado del menú -->
+        @if (menuOpen && (loggedAdminName != null || loggedUserName != null)){
           <div class="user-menu bg-light border rounded shadow-sm animate-menu">
             <ul class="list-unstyled mb-0">
+              @if(loggedAdminName){
               <li>
                 <button class="dropdown-item text-dark small" [routerLink]="['/dashboard', loggedAdminId]" (click)="menuOpen = false">
                   Dashboard
                 </button>
               </li>
-              <li>
-                <button class="dropdown-item text-dark small" (click)="logout()">
-                  Cerrar sesión
-                </button>
-              </li>
-            </ul>
-          </div>
-        }
-
-        <!-- Menú cuando es usuario normal -->
-        @if (loggedUserName && loggedAdminName === null) {
-          <div class="user-menu bg-light border rounded shadow-sm animate-menu">
-            <ul class="list-unstyled mb-0">
+            }
               <li>
                 <button class="dropdown-item text-dark small" (click)="logout()">
                   Cerrar sesión
@@ -68,7 +57,7 @@
         }
       </div>
 
-      @if (showLoginModal) {
+      @if (showLoginModal && loggedUserName === null) {
         <div class="modal-backdrop" (click)="closeLoginModal()"></div>
         <div class="login-modal card shadow p-4">
           <h5 class="mb-3 text-center text-gold">Iniciar sesión</h5>

@@ -197,6 +197,7 @@ export class NavbarComponent {
     if (this.loggedAdminName) {
       this.menuOpen = !this.menuOpen;
     } else {
+      this.menuOpen = !this.menuOpen;
       this.openLoginModal();
     }
   }
@@ -273,6 +274,8 @@ export class NavbarComponent {
   });
 }
 
+
+
   isActive(route: string): boolean {
     return this.currentRoute === route;
   }
@@ -315,23 +318,17 @@ export class NavbarComponent {
 
 
   verificarCaptcha() {
-    const generated = this.captchaArray.join('');
-    if (this.userInput === generated) {
-      this.showCaptchaModal = false;
-      if (this.captchaMode === 'admin') {
-        this.submitLogin();
-      }
-    } else {
-      Swal.fire({
-          title: "Captcha Incorrecto",
-          text: "Por favor intentalo nuevamente", 
-          icon: "error",
-          confirmButtonColor: 'gold',
-          background: '#1e1e1e',
-          color: 'white'
-      });
-      this.generateCaptcha();
+  const generated = this.captchaArray.join('');
+  if (this.userInput === generated) {
+    this.showCaptchaModal = false;
+    if (this.captchaMode === 'admin') {
+      this.submitLogin();
     }
+  } else {
+    alert('Captcha incorrecto, inténtalo de nuevo');
+    this.generateCaptcha();
   }
+}
+
 
 }
