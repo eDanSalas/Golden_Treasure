@@ -12,10 +12,12 @@ import { AdminReactiveComponent } from '../admin-reactive/admin-reactive.compone
 import { DataBaseService } from '../../services/data-base.service';
 import { NgxEchartsModule, NGX_ECHARTS_CONFIG  } from 'ngx-echarts';
 import * as echarts from 'echarts';
+import { AccesibilityMenuComponent } from '../accesibility-menu/accesibility-menu.component';
+import { ScreenReaderService } from '../../services/screen-reader.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AdminComponent, AdminReactiveComponent, CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, NgxEchartsModule],
+  imports: [AdminComponent, AdminReactiveComponent, CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, NgxEchartsModule, AccesibilityMenuComponent],
   providers: [
     {
       provide: NGX_ECHARTS_CONFIG,
@@ -89,7 +91,7 @@ export class DashboardComponent {
     ]
   };
 
-  constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService) {
+  constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService, private reader: ScreenReaderService) {
     this.servicios = this.storageService.getServicios();
     this.reservaciones = this.storageService.getReservaciones();
   }
@@ -193,6 +195,55 @@ export class DashboardComponent {
         const nombreNormalizado = item.name.toLowerCase();
         item.value = this.reservaciones.filter(r => r.habitacion.toLowerCase() === nombreNormalizado).length;
       });
+    }
+  }
+
+  // Funciones para accesibilidad
+
+  leerCard(titulo: string, texto: string) {
+    const mensaje = `${titulo}. ${texto}`;
+    this.reader.speak(mensaje);
+  }
+
+  leerPregunta(pregunta: string, respuesta: string) {
+    const textoPlano = this.stripHtmlTags(respuesta);
+    this.reader.speak(`${pregunta}. ${textoPlano}`);
+  }
+
+  stripHtmlTags(html: string): string {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  handleContrastToggle(active: boolean) {
+    document.body.classList.toggle('high-contrast', active);
+  }
+
+  applyColorFilter(filter: string | null) {
+    document.body.classList.remove(
+      'color-filter-protanopia',
+      'color-filter-deuteranopia',
+      'color-filter-tritanopia'
+    );
+    if (filter) {
+      document.body.classList.add(`color-filter-${filter}`);
+    }
+  }
+
+  handleFontSizeChange(size: number) {
+    document.body.classList.remove('small-text', 'large-text');
+    if (size === 1) {
+      document.body.classList.add('large-text');
+    } else if (size === -1) {
+      document.body.classList.add('small-text');
+    }
+  }
+
+  handleFontChange(font: string) {
+    document.body.classList.remove('sans-serif', 'serif', 'monospace');
+    if (font !== 'default') {
+      document.body.classList.add(font);
     }
   }
 }

@@ -5,6 +5,14 @@
   </div>
 </div>
 
+<app-accesibility-menu 
+  [position]="'bottom-right'"
+  (contrastToggled)="handleContrastToggle($event)"
+  (colorFilterChanged)="applyColorFilter($event)"
+  (fontSizeChanged)="handleFontSizeChange($event)"
+  (fontChanged)="handleFontChange($event)">
+</app-accesibility-menu>
+
 <div 
   class="card custom-card p-3 rounded-4 shadow mx-auto mt-2 mb-4" 
   [ngStyle]="{
