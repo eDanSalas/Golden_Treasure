@@ -15,8 +15,6 @@ import { signal, computed } from '@angular/core';
 import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
 import QRCode from 'qrcode';
 
-
-
 @Component({
   selector: 'app-habitacion',
   imports: [RouterModule, MatProgressSpinnerModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatDatepickerModule, MatProgressBarModule, CommonModule, NgxPayPalModule],
@@ -338,19 +336,7 @@ export class HabitacionComponent {
 
       // Generar QR
       this.qrDataUrl = await QRCode.toDataURL(
-        JSON.stringify({
-          no_reservacion: respuesta.no_reservacion,
-          habitacion: this.habitacion.titulo,
-          nombre: data.nombre,
-          correo: data.correo,
-          telefono: data.telefono,
-          huespedes: data.huespedes,
-          noches: data.noches,
-          tipoReserva: data.reserva,
-          extras: data.extras,
-          fechas: { inicio: data.inicio, fin: data.fin },
-          total: data.total
-        })
+        `http://localhost:8080/api/reservaciones/${respuesta.no_reservacion}`
       );
 
     } catch (error: any) {
