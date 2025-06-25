@@ -4,11 +4,12 @@ const { sendMail } = require('../controllers/mailController');
 const { addClient, loginClient, changePass } = require('../controllers/userController');
 const { loginAdmin, getAdmins, changePassAdmin } = require('../controllers/adminController');
 const { obtenerCredencialesPaypal } = require('../controllers/paypalController');
-const { addReservation, obtenerTodas, actualizar, eliminar } = require('../controllers/reservacionController');
+const { addReservation, obtenerTodas, obtenerReservacion, actualizar, eliminar } = require('../controllers/reservacionController');
 
 // FireBase API REST
 router.post('/reservaciones/crear', addReservation);
 router.get('/reservaciones/todas', obtenerTodas);
+router.get('/reservaciones/:id', obtenerReservacion);
 router.put('/reservaciones/editar/:id', actualizar);
 router.delete('/reservaciones/eliminar/:id', eliminar);
 
