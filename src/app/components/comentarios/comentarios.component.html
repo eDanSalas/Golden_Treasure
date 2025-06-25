@@ -42,7 +42,7 @@
       </div>
       
     
-    <div id="comentariosCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="comentariosCarousel" class="carousel slide" data-bs-ride="carousel" (slide.bs.carousel)="onSlideChange($event)">
         <!-- Indicadores -->
         <div class="carousel-indicators">
             @for(comentario of comentarios; track comentario; let i = $index) {

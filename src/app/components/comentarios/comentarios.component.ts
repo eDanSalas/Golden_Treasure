@@ -59,26 +59,27 @@ export class ComentariosComponent {
   @ViewChild('carousel') carousel: any;
   currentSlideIndex = 0;
 
-  // ofertas = [
-  //   "Oferta 1: Escápate al paraíso con un 50% de descuento en tu viaje a la playa. En Golden Treasure, te llevamos a las costas más hermosas para que disfrutes de sol, arena y mar a mitad de precio. No dejes pasar esta oportunidad de relajarte y desconectar rodeado de paisajes inigualables.",
-  //   "Oferta 2: Vive el verano con estilo. Con un 60% de descuento y unas gafas de sol de cortesía, en Golden Treasure te invitamos a disfrutar de unas vacaciones llenas de glamour y comodidad. Relájate bajo el sol y luce espectacular, mientras aprovechas una oferta que no se repite.",
-  //   "Oferta 3: Disfruta de todo sin límites con un 50% de descuento en nuestro paquete Todo Incluido. Hospédate en Golden Treasure y accede a restaurantes gourmet, spa, albercas, bebidas y más, todo por la mitad de precio.La mejor experiencia, con todos los lujos, al alcance de tu bolsillo."
-  // ];
+  onSlideChange(event: any) {
+    this.currentSlideIndex = event.to;
+    this.announceCurrentSlide();
+  }
 
-  // onSlideChange(event: any) {
-  //   this.currentSlideIndex = event.to;
-  //   this.announceCurrentOffer();
-  // }
+  announceCurrentSlide() {
+    const rev_date = this.formatFecha(this.comentarios[this.currentSlideIndex].rev_date);
+    console.log(rev_date);
+    if (this.reader.lectorActivo && this.comentarios[this.currentSlideIndex]) {
+      this.reader.speak(this.comentarios[this.currentSlideIndex].nombre + 
+      "fecha " + rev_date +
+      "calificacion " + this.comentarios[this.currentSlideIndex].rating.toString() +
+      this.comentarios[this.currentSlideIndex].review
+    );
+      
+    }
+  }
 
-  // announceCurrentOffer() {
-  //   if (this.reader.lectorActivo && this.ofertas[this.currentSlideIndex]) {
-  //     this.reader.speak(this.ofertas[this.currentSlideIndex]);
-  //   }
-  // }
-
-  // readCurrentOffer() {
-  //   this.announceCurrentOffer();
-  // }
+  readCurrentOffer() {
+    this.announceCurrentSlide();
+  }
 
   leerCard(titulo: string, texto: string) {
     const mensaje = `${titulo}. ${texto}`;
