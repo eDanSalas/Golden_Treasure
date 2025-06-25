@@ -160,6 +160,13 @@
               <div class="paypal-buttons" >
                 @if (mostrarBotonesPayPal && payPalConfig) {
                   <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+
+                  @if (qrDataUrl) {
+                    <div class="qr-container mt-4 text-center">
+                      <h3>Escanea tu QR para ver tu reservación</h3>
+                      <img [src]="qrDataUrl" alt="QR de tu reserva" class="my-qr" />
+                    </div>
+                  }
                 }
               </div>
             </form>

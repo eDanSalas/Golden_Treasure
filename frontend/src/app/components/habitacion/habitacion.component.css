@@ -207,3 +207,16 @@ i{
     margin-top: 1rem;
     z-index: 0;
 }
+
+.qr-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.my-qr {
+  width: 200px;
+  height: 200px;
+  padding: 0.5rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+}

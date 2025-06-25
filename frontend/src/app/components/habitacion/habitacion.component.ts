@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { signal, computed } from '@angular/core';
 import { ICreateOrderRequest, IPayPalConfig, NgxPayPalModule } from 'ngx-paypal';
+import QRCode from 'qrcode';
+
 
 
 @Component({
@@ -28,6 +30,7 @@ export class HabitacionComponent {
   id!: number;
   miform: FormGroup;
   progress: number = 0;
+  qrDataUrl: string = '';
 
   habImage: {[key: number]: string[]} = {
     1: ["images/h1-1.jpg","images/h1-2.jpg","images/h1-3.jpg"],
@@ -270,6 +273,8 @@ export class HabitacionComponent {
     console.log('Reserva seleccionada:', tipoReserva);
   }
 
+
+
   obtenerAmenidad(icon: string): string {
     const nombres: { [key: string]: string } = {
       "fa-wifi": "WIFI",
@@ -289,72 +294,78 @@ export class HabitacionComponent {
     return nombres[icon] || "Amenidad";
   }
 
-  enviar(){
-    if (this.miform.valid){
-      const data = {
-        habitacion: this.habitacion.titulo,
-        nombre: this.miform.value.nombre,
-        correo: this.miform.value.email,
-        telefono: this.miform.value.telefono,
-        huespedes: this.huespedes(),
-        noches: this.noches(),
-        reserva: this.miform.value.reserva,
-        extras: Object.entries(this.miform.value.extras)
-                  .filter(([key, value]) => value)
-                  .map(([key]) => key),
-        inicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
-        fin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
-        total: this.total()
-      }
+  async enviar() {
+  if (this.miform.valid) {
+    const data = {
+      habitacion: this.habitacion.titulo,
+      nombre: this.miform.value.nombre,
+      correo: this.miform.value.email,
+      telefono: this.miform.value.telefono,
+      huespedes: this.huespedes(),
+      noches: this.noches(),
+      reserva: this.miform.value.reserva,
+      extras: Object.entries(this.miform.value.extras)
+        .filter(([key, value]) => value)
+        .map(([key]) => key),
+      inicio: new Date(this.miform.value.rango.inicio).toISOString().slice(0, 10),
+      fin: new Date(this.miform.value.rango.fin).toISOString().slice(0, 10),
+      total: this.total()
+    };
+    this.dataTotales = data;
 
-      fetch('http://localhost:8080/api/reservaciones/crear', {
+    try {
+      const response = await fetch('http://localhost:8080/api/reservaciones/crear', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(async response => {
-        if (!response.ok) {
-          const err = await response.json();
-          throw new Error(err.message);
-        }
-        return response.json();
-      })
-      .then(respuesta => {
-        console.log('Reservación creada con número:', respuesta.no_reservacion);
-        Swal.fire({
-          icon: 'success',
-          title: '¡Reservación Realizada!',
-          text: `Su reservación fue creada con éxito. Número: ${respuesta.no_reservacion}`,
-          confirmButtonText: 'Aceptar'
-        });
-        this.mostrarBotonesPayPal = true;
-        this.initConfig();
-      })
-      .catch(error => {
-        console.error('Error al enviar reservación:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudo crear la reservación',
-          confirmButtonText: 'Aceptar'
-        });
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
 
-      // this.huespedes.set(1);
-      // this.noches.set(1);
-      // this.extrasSeleccionados.set({});
-      
-      // this.miform.reset();
-      // Swal.fire({
-      //   icon: 'success',
-      //   title: '¡Reservación Realizada!',
-      //   text: 'Su reservación fue creada con éxito. ¡Nos vemos muy pronto!',
-      //   confirmButtonText: 'Aceptar'
-      // });
-    } else {
-      this.miform.markAllAsTouched();
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+      }
+
+      const respuesta = await response.json();
+      Swal.fire({
+        icon: 'success',
+        title: '¡Reservación Realizada!',
+        text: `Su reservación fue creada con éxito. Número: ${respuesta.no_reservacion}`,
+        confirmButtonText: 'Aceptar'
+      });
+
+      this.mostrarBotonesPayPal = true;
+      this.initConfig();
+
+      // Generar QR
+      this.qrDataUrl = await QRCode.toDataURL(
+        JSON.stringify({
+          no_reservacion: respuesta.no_reservacion,
+          habitacion: this.habitacion.titulo,
+          nombre: data.nombre,
+          correo: data.correo,
+          telefono: data.telefono,
+          huespedes: data.huespedes,
+          noches: data.noches,
+          tipoReserva: data.reserva,
+          extras: data.extras,
+          fechas: { inicio: data.inicio, fin: data.fin },
+          total: data.total
+        })
+      );
+
+    } catch (error: any) {
+      console.error('Error al enviar reservación:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo crear la reservación',
+        confirmButtonText: 'Aceptar'
+      });
     }
+  } else {
+    this.miform.markAllAsTouched();
   }
+}
+
+
 }
