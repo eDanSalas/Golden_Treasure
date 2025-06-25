@@ -7,7 +7,7 @@ import { Habitacion } from '../habitacion';
   providedIn: 'root'
 })
 export class HabitacionService {
-  apiURL = 'https://goldentreasure.free.beeceptor.com';
+  apiURL = 'https://prueba2.free.beeceptor.com/';
 
   constructor(private http: HttpClient) { }
 

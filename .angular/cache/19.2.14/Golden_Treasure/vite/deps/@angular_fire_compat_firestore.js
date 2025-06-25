@@ -1,9 +1,6 @@
 import "./chunk-XCW2M6U6.js";
 import "./chunk-KIVQGRZL.js";
 import {
-  FirebaseApp
-} from "./chunk-NAWOK5XT.js";
-import {
   FIREBASE_APP_NAME,
   FIREBASE_OPTIONS,
   ɵapplyMixins,
@@ -14,6 +11,9 @@ import {
 import {
   firebase
 } from "./chunk-MU6ZNGWA.js";
+import {
+  FirebaseApp
+} from "./chunk-NAWOK5XT.js";
 import {
   VERSION,
   pendingUntilEvent,
@@ -48,10 +48,10 @@ import {
   registerVersion,
   updateEmulatorBanner
 } from "./chunk-DD6JDW3G.js";
-import "./chunk-V6UBJZYW.js";
+import "./chunk-K5DRYVCE.js";
 import {
   isPlatformServer
-} from "./chunk-4HGY45S6.js";
+} from "./chunk-NUOVYI65.js";
 import {
   EnvironmentInjector,
   Inject,

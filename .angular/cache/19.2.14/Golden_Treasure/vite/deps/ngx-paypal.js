@@ -1,7 +1,7 @@
 import {
   CommonModule
-} from "./chunk-V6UBJZYW.js";
-import "./chunk-4HGY45S6.js";
+} from "./chunk-K5DRYVCE.js";
+import "./chunk-NUOVYI65.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,

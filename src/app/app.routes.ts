@@ -9,6 +9,7 @@ import { HabitacionComponent } from './components/habitacion/habitacion.componen
 import { DesarrolladoresComponent } from './components/desarrolladores/desarrolladores.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { PagReservacionComponent } from './components/pag-reservacion/pag-reservacion.component';
 
 export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
@@ -21,5 +22,6 @@ export const routes: Routes = [
     {path: 'desarrolladores', component: DesarrolladoresComponent},
     {path: 'dashboard/:id', component: DashboardComponent },
     {path: 'login', component: LoginComponent },
+    {path: 'api/reservaciones/:id', component: PagReservacionComponent },
     {path: '', redirectTo: '/inicio', pathMatch: 'full'}
 ];

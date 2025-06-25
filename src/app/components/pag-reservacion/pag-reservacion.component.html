@@ -1,0 +1,26 @@
+@if (cargando) {
+    <div class="text-center my-5 text-white">Cargando reservación...</div>
+} @else if (error) {
+    <div class="alert alert-danger text-center mt-4" role="alert">
+        No se pudo cargar la reservación.
+    </div>
+} @else {
+    <div class="card bg-dark text-white border-warning shadow-lg mx-auto my-5" style="max-width: 600px;">
+        <div class="card-header bg-black border-bottom border-warning text-center">
+        <h2 class="text-warning">Reservación #{{ reservacion.no_reservacion }}</h2>
+        </div>
+        <div class="card-body">
+        <p><strong class="text-warning">Nombre:</strong> {{ reservacion.nombre }}</p>
+        <p><strong class="text-warning">Correo:</strong> {{ reservacion.correo }}</p>
+        <p><strong class="text-warning">Teléfono:</strong> {{ reservacion.telefono }}</p>
+        <p><strong class="text-warning">Habitación:</strong> {{ reservacion.habitacion }}</p>
+        <p><strong class="text-warning">Huéspedes:</strong> {{ reservacion.huespedes }}</p>
+        <p><strong class="text-warning">Noches:</strong> {{ reservacion.noches }}</p>
+        <p><strong class="text-warning">Tipo de Reserva:</strong> {{ reservacion.tipoReserva }}</p>
+        <p><strong class="text-warning">Extras:</strong> {{ reservacion.extras?.join(', ') || 'Ninguno' }}</p>
+        <p><strong class="text-warning">Inicio:</strong> {{ reservacion.inicio }}</p>
+        <p><strong class="text-warning">Fin:</strong> {{ reservacion.fin }}</p>
+        <p><strong class="text-warning">Total:</strong> ${{ reservacion.total }}</p>
+        </div>
+    </div>
+}
