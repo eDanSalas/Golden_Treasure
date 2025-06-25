@@ -1,3 +1,29 @@
-body {
-    background-color: #000;
+.qr{
+    position: relative;
+    display: block;
+}
+
+.qr img {
+    height: 50vh;
+    object-fit: cover;
+    filter: brightness(55%);
+}
+.services-text {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.services-text h1 {
+    font-size: 8rem;
+    font-weight: bold;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    -webkit-text-stroke: 6px rgb(219, 186, 0);
 }
