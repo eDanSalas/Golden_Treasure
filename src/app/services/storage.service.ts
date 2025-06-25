@@ -38,22 +38,12 @@ export class StorageService {
       .then(data => console.log(data));
   }
 
-  eliminarServicio(index: number): void {
-    fetch(`${this.apiUrl}/servicios/eliminar/${index+1}`, {
-      method: 'DELETE'
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+  eliminarServicio(index: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/servicios/eliminar/${index+1}`);
   }
 
-  editarServicios(index: number, servicio: any): void {
-    fetch(`${this.apiUrl}/servicios/editar/${index+1}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(servicio)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+  editarServicios(index: number, servicio: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/servicios/editar/${index+1}`, servicio);
   }
 
   // Reservaciones
@@ -71,21 +61,11 @@ export class StorageService {
       .then(data => console.log(data));
   }
 
-  eliminarReservaciones(index: number): void {
-    fetch(`${this.apiUrl}/reservaciones/eliminar/${index+1}`, {
-      method: 'DELETE'
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+  eliminarReservaciones(index: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/reservaciones/eliminar/${index+1}`);
   }
 
-  editarReservaciones(index: number, reservacion: any): void {
-    fetch(`${this.apiUrl}/reservaciones/editar/${index+1}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(reservacion)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+  editarReservaciones(index: number, reservacion: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reservaciones/editar/${index+1}`, reservacion);
   }
 }

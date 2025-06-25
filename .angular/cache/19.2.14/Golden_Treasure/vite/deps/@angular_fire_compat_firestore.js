@@ -1,6 +1,9 @@
 import "./chunk-XCW2M6U6.js";
 import "./chunk-KIVQGRZL.js";
 import {
+  FirebaseApp
+} from "./chunk-NAWOK5XT.js";
+import {
   FIREBASE_APP_NAME,
   FIREBASE_OPTIONS,
   ɵapplyMixins,
@@ -11,9 +14,6 @@ import {
 import {
   firebase
 } from "./chunk-MU6ZNGWA.js";
-import {
-  FirebaseApp
-} from "./chunk-NAWOK5XT.js";
 import {
   VERSION,
   pendingUntilEvent,

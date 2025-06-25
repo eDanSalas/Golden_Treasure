@@ -14,6 +14,7 @@ import { NgxEchartsModule, NGX_ECHARTS_CONFIG  } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { AccesibilityMenuComponent } from '../accesibility-menu/accesibility-menu.component';
 import { ScreenReaderService } from '../../services/screen-reader.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -91,20 +92,12 @@ export class DashboardComponent {
     ]
   };
 
-  constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService, private reader: ScreenReaderService) {
-    this.storageService.getServicios().subscribe((data: any[]) => {
-      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
-    });
-    this.storageService.getReservaciones().subscribe((data: any[]) => {
-      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
-    });
-    this.updateChart();
-  }
+  constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService, private reader: ScreenReaderService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.id = +this.route.snapshot.paramMap.get('id')!;
     this.loadAdminData();
-    this.actualizarLista();
+    await this.actualizarLista();
     window.scrollTo({ top: 0 });
   }
 
@@ -131,69 +124,61 @@ export class DashboardComponent {
     });
   }
 
-  actualizarLista() {
-    this.storageService.getServicios().subscribe((data: any[]) => {
-      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
-    });
-    this.storageService.getReservaciones().subscribe((data: any[]) => {
-      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
-    });
-    this.updateChart();
-  }
-
-  eliminarServicio(index: number) {
-    this.storageService.eliminarServicio(index);
-    this.storageService.getServicios().subscribe(data => {
-      this.servicios = [...data.sort((a, b) => a.no_servicio - b.no_servicio)];
-      Swal.fire({
-        title: 'Registro eliminado',
-        icon: 'success',
-        confirmButtonColor: 'gold',
-        background: '#1e1e1e',
-        color: 'white'
-      });
-      this.actualizarLista();
-    });
-  }
-
-  editarServicio(evento: {index: number, servicio: any}) {
-    this.storageService.editarServicios(evento.index, evento.servicio);
-    this.storageService.getServicios().subscribe(data => {
-      this.servicios = [...data.sort((a, b) => a.no_servicio - b.no_servicio)];
-      Swal.fire({
-        title: 'Registro editado',
-        icon: 'success',
-        confirmButtonColor: 'gold',
-        background: '#1e1e1e',
-        color: 'white'
-      });
-      this.actualizarLista();
-    });
-  }
-
-  eliminarReservacion(index: number) {
-    this.storageService.eliminarReservaciones(index);
-    this.storageService.getReservaciones().subscribe(data => {
-      this.reservaciones = [...data.sort((a, b) => a.no_reservacion - b.no_reservacion)];
-
-      Swal.fire({
-        title: 'Registro eliminado',
-        icon: 'success',
-        confirmButtonColor: 'gold',
-        background: '#1e1e1e',
-        color: 'white'
-      });
-
-      this.actualizarLista();
-    });
-  }
-
-  editarReservacion(evento: {index: number, reservacion: any}) {
-    this.storageService.editarReservaciones(evento.index, evento.reservacion);
-    // this.reservaciones = [...this.storageService.getReservaciones()];
-    this.storageService.getReservaciones().subscribe(data => {
-      this.reservaciones = data.slice().sort((a, b) => a.no_reservacion - b.no_reservacion);
+  async actualizarLista() {
+    try {
+      const [servicios, reservaciones] = await Promise.all([
+        lastValueFrom(this.storageService.getServicios()),
+        lastValueFrom(this.storageService.getReservaciones())
+      ]);
       
+      this.servicios = servicios.sort((a, b) => a.no_servicio - b.no_servicio);
+      this.reservaciones = reservaciones.sort((a, b) => a.no_reservacion - b.no_reservacion);
+      this.updateChart();
+    } catch (err) {
+      console.error('Error al cargar datos:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudieron cargar los datos',
+        icon: 'error',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    }
+  }
+
+  async eliminarServicio(index: number) {
+    try {
+      await lastValueFrom(this.storageService.eliminarServicio(index));
+      const data = await lastValueFrom(this.storageService.getServicios());
+      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
+      this.updateChart();
+      Swal.fire({
+        title: 'Registro eliminado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    } catch (err) {
+      console.error('Error al eliminar:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo eliminar el registro',
+        icon: 'error',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    }
+  }
+
+  async editarServicio(evento: {index: number, servicio: any}) {
+    try {
+      await lastValueFrom(this.storageService.editarServicios(evento.index, evento.servicio));
+      const data = await lastValueFrom(this.storageService.getServicios());
+      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
+      this.updateChart();
       Swal.fire({
         title: 'Registro editado',
         icon: 'success',
@@ -201,20 +186,92 @@ export class DashboardComponent {
         background: '#1e1e1e',
         color: 'white'
       });
+    } catch (err) {
+      console.error('Error al editar:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo editar el registro',
+        icon: 'error',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    }
+  }
 
-      this.actualizarLista();
-    });
+  async eliminarReservacion(index: number) {
+    try {
+      await lastValueFrom(this.storageService.eliminarReservaciones(index));
+      const data = await lastValueFrom(this.storageService.getReservaciones());
+      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
+      this.updateChart();
+      Swal.fire({
+        title: 'Registro eliminado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    } catch (err) {
+      console.error('Error al eliminar:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo eliminar el registro',
+        icon: 'error',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    }
+  }
+
+  async editarReservacion(evento: {index: number, reservacion: any}) {
+    try {
+      await lastValueFrom(this.storageService.editarReservaciones(evento.index, evento.reservacion));
+      const data = await lastValueFrom(this.storageService.getReservaciones());
+      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
+      this.updateChart();
+      Swal.fire({
+        title: 'Registro editado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    } catch (err) {
+      console.error('Error al editar:', err);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo editar el registro',
+        icon: 'error',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+    }
   }
 
   toggleActive() {
     this.isActive = !this.isActive;
   }
   
-  updateChart(){
-    this.chartData.forEach(item => {
-      const nombreNormalizado = item.name.toLowerCase();
-      item.value = this.reservaciones.filter(r => r.habitacion.toLowerCase() === nombreNormalizado).length;
+  updateChart() {
+    this.chartData.forEach(item => item.value = 0);
+
+    this.reservaciones.forEach(reservacion => {
+      const habitacion = reservacion.habitacion.toLowerCase();
+      const item = this.chartData.find(c => c.name.toLowerCase() === habitacion);
+      if (item) {
+        item.value++;
+      }
     });
+    this.chartOptions = {
+      ...this.chartOptions,
+      series: [{
+        ...this.chartOptions.series[0],
+        data: [...this.chartData]     // Forzar actualización
+      }]
+    };
   }
 
   // Funciones para accesibilidad

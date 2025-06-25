@@ -60,7 +60,14 @@ export class LoginComponent {
     });
 
     if (info.status === 501) {
-      alert('Cuenta bloqueada, se te va a enviar un correo');
+      Swal.fire({
+          title: "Cuenta Bloqueada",
+          text: "Tu cuenta ha sido bloqueada por multiples inicios de sesion",
+          icon: "error",
+          confirmButtonColor: 'gold',
+          background: '#1e1e1e',
+          color: 'white'
+        });
       const data = await fetch('http://localhost:8080/api/mail', {
         method: 'POST',
         headers: {
@@ -69,7 +76,14 @@ export class LoginComponent {
         body: JSON.stringify({ id })
       });
       if (data.status === 200) {
-        alert('Se envió un correo correctamente');
+        Swal.fire({
+          title: "Se envio el correo correctamente",
+          text: "Por favor comprueba tu bandeja de entrada", 
+          icon: "success",
+          confirmButtonColor: 'gold',
+          background: '#1e1e1e',
+          color: 'white'
+        });
       }
       return;
     }
@@ -81,12 +95,26 @@ export class LoginComponent {
       localStorage.setItem('loggedUserId', data.cliente.id); 
       localStorage.setItem('loggedUserName', data.cliente.nombre);
 
-      alert(`Bienvenido ${data.cliente.nombre}`);
+      Swal.fire({
+        title: `Bienvenido ${data.cliente.nombre}`,
+        text: "Es un placer tenerte devuelta", 
+        icon: "success",
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
       // Recarga para que el navbar detecte los cambios
       window.location.reload();
       
     } else {
-      alert('Error en las credenciales');
+      Swal.fire({
+        title: "Error en las credenciales",
+        text: "Porfavor checa que tus datos sean correctos", 
+        icon: "error",
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
     }
   }
 }
@@ -145,8 +173,14 @@ export class LoginComponent {
       const data = await info.json();
       
       if(info.ok){
-        
-        alert("Estas registrados");
+        Swal.fire({
+          title: 'Registro Exitoso',
+          text: `Muchas gracias por tu registro: ${data.cliente.nombre}, tu id de acceso es: ${data.cliente.id}, guarda tu ID para iniciar sesion`,
+          icon: 'success',
+          confirmButtonColor: 'gold',
+          background: '#1e1e1e',
+          color: 'white'
+        });
       }
 
       console.log('Intentando registro con', { correo, nombre, contra });
@@ -208,7 +242,14 @@ export class LoginComponent {
       if (this.captchaMode === 'login') this.onLogin();
       if (this.captchaMode === 'register') this.onRegister();
     } else {
-      alert('Captcha incorrecto, inténtalo de nuevo');
+      Swal.fire({
+        title: "El captcha es incorrecto",
+        text: "Intentalo de nuevo ", 
+        icon: "error",
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
       this.generateCaptcha();
     }
   }
