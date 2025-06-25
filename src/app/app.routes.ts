@@ -22,6 +22,6 @@ export const routes: Routes = [
     {path: 'desarrolladores', component: DesarrolladoresComponent},
     {path: 'dashboard/:id', component: DashboardComponent },
     {path: 'login', component: LoginComponent },
-    {path: 'api/reservaciones/:id', component: PagReservacionComponent },
+    {path: 'reservaciones/:id', component: PagReservacionComponent },
     {path: '', redirectTo: '/inicio', pathMatch: 'full'}
 ];

@@ -21,7 +21,7 @@ export class PagReservacionComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-    this.http.get(`http://localhost:8080/api/reservaciones/${id}`).subscribe({
+    this.http.get(`/api/reservaciones/${id}`).subscribe({
       next: (data) => {
         this.reservacion = data;
         this.cargando = false;
