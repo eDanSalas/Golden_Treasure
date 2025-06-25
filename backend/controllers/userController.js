@@ -32,14 +32,19 @@ const addClientGoogle = async (req, res) => {
 
     try {
         const result = await createClientGoogle({ nombre, correo });
-        res.status(201).json({
-        message: 'Cliente agregado correctamente',
-        cliente: {
-            id: result.id,
-            nombre: result.nombre,
-            correo: result.correo
+
+        if (result.yaExiste) {
+            return res.status(200).json({
+                message: 'El correo ya está registrado',
+                cliente: result.cliente
+            });
         }
+
+        res.status(201).json({
+            message: 'Cliente agregado correctamente',
+            cliente: result.cliente
         });
+
     } catch (error) {
         console.error('Error al agregar cliente:', error);
         res.status(500).json({ message: 'Error al agregar cliente' });
