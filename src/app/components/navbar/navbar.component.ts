@@ -328,7 +328,14 @@ export class NavbarComponent {
       this.submitLogin();
     }
   } else {
-    alert('Captcha incorrecto, inténtalo de nuevo');
+    Swal.fire({
+      title: 'Error',
+      text: 'Captcha incorrecto, inténtalo de nuevo',
+      icon: 'error',
+      confirmButtonColor: 'gold',
+      background: '#1e1e1e',
+      color: 'white'
+    });
     this.generateCaptcha();
   }
 }
