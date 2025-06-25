@@ -150,7 +150,7 @@ export class HabitacionComponent {
   }
 
   private async obtenerDatosCredenciales() {
-    const credenciales = await fetch('http://localhost:8080/api/cliente_paypal', {
+    const credenciales = await fetch('/api/cliente_paypal', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -315,7 +315,7 @@ export class HabitacionComponent {
     this.dataTotales = data;
 
     try {
-      const response = await fetch('http://localhost:8080/api/reservaciones/crear', {
+      const response = await fetch('/api/reservaciones/crear', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -339,7 +339,7 @@ export class HabitacionComponent {
 
       // Generar QR
       this.qrDataUrl = await QRCode.toDataURL(
-        `http://localhost:8080/api/reservaciones/${respuesta.no_reservacion}`
+        `/api/reservaciones/${respuesta.no_reservacion}`
       );
 
     } catch (error: any) {

@@ -12,7 +12,7 @@ export class StorageService {
   
   private readonly LS_KEY = 'serviciosReservados';
   private readonly LS_KEY_R = 'reservaciones';
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = '/api';
 
   constructor(private http: HttpClient) {
     this.serviciosReservados = JSON.parse(

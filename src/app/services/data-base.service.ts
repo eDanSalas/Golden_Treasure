@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataBaseService {
-  private apiUrl = 'http://localhost:8080/api'; // URL base
+  private apiUrl = '/api'; // URL base
   constructor(private http: HttpClient) { }
 
   getAllAdmins(): Observable<any> {

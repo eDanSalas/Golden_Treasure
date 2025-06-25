@@ -67,7 +67,7 @@ export class LoginComponent {
     const id = this.loginForm.get('id')?.value;
     const contra = this.loginForm.get('contra')?.value;
 
-    const info = await fetch('http://localhost:8080/api/client/login', {
+    const info = await fetch('/api/client/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ export class LoginComponent {
           background: '#1e1e1e',
           color: 'white'
         });
-      const data = await fetch('http://localhost:8080/api/mail', {
+      const data = await fetch('/api/mail', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -137,7 +137,7 @@ export class LoginComponent {
 
   async onLoginGoogle(){
     const user = await this.authService.logInGoogle();
-    const info = await fetch('http://localhost:8080/api/client/loginGoogle', {
+    const info = await fetch('/api/client/loginGoogle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -190,7 +190,7 @@ export class LoginComponent {
   async handleClick(){
     this.authService.credential(this.verify, this.otp);
     if (localStorage.getItem('user_data')) {
-      const info = await fetch('http://localhost:8080/api/client/loginPhone', {
+      const info = await fetch('/api/client/loginPhone', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -229,7 +229,7 @@ export class LoginComponent {
       const contra=this.registerForm.get('contra')?.value;
       // Aca pondremos la logica para mandar la informacion del registro
 
-      const info = await fetch('http://localhost:8080/api/client', {
+      const info = await fetch('/api/client', {
         method : 'POST', 
         headers: { 
           'Content-Type': 'application/json'
