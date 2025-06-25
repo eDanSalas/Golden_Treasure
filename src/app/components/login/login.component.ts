@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { Router } from '@angular/router';
+import { NavbarStateService } from '../../services/navbar-state.service';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,7 @@ export class LoginComponent {
   otp: string = '';
   verify: any = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private navbarState: NavbarStateService) {
 
     // Formulario de login
     this.loginForm=this.fb.group({
@@ -120,11 +121,7 @@ export class LoginComponent {
         color: 'white'
       });
       // Recarga para que el navbar detecte los cambios
-      this.router.navigate(['/inicio']).then(() => {
-        if (window.location.pathname === '/inicio') {
-          window.location.reload();
-        }
-      });
+      this.navbarState.requestRefresh();
       
     } else {
       Swal.fire({
@@ -161,9 +158,7 @@ export class LoginComponent {
         text: `Bienvenido ${data.cliente.nombre}`,
         icon: 'success'
       }).then(() => {
-        this.router.navigate(['/inicio']).then(() => {
-            window.location.reload(); // recarga luego de navegar
-        });
+        this.navbarState.requestRefresh();
       });
       
     } else {
@@ -212,9 +207,7 @@ export class LoginComponent {
           text: `Bienvenido ${data.cliente.nombre}`,
           icon: 'success'
         }).then(() => {
-          this.router.navigate(['/inicio']).then(() => {
-            window.location.reload(); // recarga luego de navegar
-          });
+          this.navbarState.requestRefresh();
         });
       }else{
         Swal.fire({
