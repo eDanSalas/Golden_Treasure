@@ -1,0 +1,247 @@
+<nav class="navbar navbar-dark navbar-expand-lg myNav" [ngClass]="{'scrolled': isScrolled}">
+  <div class="container-fluid d-flex flex-column">
+    <div class="nav-up w-100 d-flex align-items-center justify-content-between py-2 px-3">
+      <img src="images/logo.png" alt="Logo" width="80" height="80">
+
+      <div class="d-flex flex-column text-start div-text">
+        <span class="brand-line bl1"
+          [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {'text-decoration': 'underline'}"
+          (mouseover)="hovered = true" (mouseleave)="hovered = false">
+          Golden
+        </span>
+        <span class="brand-line bl2"
+          [ngStyle]="hovered ? {'color': 'gold', 'font-weight': 'bold', 'text-shadow': '2px 2px 4px rgba(255,215,0,0.5)'} : {'text-decoration': 'underline'}"
+          (mouseover)="hovered = true" (mouseleave)="hovered = false">
+          Treasure
+        </span>
+      </div>
+
+      <!-- Icono/avatar que es común para admin y usuarios -->
+      <div class="user-avatar position-relative d-flex flex-column align-items-center">
+        <img
+          [src]="loggedAdminAvatar ? loggedAdminAvatar : 'images/avatar.jpg'"
+          alt="User Avatar"
+          width="50"
+          height="50"
+          class="rounded-circle cursor-pointer"
+          [ngClass]="{'opacity-img': !isScrolled, 'no-opacity-img': isScrolled}"
+          (click)="toggleMenu()"
+          style="object-fit: cover;"
+        />
+
+        <!-- Mostrar nombre del admin o del usuario -->
+        @if (loggedAdminName || loggedUserName) {
+          <div class="mt-1 text-gold text-center small fw-bold">
+            {{ loggedAdminName ? loggedAdminName : loggedUserName }}
+          </div>
+        }
+
+        <!-- Menú cuando es admin -->
+        @if (menuOpen && loggedAdminName) {
+          <div class="user-menu bg-light border rounded shadow-sm animate-menu">
+            <ul class="list-unstyled mb-0">
+              <li>
+                <button class="dropdown-item text-dark small" [routerLink]="['/dashboard', loggedAdminId]" (click)="menuOpen = false">
+                  Dashboard
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item text-dark small" (click)="logout()">
+                  Cerrar sesión
+                </button>
+              </li>
+            </ul>
+          </div>
+        }
+
+        <!-- Menú cuando es usuario normal -->
+        @if (loggedUserName && loggedAdminName === null) {
+          <div class="user-menu bg-light border rounded shadow-sm animate-menu">
+            <ul class="list-unstyled mb-0">
+              <li>
+                <button class="dropdown-item text-dark small" (click)="logout()">
+                  Cerrar sesión
+                </button>
+              </li>
+            </ul>
+          </div>
+        }
+      </div>
+
+      @if (showLoginModal) {
+        <div class="modal-backdrop" (click)="closeLoginModal()"></div>
+        <div class="login-modal card shadow p-4">
+          <h5 class="mb-3 text-center text-gold">Iniciar sesión</h5>
+          <form (ngSubmit)="submitLogin()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label class="form-label text-white">ID</label>
+              <input type="number" class="form-control" [(ngModel)]="loginId" name="loginId" required #idField="ngModel">
+              @if (idField.invalid && idField.touched) {
+                <span class="text-danger span-error">El id es obligatorio</span>
+              }
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-white">Usuario</label>
+              <input type="text" class="form-control" [(ngModel)]="loginUs" name="loginUsername" required #usernameField="ngModel">
+              @if (usernameField.invalid && usernameField.touched) {
+                <span class="text-danger span-error">El usuario es obligatorio</span>
+              }
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-white">Contraseña</label>
+              <input type="password" class="form-control" [(ngModel)]="loginPassword" name="loginPassword" required #passwordField="ngModel">
+              @if (passwordField.invalid && passwordField.touched) {
+                <span class="text-danger span-error">La contraseña es obligatoria</span>
+              }
+            </div>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary btn-sm" (click)="closeLoginModal()">Cancelar</button>
+              <button
+                type="button"
+                class="btn btn-gold btn-sm"
+                [disabled]="!loginForm.valid"
+                (click)="openCaptchaModal('admin')"
+              >
+                Ingresar
+              </button>
+            </div>
+          </form>
+
+          @if (showCaptchaModal && captchaMode === 'admin') {
+            <div class="captcha-modal mt-4 p-3 border rounded bg-dark text-white">
+              <h3 class="h5 mb-3 text-center">Verifica que no eres un robot</h3>
+              <div class="captcha-display d-flex justify-content-center mb-3">
+                @for (char of captchaArray; track $index) {
+                  <span [ngStyle]="captchaStyles[$index]" class="mx-1">{{ char }}</span>
+                }
+                <div class="captcha-strikethrough"></div>
+              </div>
+              <input
+                type="text"
+                class="form-control mb-2"
+                placeholder="Escribe el captcha aquí"
+                [(ngModel)]="userInput"
+              />
+              <div class="captcha-buttons d-flex justify-content-between">
+                <button (click)="verificarCaptcha()" class="btn btn-gold btn-sm">Verificar</button>
+                <button (click)="generateCaptcha()" class="btn btn-secondary btn-sm">Refrescar</button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <span class="separator w-100"></span>
+
+    <div class="w-100 d-flex flex-column">
+      <button class="navbar-toggler align-self-end mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse myDivNav" id="navbarNav">
+        <ul class="navbar-nav d-flex justify-content-center w-100">
+          <li class="nav-item mx-5">
+            <a class="nav-link" [routerLink]="['/inicio']" [ngStyle]="isActive('/inicio') ? 
+              {
+                'background-color': ' rgba(201, 164, 73, 0.6)',
+                'color': 'rgba(0, 0, 0, 0.4)',
+                'border-radius': '8px',
+                'padding': '8px 12px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'font-weight': '500',
+                'transition': 'all 0.3s ease',
+                'display': 'inline-block',
+                'line-height': '1.2'
+              } : {}">
+              Inicio
+            </a>
+          </li>
+          <li class="nav-item mx-5">
+            <a class="nav-link" [routerLink]="['/alojamiento']" [ngStyle]="isActive('/alojamiento') ? 
+              {
+                'background-color': ' rgba(201, 164, 73, 0.6)',
+                'color': 'rgba(0, 0, 0, 0.4)',
+                'border-radius': '8px',
+                'padding': '8px 12px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'font-weight': '500',
+                'transition': 'all 0.3s ease',
+                'display': 'inline-block',
+                'line-height': '1.2'
+              } : {}">
+              Alojamiento
+            </a>
+          </li>
+          <li class="nav-item mx-5">
+            <a class="nav-link" [routerLink]="['/ofertas']" [ngStyle]="isActive('/ofertas') ? 
+              {
+                'background-color': ' rgba(201, 164, 73, 0.6)',
+                'color': 'rgba(0, 0, 0, 0.4)',
+                'border-radius': '8px',
+                'padding': '8px 12px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'font-weight': '500',
+                'transition': 'all 0.3s ease',
+                'display': 'inline-block',
+                'line-height': '1.2'
+              } : {}">
+              Ofertas
+            </a>
+          </li>
+          <li class="nav-item mx-5">
+            <a class="nav-link" [routerLink]="['/servicios']" [ngStyle]="isActive('/servicios') ? 
+              {
+                'background-color': ' rgba(201, 164, 73, 0.6)',
+                'color': 'rgba(0, 0, 0, 0.4)',
+                'border-radius': '8px',
+                'padding': '8px 12px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'font-weight': '500',
+                'transition': 'all 0.3s ease',
+                'display': 'inline-block',
+                'line-height': '1.2'
+              } : {}">
+              Servicios
+            </a>
+          </li>
+          <li class="nav-item mx-5">
+            <a class="nav-link" [routerLink]="['/comentarios']" [ngStyle]="isActive('/comentarios') ? 
+              {
+                'background-color': ' rgba(201, 164, 73, 0.6)',
+                'color': 'rgba(0, 0, 0, 0.4)',
+                'border-radius': '8px',
+                'padding': '8px 12px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'font-weight': '500',
+                'transition': 'all 0.3s ease',
+                'display': 'inline-block',
+                'line-height': '1.2'
+              } : {}">
+              Comentarios
+            </a>
+          </li>
+          @if(!loggedAdminName && !loggedUserName){
+            <li class="nav-item mx-5">
+              <a class="nav-link" [routerLink]="['/login']" [ngStyle]="isActive('/login') ? 
+                {
+                  'background-color': ' rgba(201, 164, 73, 0.6)',
+                  'color': 'rgba(0, 0, 0, 0.4)',
+                  'border-radius': '8px',
+                  'padding': '8px 12px',
+                  'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                  'font-weight': '500',
+                  'transition': 'all 0.3s ease',
+                  'display': 'inline-block',
+                  'line-height': '1.2'
+                } : {}">
+                Sesion Usuarios
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

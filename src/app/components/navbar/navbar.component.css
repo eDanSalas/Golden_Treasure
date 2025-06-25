@@ -1,0 +1,156 @@
+.myNav {
+    background-color: rgba(0, 0, 0, 0.405);
+    box-shadow: 0px 2px 6px rgb(0, 0, 0, 0.3);
+    padding: 0;
+    width: 100%;
+
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+
+    transition: background-color 0.5s ease;
+}
+
+.myNav.scrolled {
+    background-color: #fff;
+}
+
+.nav-up {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.opacity-img {
+    opacity: 0.5;
+}
+
+.no-opacity-img {
+    opacity: 1;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.user-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.user-avatar img {
+    margin-bottom: 4px;
+}
+
+.text-gold {
+    color: gold;
+}
+
+.user-menu {
+    position: absolute;
+    top: 50%;
+    margin-top: 8px;
+    right: 0;
+    min-width: 150px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.user-avatar .animate-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-menu ul {
+    padding: 0;
+    margin: 0;
+}
+
+.user-menu li {
+    width: 100%;
+}
+
+.user-menu li:hover {
+    background-color: rgba(128, 128, 128, 0.47);
+}
+
+.user-menu .dropdown-item {
+    padding: 8px 12px;
+}
+
+.user-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.div-text {
+    color: goldenrod;
+    font-size: 2rem;
+}
+
+.separator {
+    height: 2px;
+    background-color: goldenrod;
+}
+
+li a {
+    color: goldenrod;
+
+}
+
+.bl1{
+    font-size: 20px;
+    align-self: center;
+}
+
+.bl2{
+    font-size: 28px;
+    align-self: center;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.6);
+    z-index: 1040;
+}
+
+.login-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid gold;
+    border-radius: 12px;
+    z-index: 1050;
+    width: 300px;
+}
+
+.btn-gold {
+    background-color: gold;
+    color: black;
+}
+
+.btn-gold:hover {
+    background-color: #e6c200;
+}
+
+.span-error {
+    font-size: 0.85rem;
+}

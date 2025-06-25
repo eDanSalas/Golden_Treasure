@@ -1,0 +1,110 @@
+<app-accesibility-menu [position]="'bottom-right'" (contrastToggled)="handleContrastToggle($event)"
+    (colorFilterChanged)="applyColorFilter($event)" (fontSizeChanged)="handleFontSizeChange($event)"
+    (fontChanged)="handleFontChange($event)">
+</app-accesibility-menu>
+<div id="main-content">
+    <div class="oferts">
+        <img src="images/oferta.webp" class="img-fluid w-100" alt="Oferta Principal">
+
+        <div class="oferts-text">
+            <h1>Ofertas</h1>
+        </div>
+    </div>
+
+
+    <section class="hotel-text">
+        <img src="images/ofert.jpg" alt="Hotel">
+        <div class="text">
+            <h2>Las Mejores <strong>Ofertas</strong> de hoteles</h2>
+            <hr>
+            <p class="p-texto">
+                ¿Te falta dinero? Pero no las ganas de disfrutar. Solo echa un vistazo a estas increíbles ofertas: se
+                acomodan a todos los bolsillos y a todas las personas. Porque en nuestro hotel creemos que el verdadero
+                lujo no tiene que ser inaccesible. Ya sea que viajes en familia, vengas por negocios o simplemente
+                busques un lugar para relajarte y desconectar, tenemos opciones pensadas especialmente para ti.
+                Disfruta de nuestras cómodas habitaciones, servicios de spa, restaurante gourmet y áreas recreativas sin
+                preocuparte por el presupuesto. Con paquetes flexibles y promociones exclusivas, el confort y la calidad
+                están al alcance de todos. Ven y vive la experiencia que mereces, sin sacrificar tu bolsillo.
+            </p>
+            <p class="p-reserva"><strong>¡Echale un Ojo!</strong></p>
+        </div>
+    </section>
+
+    <section class="oferts-section">
+        <h2 class="text-center m-2 p-2"><strong>Viaja Ahora y Sin Preocupaciones con estas Ofertas</strong></h2>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
+            (slide.bs.carousel)="onSlideChange($event)">
+            <div class="carousel-inner">
+
+                <div class="carousel-item active">
+                    <img src="images/oferta1.jpg" alt="Oferta 1: Sol con lentes y cartel del 50%" class="card-icon"
+                        aria-describedby="desc-oferta1">
+                    <div class="info-box" id="desc-oferta1">
+                        <p>Escápate al paraíso con un 50% de descuento en tu viaje a la playa. En Golden Treasure, te
+                            llevamos a las costas más hermosas para que disfrutes de sol, arena y mar a mitad de precio.
+                            No dejes pasar esta oportunidad de relajarte y desconectar rodeado de paisajes inigualables.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images/oferta2.jpg"
+                        alt="Oferta 2: Lentes con Playa paradisíaca con palmeras y aguas cristalinas" class="card-icon"
+                        aria-describedby="desc-oferta2">
+                    <div class="info-box" id="desc-oferta2">
+                        <p>Vive el verano con estilo. Con un 60% de descuento y unas gafas de sol de cortesía, en Golden
+                            Treasure te invitamos a disfrutar de unas vacaciones llenas de glamour y comodidad. Relájate
+                            bajo el sol y luce espectacular, mientras aprovechas una oferta que no se repite.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="images/oferta3.jpg"
+                        alt="Oferta 3: Playa paradisíaca con juguetes para playa y salvavidas" class="card-icon"
+                        aria-describedby="desc-oferta3">>
+                    <div class="info-box" id="desc-oferta3">
+                        <p>Disfruta de todo sin límites con un 50% de descuento en nuestro paquete Todo Incluido.
+                            Hospédate en Golden Treasure y accede a restaurantes gourmet, spa, albercas, bebidas y más,
+                            todo por la mitad de precio. La mejor experiencia, con todos los lujos, al alcance de tu
+                            bolsillo.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-2">
+                <!-- <button [routerLink]="['/alojamiento']" class="btn btn-golden">Pasar a la acción</button> -->
+                <button [routerLink]="['/alojamiento']" class="btn btn-golden" (click)="readCurrentOffer()">
+                    Pasar a la acción
+                </button>
+            </div>
+
+
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Estas secciones de aqui para abajo son nuevos agregados de Brandon, cualquier duda o aclaracion directamente conmigo -->
+    <section class="cupones-descuento">
+        <h2>Cupones exclusivos para ti</h2>
+        <div class="cupones-container">
+            @for (cupon of cupones; track cupon.id) {
+            <div class="cupon">
+                <h3>{{ cupon.titulo }}</h3>
+                <p class="codigo" id="{{ cupon.id }}">{{ cupon.codigo | uppercase }}</p> <!-- Pipe Predeterminado -->
+                <button (click)="copiarAlPortapapeles(cupon.id)">Copiar código</button>
+            </div>
+            }
+        </div>
+        <h3>los cupones solo podran utilizarse una vez hayas hecho tu reservacion y se entregan personalmente a los
+            empleados</h3>
+        <h3>Los cupones cambian periodicamente</h3>
+    </section>
+</div>

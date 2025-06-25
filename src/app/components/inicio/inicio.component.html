@@ -1,0 +1,106 @@
+<div class="video-container">
+    <video #videoPlayer autoplay loop playsinline [src]="videoUrl | safeurl" (contextmenu)="onRightClick($event)"></video> <!-- Pipe Personalizado -->
+    <div class="descripcion-card mb-4">
+        <h1 class="lead mb-0">"Descubre el Oro y vive el Tesoro."</h1>
+    </div>
+</div>
+
+<app-accesibility-menu 
+  [position]="'bottom-right'"
+  (contrastToggled)="handleContrastToggle($event)"
+  (colorFilterChanged)="applyColorFilter($event)"
+  (fontSizeChanged)="handleFontSizeChange($event)"
+  (fontChanged)="handleFontChange($event)">
+</app-accesibility-menu>
+
+<section class="hotel-text" id="main-content">
+    <img src="images/hotel.png" alt="Hotel">
+    <div class="text">
+        <h2>Bienvenido a <strong>Golden Treasure</strong></h2>
+        <hr>
+        <p class="p-texto">
+            Hotel ubicado frente a Playa La Corona en Guayabitos. 
+            ¡Te va a encantar nuestro paraíso tropical! Contamos con 140 habitaciones y suites con espectaculares vistas al mar, 
+            disfruta de unas vacaciones perfectas, sea cual sea tu motivo de viaje. 
+            Degusta sabores de la alta cocina mexicana e italiana en nuestros restaurantes a la carta, 
+            revitaliza tus sentidos en Aura SPA y relájate en la playa o la piscina. 
+            Diversión garantizada para niños y adultos con asombrosos shows nocturnos diarios. 
+            Ven y atesora momentos mágicos que solo Hotel Golden Treasure puede ofrecer.
+        </p>
+        <p class="p-reserva"><strong>¡Reserva Ahora!</strong></p>
+    </div>
+</section>
+
+<section class="cards-container">
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="card-item" (click)="leerCard('Limpieza', 'Supervisamos y desarrollaremos activamente nuestras soluciones para garantizar un enfoque continuo en la salud y la seguridad de nuestros huéspedes y asociados.')">
+                <div class="card-front">
+                    <img src="images/limpieza.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Limpieza</h3>
+                    <p class="card-text">
+                        Supervisamos y desarrollaremos activamente nuestras soluciones para garantizar un enfoque continuo 
+                        en la salud y la seguridad de nuestros huéspedes y asociados.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item" (click)="leerCard('Platillos', 'Disfrute de una variada selección de platillos cuidadosamente preparados para ofrecer sabores refinados de otro mundo, reconocidos por sus platillos de Italia y Francia.')">
+                <div class="card-front">
+                    <img src="images/comida.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Platillos</h3>
+                    <p class="card-text">
+                        Disfrute de una variada selección de platillos cuidadosamente preparados para ofrecer 
+                        sabores refinados de otro mundo, reconocidos por sus platillos de Italia y Francia.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item" (click)="leerCard('Reservación Flexible', 'Adaptamos nuestras políticas para que pueda modificar o cancelar su estancia con mayor libertad y tranquilidad.')">
+                <div class="card-front">
+                    <img src="images/reservar.webp" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Reservación Flexible</h3>
+                    <p class="card-text">
+                        Adaptamos nuestras políticas para que pueda modificar o cancelar su estancia con mayor libertad y tranquilidad.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card-item" (click)="leerCard('Atención de Alta Calidad', 'Desde el primer contacto hasta su despedida, trabajamos para que su experiencia sea cómoda y memorable.')">
+                <div class="card-front">
+                    <img src="images/atencion.jpg" alt="Limpieza" class="card-icon">
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">Atención de Alta Calidad</h3>
+                    <p class="card-text">
+                        Desde el primer contacto hasta su despedida, trabajamos para que su experiencia sea cómoda y memorable.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Secciones nuevas agregadas por Brandon cualquier duda o cambio estetico que quieran que haga favor de avisar -->
+<section class="faq-section my-5 px-4">
+ <h2 class="text-center mb-4">Preguntas <span style="color: #daa520;">Frecuentes</span></h2> 
+  <mat-accordion multi>
+    @for (lista of preguntas; track lista) {
+      <mat-expansion-panel class="faq animate__animated animate__fadeInUp" (opened)="leerPregunta(lista.pregunta, lista.respuesta)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{lista.pregunta}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="answer" [innerHTML]="lista.respuesta"></p>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</section>

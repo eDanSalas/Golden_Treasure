@@ -1,0 +1,86 @@
+.tablaReactiva{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+}
+
+.imagen-container{ 
+    position: relative;
+    display: block;
+}
+
+.imagen-container img {
+    height: 50vh;
+    object-fit: cover;
+    filter: brightness(55%);
+}
+
+.imagen-text{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    padding: 10px 20px;
+}
+
+.imagen-text h1 {
+    font-size: 8rem;
+    font-weight: bold;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    -webkit-text-stroke: 6px rgb(219, 186, 0);
+}
+
+.img-admin{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    align-self: center;
+    border-radius: 100%;
+    border: 2px solid gold;
+}
+
+.custom-card {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(3px);
+    border-radius: 0.75rem;
+    color: #ffffff;
+}
+
+.title-gold {
+    color: #f7d44c;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.label-gold {
+    color: #f7d44c;
+}
+
+@keyframes goldenPulse {
+    0% {
+        box-shadow: 0 0 20px rgba(247, 212, 76, 0.4), inset 0 0 10px rgba(247, 212, 76, 0.15);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(247, 212, 76, 0.6), inset 0 0 15px rgba(247, 212, 76, 0.25);
+    }
+
+    100% {
+        box-shadow: 0 0 20px rgba(247, 212, 76, 0.4), inset 0 0 10px rgba(247, 212, 76, 0.15);
+    }
+}
+
+.cardBienvenida{
+    border-bottom: 1px solid gold;
+}
+
+.chart{
+    width: 70%;
+    justify-self: center;
+}

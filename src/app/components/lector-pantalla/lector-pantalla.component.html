@@ -1,0 +1,25 @@
+<div class="lector-container">
+  <div class="lector-header">
+    <i class="fas fa-ear-listen lector-icon"></i>
+    <h3 class="lector-title">Controles del Lector de Pantalla</h3>
+    <span class="lector-status" [ngClass]="getEstadoClass()">
+      {{ estado === 'inactivo' ? 'Inactivo' : 
+         estado === 'leyendo' ? 'Leyendo' : 'Pausado' }}
+    </span>
+  </div>
+  
+  <section class="lector-controles" aria-label="Controles del lector de pantalla">
+    <button (click)="iniciar()" [disabled]="estado === 'leyendo'">
+      <i class="fas fa-play"></i> Iniciar
+    </button>
+    <button (click)="pausar()" [disabled]="estado !== 'leyendo'">
+      <i class="fas fa-pause"></i> Pausar
+    </button>
+    <button (click)="continuar()" [disabled]="estado !== 'pausado'">
+      <i class="fas fa-play-circle"></i> Continuar
+    </button>
+    <button (click)="detener()" [disabled]="estado === 'inactivo'">
+      <i class="fas fa-stop"></i> Detener
+    </button>
+  </section>
+</div>

@@ -1,0 +1,70 @@
+<app-accesibility-menu 
+  [position]="'bottom-right'"
+  (contrastToggled)="handleContrastToggle($event)"
+  (colorFilterChanged)="applyColorFilter($event)"
+  (fontSizeChanged)="handleFontSizeChange($event)"
+  (fontChanged)="handleFontChange($event)">
+</app-accesibility-menu>
+<div id="main-content">
+  <div class="imagen-container">
+      <img src="images/alojamiento.png" class="img-fluid w-100" alt="Alojamiento">
+      <div class="imagen-text">
+          <h1>Alojamiento</h1>
+      </div>
+  </div>
+  
+  @if (habitaciones.length > 0) {
+      <div class="texto-container">
+        <p>
+          Deja que la comodidad te acompañe durante tu estancia. 
+          Disfruta en alguna de nuestras 140 habitaciones que te ofrecen elementos visuales clásicos de la arquitectura mexicana 
+          con un mobiliario sofisticado y confortable. 
+          Eleva tu estadía en una de nuestras sorprendentes master suites y 
+          obtén acceso a un espacio amplificado, con sala de estar, cocineta y confortables baños con tina de hidromasaje. 
+          ¡Déjate sorprender con nuestras increíbles vistas al mar y al atardecer! descubre todas las opciones que tenemos para ti.
+        </p>
+      </div>
+  
+      <app-search (buscar)="onSearch($event)"></app-search>
+  
+      @if(sinRes){
+        <div class="cargando-container">
+          <h1>Habitacion Inexistente</h1>
+          <mat-icon>search_off</mat-icon>
+        </div> 
+      }@else{
+        <div class="habitaciones-container">
+          @for (habitacion of habFiltradas; track habitacion.id; let i = $index) {
+            <div class="hab">
+              <div class="carrusel">
+                <img [src]="habImage[habitacion.id][0]" alt="{{ habitacion.titulo }}" class="imagen-principal" />
+              </div>
+              <div class="info">
+                <h2>{{ habitacion.titulo }}</h2>
+                <hr>
+                <div class="iconos-servicios">
+                  @for (icon of amenidades[(habitacion.id - 1) % amenidades.length]; track icon) {
+                    <div>
+                      <i class="fa-solid {{ icon }}"></i>
+                      {{ obtenerAmenidad(icon) }}
+                    </div>
+                  }
+                </div>
+                <p class="descripcion">{{ habitacion.descripcion }}</p>
+                <button class="btn-vermas" [routerLink]="['/habitacion', habitacion.id]">VER MÁS</button>
+                <p class="precio">Desde <strong>{{ habitacion.precio | currency:'USD':'symbol':'1.2-2' }}</strong> por noche</p>   <!-- Pipe Predeterminado -->
+              </div>
+            </div>
+          }
+        </div>
+      }
+      
+    } @else {
+      @if (loading()) {
+        <div class="cargando-container">
+          <h1>Cargando habitaciones</h1>
+          <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+        </div>
+      } 
+  }
+</div>

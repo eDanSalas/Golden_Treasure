@@ -1,0 +1,135 @@
+.hotel-text{
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin: 2rem auto;
+    gap: 25px;
+}
+
+.hotel-text img{
+    width: 40%;
+    height: auto;
+    border-radius: 15px;
+}
+
+.hotel-text h2, .hotel-text img{
+    transition: 0.5s ease;
+}
+
+.hotel-text img:hover, .hotel-text h2:hover{
+    transform: scale(1.05);
+}
+
+strong{
+    color: goldenrod;
+}
+
+.text .p-texto{
+    text-align: justify;
+}
+
+.services {
+    position: relative;
+    display: block;
+}
+
+.services img {
+    height: 50vh;
+    object-fit: cover;
+    filter: brightness(55%);
+}
+
+.services-text {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.services-text h1 {
+    font-size: 8rem;
+    font-weight: bold;
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    -webkit-text-stroke: 6px rgb(219, 186, 0);
+}
+
+.services-section {
+    width: 80%;
+    margin: 3rem auto;
+}
+
+.card-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    position: relative;
+    width: 18rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.card-img-top {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+}
+
+.card-body h5 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card:hover .card-body {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.c-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.cargando-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: goldenrod;
+    background-color: lightgray;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 10px;
+    width: 50%;
+    margin: 3rem auto 3rem auto;
+}

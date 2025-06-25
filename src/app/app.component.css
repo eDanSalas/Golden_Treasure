@@ -1,0 +1,39 @@
+/* Estilos de accesibilidad globales */
+.high-contrast {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+.high-contrast .container,
+.high-contrast .content,
+.high-contrast .status-bar {
+  background: #000 !important;
+  border-color: #fff !important;
+}
+
+.high-contrast .accessibility-button,
+.high-contrast .menu button {
+  background: #fff !important;
+  color: #000 !important;
+  border-color: #000 !important;
+}
+
+.large-text {
+  font-size: 120% !important;
+}
+
+.small-text {
+  font-size: 85% !important;
+}
+
+.sans-serif {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.serif {
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
+}
+
+.monospace {
+  font-family: 'Courier New', Courier, monospace !important;
+}

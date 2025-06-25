@@ -1,0 +1,180 @@
+@if (habitacion) {
+    <div class="image-container">
+        <img src="{{habImage[habitacion.id][0]}}" alt="Imagen Principal" class="imgPrincipal">
+
+        <div class="image-content">
+            <h1>{{ habitacion.titulo }}</h1>
+            <div id="habitacionCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                  @for (img of habImage[habitacion.id]; track img; let i = $index) {
+                    <button type="button" data-bs-target="#habitacionCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Imagen ' + (i + 1)"></button>
+                  }
+                </div>
+                <div class="carousel-inner">
+                  @for (img of habImage[habitacion.id]; track img; let i = $index) {
+                    <div class="carousel-item" [class.active]="i === 0">
+                      <img [src]="img" class="d-block w-100 imgCarrusel" [alt]="'Imagen ' + (i + 1)">
+                    </div>
+                  }
+                </div>      
+                <button class="carousel-control-prev" type="button" data-bs-target="#habitacionCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#habitacionCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <h1 class="mb-3 mt-3 text-center">{{ habitacion.titulo }}</h1>
+    <div class="main-container mb-5">
+        <div class="hab-texto">
+            <h3><strong>Descripcion.</strong></h3>
+            <p class="lead">{{ habitacion.descripcion }}</p>
+            <hr>
+            <h3><strong>Amenidades.</strong></h3>
+            <div class="row row-cols-2 row-cols-md-3 g-2 mt-2">
+                @for(icon of amenidades[habitacion.id - 1]; track icon) {
+                  <div class="col d-flex align-items-center">
+                    <i class="fa-solid {{ icon }}"></i>
+                    <span>{{ obtenerAmenidad(icon) }}</span>
+                  </div>
+                }
+            </div>
+        </div>
+        <div class="formulario-container">
+          <h2>Realiza Tu Reservación</h2>
+          <h2>¡AHORA!</h2>
+          <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
+            <form [formGroup]="miform" (ngSubmit)="enviar()">
+              <div class="form-info">
+                <div class="info-cliente">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" formControlName="nombre" id="nombre">
+                  @if (miform.get('nombre')?.touched && miform.get('nombre')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('nombre')?.errors?.['required']) {
+                        <div>Nombre es obligatorio.</div>
+                      }
+                      @if (miform.get('nombre')?.errors?.['minlength']) {
+                        <div>El nombre debe contener mínimo 4 caracteres.</div>
+                      }
+                    </div>
+                  }
+                  
+                  <label for="email">Email:</label>
+                  <input id="email" type="email" formControlName="email" />
+                  @if (miform.get('email')?.touched && miform.get('email')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('email')?.errors?.['required']) {
+                        <div>Email es obligatorio.</div>
+                      }
+                      @if (miform.get('email')?.errors?.['email']) {
+                        <div>Formato: [cliente&#64;correo.com].</div>
+                      }
+                    </div>
+                  }
+                  
+                  <label for="telefono">Teléfono</label>
+                  <input id="telefono" type="text" formControlName="telefono" />
+                  @if (miform.get('telefono')?.touched && miform.get('telefono')?.invalid) {
+                    <div class="error">
+                      @if (miform.get('telefono')?.errors?.['required']) {
+                        <div>Teléfono es obligatorio.</div>
+                      }
+                      @if (miform.get('telefono')?.errors?.['pattern']) {
+                        <div>Formato: [123 456 7890].</div>
+                      }
+                    </div>
+                  }
+                  
+                </div>
+                <div class="info-reserva">
+                  <div class="contador">
+                    <label>Clientes: </label>
+                    <button type="button" (click)="disminuir('huespedes')" class="btn-client">−</button>
+                    <span>{{ huespedes() }}</span>
+                    <button type="button" (click)="aumentar('huespedes')" class="btn-client">+</button>
+                    <label>+ ${{porHuesped}} USD c/u</label>
+                  </div>
+                  <div class="contador">
+                    <label>Noches: </label>
+                    <span>{{ noches() }}</span>
+                    <label>+ ${{ porNoche() }} USD c/u</label>
+                  </div>
+
+                  <label for="reserva">Tipo de reserva:</label>
+                  <select id="reserva" formControlName="reserva" (change)="actualizarReserva()">
+                    <option value="">-- Selecciona una opción --</option>
+                    @for(r of reservas; track r){
+                      <option [value]="r">{{ r }} (+${{ reservaPrecios[r] }})</option>
+                    }
+                  </select>
+                  @if (miform.get('reserva')?.touched && miform.get('reserva')?.invalid) {
+                    <div class="error">Tipo de reserva es obligatorio.</div>
+                  }
+                  <label>Extras:</label>
+                  <div class="extras" formGroupName="extras">
+                    @for(extra of extras; track extra){
+                      <label>
+                        <input type="checkbox" [formControlName]="extra.sec" />
+                        {{ extra.sec }}: ${{ extra.costo }}
+                      </label>
+                    }
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="calendario">
+                <mat-form-field [formGroupName]="'rango'">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input matStartDate placeholder="Start date" formControlName="inicio" [min]="hoy">
+                      <input matEndDate placeholder="End date" formControlName="fin" [min]="hoy">
+                    </mat-date-range-input>
+                    <mat-hint>{{ miform.get('rango.inicio')?.value | date:'MM/dd/yyyy' }} – {{ miform.get('rango.fin')?.value | date:'MM/dd/yyyy' }}</mat-hint>   <!--Pipe predeterminado-->
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                @if (miform.get('rango')?.touched && miform.get('rango')?.invalid) {
+                  <div class="error">
+                    @if (miform.get('rango')?.errors?.['fechaInicioPasada']) {
+                      <div>La fecha de inicio no puede ser anterior a hoy.</div>
+                    }
+                    @if (miform.get('rango')?.errors?.['fechaFinPasada']) {
+                      <div>La fecha de fin no puede ser anterior a hoy.</div>
+                    }
+                    @if (miform.get('rango')?.errors?.['fechaFinAnteriorInicio']) {
+                      <div class="error">La fecha de fin debe ser posterior a la de inicio.</div>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="total">
+                TOTAL CON IMPUESTOS:
+                <span>{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>    <!--Pipe Predetermiando-->
+              </div>
+              <button type="submit" [disabled]="miform.invalid" [ngClass]="{'btn-disabled': miform.invalid, 'btn-reserva': !miform.invalid}">{{ 'Reservar' | uppercase }}</button> <!--Pipe Predeterminado-->
+              <div class="paypal-buttons" >
+                @if (mostrarBotonesPayPal && payPalConfig) {
+                  <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+
+                  @if (qrDataUrl) {
+                    <div class="qr-container mt-4 text-center">
+                      <h3>Escanea tu QR para ver tu reservación</h3>
+                      <img [src]="qrDataUrl" alt="QR de tu reserva" class="my-qr" />
+                    </div>
+                  }
+                }
+              </div>
+            </form>
+        </div>
+    </div>
+} @else{
+    <div class="cargando-container">
+        <h1>Cargando habitacion</h1>
+        <mat-spinner class="gold-spinner" diameter="80" strokeWidth="6"></mat-spinner>
+    </div>
+}
