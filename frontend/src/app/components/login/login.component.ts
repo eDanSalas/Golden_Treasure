@@ -106,10 +106,9 @@ export class LoginComponent {
       });
       
       const data = await info.json();
-
-      data.message 
       
       if(info.ok){
+        
         alert("Estas registrados");
       }
 
