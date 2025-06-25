@@ -247,9 +247,12 @@ export class NavbarComponent {
       this.loggedUserId = null;
       localStorage.removeItem('loggedUserName');
       localStorage.removeItem('loggedUserId');
-      if(localStorage.getItem('isGoogleAccount') !== null){
+      if(localStorage.getItem('isGoogleAccount') !== null || localStorage.getItem('isPhoneAccount') != null){
         this.authService.logLogout();
         localStorage.removeItem('isGoogleAccount');
+        localStorage.removeItem('isPhoneAccount');
+        localStorage.removeItem('user_data');
+        localStorage.removeItem('verificationId');
       }
 
       // Borrar datos del admin

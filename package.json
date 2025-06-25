@@ -27,6 +27,7 @@
     "echarts": "^5.0.0",
     "firebase": "^11.9.1",
     "leaflet": "^1.9.4",
+    "ng-otp-input": "^2.0.8",
     "ngx-echarts": "^19.0.0",
     "ngx-paypal": "^11.0.0",
     "postcss": "^8.5.3",

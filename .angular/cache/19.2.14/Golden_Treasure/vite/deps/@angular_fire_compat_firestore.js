@@ -1,5 +1,9 @@
 import "./chunk-XCW2M6U6.js";
 import "./chunk-KIVQGRZL.js";
+import "./chunk-K5DRYVCE.js";
+import {
+  isPlatformServer
+} from "./chunk-NUOVYI65.js";
 import {
   FirebaseApp
 } from "./chunk-NAWOK5XT.js";
@@ -48,10 +52,6 @@ import {
   registerVersion,
   updateEmulatorBanner
 } from "./chunk-DD6JDW3G.js";
-import "./chunk-K5DRYVCE.js";
-import {
-  isPlatformServer
-} from "./chunk-NUOVYI65.js";
 import {
   EnvironmentInjector,
   Inject,

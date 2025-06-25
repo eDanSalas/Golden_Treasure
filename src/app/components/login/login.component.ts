@@ -4,10 +4,11 @@ import { FormBuilder,FormGroup,Validators, AbstractControl, ReactiveFormsModule,
 import { FormsModule } from '@angular/forms'; 
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { NgOtpInputComponent } from 'ng-otp-input';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule,FormsModule,CommonModule],
+  imports: [ReactiveFormsModule,FormsModule,CommonModule,NgOtpInputComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -23,7 +24,21 @@ export class LoginComponent {
   captchaArray: string[] = [];
   captchaStyles: { [key: string]: string }[] = []; 
   userInput = '';
-  captchaMode: 'login' | 'register' | null = null; 
+  captchaMode: 'login' | 'register' | null = null;
+
+  //variables autenticacion sms
+  authSMS = false;
+  userSMS = '';
+  phoneSMS = '';
+  showCodeInput = false;
+  config = {
+    allowNumbersOnly: true,
+    length: 6,
+    isPasswordInput: false,
+    disableAutoFocus: false
+  }
+  otp: string = '';
+  verify: any = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
 
@@ -154,6 +169,38 @@ export class LoginComponent {
     }
   }
 
+  activatePhoneAuth(){
+    this.authSMS = !this.authSMS;
+  }
+
+  onLoginPhone(){
+    this.authService.logInMessage(this.phoneSMS);
+    if (localStorage.getItem('verificationId')) {
+      this.showCodeInput = true;
+      this.verify = JSON.parse(localStorage.getItem('verificationId') || '{}');
+    }
+  }
+
+  onOtpChange(otpCode: any){
+    this.otp = otpCode;
+  }
+
+  handleClick(){
+    this.authService.credential(this.verify, this.otp);
+    if (localStorage.getItem('user_data')) {
+      localStorage.setItem('isPhoneAccount', 'true');
+      localStorage.setItem('loggedUserId', '8'); 
+      localStorage.setItem('loggedUserName', this.userSMS);
+      // Swal.fire({
+      //   title: 'Inicio de sesión exitoso',
+      //   text: `Bienvenido ${data.cliente.nombre}`,
+      //   icon: 'success'
+      // }).then(() => {
+      //   // Recarga para que el navbar detecte los cambios
+      //   window.location.reload();
+      // });
+    }
+  }
 
   async onRegister(){
     if (this.registerForm.valid){
