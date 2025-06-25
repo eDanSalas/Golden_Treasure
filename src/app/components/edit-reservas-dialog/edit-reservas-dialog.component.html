@@ -7,7 +7,7 @@
 
   <mat-form-field appearance="fill" class="w-100">
     <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
+    <input matInput formControlName="correo">
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="w-100">
@@ -17,7 +17,7 @@
 
   <mat-form-field appearance="fill" class="w-100">
     <mat-label>Habitación</mat-label>
-    <input matInput formControlName="hab" readonly>
+    <input matInput formControlName="habitacion" readonly>
   </mat-form-field>
 
   <div class="flex gap-4">
@@ -34,7 +34,7 @@
 
   <mat-form-field appearance="fill" class="w-100">
     <mat-label>Tipo de Reserva</mat-label>
-    <mat-select formControlName="tipoReserva">
+    <mat-select formControlName="reserva">
       <mat-option *ngFor="let tipo of reservaPrecios | keyvalue" [value]="tipo.key">
         {{ tipo.key }}
       </mat-option>
@@ -43,14 +43,14 @@
 
   <mat-form-field appearance="fill" class="w-full">
     <mat-label>Fecha de inicio</mat-label>
-    <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio">
+    <input matInput [matDatepicker]="pickerInicio" formControlName="inicio">
     <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
     <mat-datepicker #pickerInicio></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="w-full mt-4">
     <mat-label>Fecha de fin</mat-label>
-    <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin">
+    <input matInput [matDatepicker]="pickerFin" formControlName="fin">
     <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
     <mat-datepicker #pickerFin></mat-datepicker>
   </mat-form-field>

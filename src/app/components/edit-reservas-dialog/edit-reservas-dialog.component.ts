@@ -61,14 +61,14 @@ export class EditReservasDialogComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       nombre: [data.nombre, [Validators.required]],
-      email: [data.email, [Validators.required, Validators.email]],
+      correo: [data.correo, [Validators.required, Validators.email]],
       telefono: [data.telefono, [Validators.required]],
-      hab: [data.hab, Validators.required],
+      habitacion: [data.habitacion, Validators.required],
       huespedes: [data.huespedes, [Validators.required, Validators.min(1)]],
       noches: [data.noches, [Validators.required, Validators.min(1)]],
-      tipoReserva: [data.tipoReserva, Validators.required],
-      fechaInicio: [new Date(this.data.fechaInicio), Validators.required],
-      fechaFin: [new Date(this.data.fechaFin), Validators.required],
+      reserva: [data.reserva, Validators.required],
+      inicio: [new Date(this.data.inicio), Validators.required],
+      fin: [new Date(this.data.fin), Validators.required],
       extras: this.fb.group(
         this.extrasDisponibles.reduce((acc, extra) => {
           acc[extra.sec] = [data.extras.includes(extra.sec)];

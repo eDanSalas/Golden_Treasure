@@ -92,8 +92,13 @@ export class DashboardComponent {
   };
 
   constructor(public route: ActivatedRoute, private storageService: StorageService, private dbService: DataBaseService, private reader: ScreenReaderService) {
-    this.servicios = this.storageService.getServicios();
-    this.reservaciones = this.storageService.getReservaciones();
+    this.storageService.getServicios().subscribe((data: any[]) => {
+      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
+    });
+    this.storageService.getReservaciones().subscribe((data: any[]) => {
+      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
+    });
+    this.updateChart();
   }
 
   ngOnInit(): void {
@@ -127,62 +132,78 @@ export class DashboardComponent {
   }
 
   actualizarLista() {
-    this.servicios = this.storageService.getServicios();
-    this.reservaciones = this.storageService.getReservaciones();
+    this.storageService.getServicios().subscribe((data: any[]) => {
+      this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
+    });
+    this.storageService.getReservaciones().subscribe((data: any[]) => {
+      this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
+    });
     this.updateChart();
   }
 
   eliminarServicio(index: number) {
     this.storageService.eliminarServicio(index);
-    this.servicios = [...this.storageService.getServicios()];
-    Swal.fire({
-      title: 'Registro eliminado',
-      icon: 'success',
-      confirmButtonColor: 'gold',
-      background: '#1e1e1e',
-      color: 'white'
+    this.storageService.getServicios().subscribe(data => {
+      this.servicios = [...data.sort((a, b) => a.no_servicio - b.no_servicio)];
+      Swal.fire({
+        title: 'Registro eliminado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+      this.actualizarLista();
     });
-    this.actualizarLista();
   }
 
   editarServicio(evento: {index: number, servicio: any}) {
     this.storageService.editarServicios(evento.index, evento.servicio);
-    this.servicios = [...this.storageService.getServicios()];
-    Swal.fire({
-      title: 'Registro editado',
-      icon: 'success',
-      confirmButtonColor: 'gold',
-      background: '#1e1e1e',
-      color: 'white'
+    this.storageService.getServicios().subscribe(data => {
+      this.servicios = [...data.sort((a, b) => a.no_servicio - b.no_servicio)];
+      Swal.fire({
+        title: 'Registro editado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+      this.actualizarLista();
     });
-    this.actualizarLista();
   }
 
   eliminarReservacion(index: number) {
     this.storageService.eliminarReservaciones(index);
-    this.servicios = [...this.storageService.getReservaciones()];
-    Swal.fire({
-      title: 'Registro eliminado',
-      icon: 'success',
-      confirmButtonColor: 'gold',
-      background: '#1e1e1e',
-      color: 'white'
+    this.storageService.getReservaciones().subscribe(data => {
+      this.reservaciones = [...data.sort((a, b) => a.no_reservacion - b.no_reservacion)];
+
+      Swal.fire({
+        title: 'Registro eliminado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+
+      this.actualizarLista();
     });
-    this.actualizarLista();
   }
 
   editarReservacion(evento: {index: number, reservacion: any}) {
     this.storageService.editarReservaciones(evento.index, evento.reservacion);
     // this.reservaciones = [...this.storageService.getReservaciones()];
-    this.reservaciones = this.storageService.getReservaciones().slice(); 
-    Swal.fire({
-      title: 'Registro editado',
-      icon: 'success',
-      confirmButtonColor: 'gold',
-      background: '#1e1e1e',
-      color: 'white'
+    this.storageService.getReservaciones().subscribe(data => {
+      this.reservaciones = data.slice().sort((a, b) => a.no_reservacion - b.no_reservacion);
+      
+      Swal.fire({
+        title: 'Registro editado',
+        icon: 'success',
+        confirmButtonColor: 'gold',
+        background: '#1e1e1e',
+        color: 'white'
+      });
+
+      this.actualizarLista();
     });
-    this.actualizarLista();
   }
 
   toggleActive() {
@@ -190,12 +211,10 @@ export class DashboardComponent {
   }
   
   updateChart(){
-    if (this.reservaciones.length > 0) {
-      this.chartData.forEach(item => {
-        const nombreNormalizado = item.name.toLowerCase();
-        item.value = this.reservaciones.filter(r => r.habitacion.toLowerCase() === nombreNormalizado).length;
-      });
-    }
+    this.chartData.forEach(item => {
+      const nombreNormalizado = item.name.toLowerCase();
+      item.value = this.reservaciones.filter(r => r.habitacion.toLowerCase() === nombreNormalizado).length;
+    });
   }
 
   // Funciones para accesibilidad

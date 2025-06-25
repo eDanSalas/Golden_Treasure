@@ -55,6 +55,12 @@ export class AdminComponent {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        let auxDate = result.fecha;
+        let año = auxDate.getFullYear();
+        let mes = String(auxDate.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+        let dia = String(auxDate.getDate()).padStart(2, '0');
+
+        result.fecha = `${año}-${mes}-${dia}`;
         this.editarServicio.emit({ index, servicio: result });
       }
     });

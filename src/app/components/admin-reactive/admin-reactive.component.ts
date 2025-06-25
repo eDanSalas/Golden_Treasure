@@ -65,9 +65,20 @@ export class AdminReactiveComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.reservaciones[index] = result;
-        localStorage.setItem('reservaciones', JSON.stringify(this.reservaciones));
+      if (result) {        
+        let auxDate = result.inicio;
+        let año = auxDate.getFullYear();
+        let mes = String(auxDate.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+        let dia = String(auxDate.getDate()).padStart(2, '0');
+
+        result.inicio = `${año}-${mes}-${dia}`;
+        
+        auxDate = result.fin;
+        año = auxDate.getFullYear();
+        mes = String(auxDate.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+        dia = String(auxDate.getDate()).padStart(2, '0');
+
+        result.fin = `${año}-${mes}-${dia}`;
         this.editarReservacion.emit({ index, reservacion: result });
       }
     });

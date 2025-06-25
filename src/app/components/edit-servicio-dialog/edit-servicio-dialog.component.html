@@ -12,7 +12,7 @@
       <mat-label>Nombre Público</mat-label>
       <input
         matInput
-        [(ngModel)]="servicio.nombrePublico"
+        [(ngModel)]="servicio.nombre_publico"
         name="nombrePublico"
       />
     </mat-form-field>
@@ -20,13 +20,13 @@
     <!-- Email -->
     <mat-form-field class="w-full">
       <mat-label>Email</mat-label>
-      <input matInput [(ngModel)]="servicio.email" name="email" />
+      <input matInput [(ngModel)]="servicio.coreo" name="email" />
     </mat-form-field>
 
     <!-- Informacion Extra -->
     <mat-form-field class="w-full">
       <mat-label>Informacion extra</mat-label>
-      <input matInput [(ngModel)]="servicio.duda" name="duda" />
+      <input matInput [(ngModel)]="servicio.info" name="duda" />
     </mat-form-field>
 
     <!-- Fecha -->
@@ -36,7 +36,7 @@
         matInput
         [matDatepicker]="picker"
         name="fechaParticular"
-        [(ngModel)]="servicio.fechaParticular"
+        [(ngModel)]="servicio.fecha"
         #fechaCtrl="ngModel"
         [min]="minFecha"
         required
@@ -57,7 +57,7 @@
       <mat-radio-group
         name="cuentaReservacion"
         required
-        [(ngModel)]="servicio.cuentaReservacion"
+        [(ngModel)]="servicio.reservacion"
         #reservacionCtrl="ngModel"
         class="d-block">
         <mat-radio-button value="si" class="me-3">Sí</mat-radio-button>
@@ -73,7 +73,7 @@
       <mat-checkbox
         name="aceptaFAQ"
         required
-        [(ngModel)]="servicio.aceptaFAQ"
+        [(ngModel)]="servicio.aceptacion"
         #aceptaCtrl="ngModel">
         Acepto enviar esta reservación de servicio. Recuerda que puedes
         solicitar cambios.

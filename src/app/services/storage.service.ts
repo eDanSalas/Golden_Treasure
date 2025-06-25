@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Servicios } from '../components/servicios/servicios.interface';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +12,9 @@ export class StorageService {
   
   private readonly LS_KEY = 'serviciosReservados';
   private readonly LS_KEY_R = 'reservaciones';
+  private apiUrl = 'http://localhost:8080/api';
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.serviciosReservados = JSON.parse(
       localStorage.getItem(this.LS_KEY) || '[]'
     );
@@ -21,52 +24,68 @@ export class StorageService {
     );
   }
 
-  getServicios() {
-    const data = localStorage.getItem(this.LS_KEY);
-    return data ? JSON.parse(data) : [];
+  getServicios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/servicios/todos`);
   }
 
   guardarServicio(servicio: any): void {
-    const servicios = this.getServicios();
-    servicio.fechaParticular = servicio.fechaParticular.toISOString().split('T')[0];
-    servicios.push(servicio);
-    localStorage.setItem(this.LS_KEY, JSON.stringify(servicios));
+    fetch(`${this.apiUrl}/servicios/crear`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(servicio)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 
   eliminarServicio(index: number): void {
-    const servicios = this.getServicios();
-    servicios.splice(index, 1);
-    localStorage.setItem(this.LS_KEY, JSON.stringify(servicios));
+    fetch(`${this.apiUrl}/servicios/eliminar/${index+1}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 
   editarServicios(index: number, servicio: any): void {
-    const servicios = this.getServicios();
-    servicios[index] = servicio;
-    localStorage.setItem(this.LS_KEY, JSON.stringify(servicios));
+    fetch(`${this.apiUrl}/servicios/editar/${index+1}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(servicio)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 
   // Reservaciones
-  getReservaciones() {
-    const data = localStorage.getItem(this.LS_KEY_R);
-    return data ? JSON.parse(data) : [];
-
+  getReservaciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/reservaciones/todas`);
   }
 
   guardarReservaciones(reservacion: any): void {
-    const reservaciones = this.getReservaciones();
-    reservaciones.push(reservacion);
-    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservacion));
+    fetch(`${this.apiUrl}/reservaciones/crear`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reservacion)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 
   eliminarReservaciones(index: number): void {
-    const reservaciones = this.getReservaciones();
-    reservaciones.splice(index, 1);
-    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservaciones));
+    fetch(`${this.apiUrl}/reservaciones/eliminar/${index+1}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 
   editarReservaciones(index: number, reservacion: any): void {
-    const reservaciones = this.getReservaciones();
-    reservaciones[index] = reservacion;
-    localStorage.setItem(this.LS_KEY_R, JSON.stringify(reservaciones));
+    fetch(`${this.apiUrl}/reservaciones/editar/${index+1}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reservacion)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
   }
 }
