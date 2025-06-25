@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DataBaseService } from '../../services/data-base.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -40,7 +41,7 @@ export class NavbarComponent {
     this.isScrolled = window.scrollY > 200;
   }
 
-  constructor(private eRef: ElementRef, private router: Router, private bdservice: DataBaseService ) {
+  constructor(private eRef: ElementRef, private router: Router, private bdservice: DataBaseService, private authService: AuthService ) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
     });
@@ -245,6 +246,10 @@ export class NavbarComponent {
       this.loggedUserId = null;
       localStorage.removeItem('loggedUserName');
       localStorage.removeItem('loggedUserId');
+      if(localStorage.getItem('isGoogleAccount') !== null){
+        this.authService.logLogout();
+        localStorage.removeItem('isGoogleAccount');
+      }
 
       // Borrar datos del admin
       this.loggedAdminName = null;

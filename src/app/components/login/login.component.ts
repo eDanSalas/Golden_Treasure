@@ -106,14 +106,16 @@ export class LoginComponent {
       // Aquí asumimos que el backend retorna algo como { id: ..., nombre: ... }
       localStorage.setItem('loggedUserId', data.cliente.id); 
       localStorage.setItem('loggedUserName', data.cliente.nombre);
+      localStorage.setItem('isGoogleAccount', 'true');
 
       Swal.fire({
-        title: 'Inicio de Sesión exitoso',
+        title: 'Inicio de sesión exitoso',
         text: `Bienvenido ${data.cliente.nombre}`,
         icon: 'success'
+      }).then(() => {
+        // Recarga para que el navbar detecte los cambios
+        window.location.reload();
       });
-      // Recarga para que el navbar detecte los cambios
-      window.location.reload();
       
     } else {
       Swal.fire({

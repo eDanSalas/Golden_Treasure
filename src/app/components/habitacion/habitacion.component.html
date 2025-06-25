@@ -44,7 +44,8 @@
                 }
             </div>
         </div>
-        <div class="formulario-container">
+        @if (isUserLogged) {
+          <div class="formulario-container">
           <h2>Realiza Tu Reservación</h2>
           <h2>¡AHORA!</h2>
           <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
@@ -171,6 +172,7 @@
               </div>
             </form>
         </div>
+        }
     </div>
 } @else{
     <div class="cargando-container">

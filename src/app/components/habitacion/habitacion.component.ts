@@ -29,6 +29,7 @@ export class HabitacionComponent {
   miform: FormGroup;
   progress: number = 0;
   qrDataUrl: string = '';
+  isUserLogged: boolean = false;
 
   habImage: {[key: number]: string[]} = {
     1: ["images/h1-1.jpg","images/h1-2.jpg","images/h1-3.jpg"],
@@ -111,6 +112,8 @@ export class HabitacionComponent {
   async ngOnInit() {
 
     await this.obtenerDatosCredenciales();
+
+    this.isUserLogged = localStorage.getItem('loggedUserId') != null ? true : false;
 
     this.id = +this.route.snapshot.paramMap.get('id')!;
     this.servicio.retornar().subscribe(data => {

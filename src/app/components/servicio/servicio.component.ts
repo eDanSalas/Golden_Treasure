@@ -51,6 +51,7 @@ export class ServicioComponent {
   };
   minFecha = new Date();
   fechaInvalida: boolean = false;
+  isUserLogged: boolean = false;
 
   @ViewChild('formulario') formularioElement!: ElementRef;
 
@@ -98,6 +99,7 @@ export class ServicioComponent {
       this.selectedServicio = this.servicio.title;
     }
     window.scrollTo({ top: 0 });
+    this.isUserLogged = localStorage.getItem('loggedUserId') !== null ? true : false;
   }
 
   scrollToFormulario() {
