@@ -120,7 +120,7 @@ export class LoginComponent {
         color: 'white'
       });
       // Recarga para que el navbar detecte los cambios
-      window.location.reload();
+      this.router.navigate(['/inicio']);
       
     } else {
       Swal.fire({

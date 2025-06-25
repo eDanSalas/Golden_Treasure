@@ -339,7 +339,7 @@ export class HabitacionComponent {
 
       // Generar QR
       this.qrDataUrl = await QRCode.toDataURL(
-        `/api/reservaciones/${respuesta.no_reservacion}`
+        `https://goldentreasurebackend-production.up.railway.app/api/reservaciones/${respuesta.no_reservacion}`
       );
 
     } catch (error: any) {
