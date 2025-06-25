@@ -198,7 +198,8 @@ export class NavbarComponent {
       this.menuOpen = !this.menuOpen;
     } else {
       this.menuOpen = !this.menuOpen;
-      this.openLoginModal();
+      if(this.loggedUserName === null)
+        this.openLoginModal();
     }
   }
 
