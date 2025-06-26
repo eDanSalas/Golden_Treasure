@@ -113,7 +113,11 @@ export class HabitacionComponent {
 
     await this.obtenerDatosCredenciales();
 
-    this.isUserLogged = localStorage.getItem('loggedUserId') != null ? true : false;
+    if (localStorage.getItem('loggedUserId') != null || localStorage.getItem('loggedAdminId') != null){
+      this.isUserLogged = true;
+    } else {
+      this.isUserLogged = false;
+    }
 
     this.id = +this.route.snapshot.paramMap.get('id')!;
     this.servicio.retornar().subscribe(data => {

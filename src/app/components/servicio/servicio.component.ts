@@ -99,7 +99,11 @@ export class ServicioComponent {
       this.selectedServicio = this.servicio.title;
     }
     window.scrollTo({ top: 0 });
-    this.isUserLogged = localStorage.getItem('loggedUserId') !== null ? true : false;
+    if (localStorage.getItem('loggedUserId') != null || localStorage.getItem('loggedAdminId') != null){
+      this.isUserLogged = true;
+    } else {
+      this.isUserLogged = false;
+    }
   }
 
   scrollToFormulario() {

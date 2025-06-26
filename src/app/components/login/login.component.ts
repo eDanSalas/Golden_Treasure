@@ -119,9 +119,12 @@ export class LoginComponent {
         confirmButtonColor: 'gold',
         background: '#1e1e1e',
         color: 'white'
+      }).then(() => {
+        // Recarga para que el navbar detecte los cambios
+        this.router.navigate(['/inicio']).then(() => {
+            window.location.reload(); // recarga luego de navegar
+        });
       });
-      // Recarga para que el navbar detecte los cambios
-      this.navbarState.requestRefresh();
       
     } else {
       Swal.fire({
@@ -158,7 +161,10 @@ export class LoginComponent {
         text: `Bienvenido ${data.cliente.nombre}`,
         icon: 'success'
       }).then(() => {
-        this.navbarState.requestRefresh();
+        // Recarga para que el navbar detecte los cambios
+        this.router.navigate(['/inicio']).then(() => {
+            window.location.reload(); // recarga luego de navegar
+        });
       });
       
     } else {
@@ -207,7 +213,10 @@ export class LoginComponent {
           text: `Bienvenido ${data.cliente.nombre}`,
           icon: 'success'
         }).then(() => {
-          this.navbarState.requestRefresh();
+          // Recarga para que el navbar detecte los cambios
+          this.router.navigate(['/inicio']).then(() => {
+              window.location.reload(); // recarga luego de navegar
+          });
         });
       }else{
         Swal.fire({
