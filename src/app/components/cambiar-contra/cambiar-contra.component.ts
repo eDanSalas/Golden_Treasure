@@ -52,6 +52,12 @@ constructor(private route: ActivatedRoute) {}
         });
       return;
     }
+    console.log({
+        id: this.id,
+        nombre: this.nombre,
+        contra: this.contra,
+        nuevaContra: this.nuevaContra
+      });
     fetch('https://goldentreasurebackend-production.up.railway.app/api/client/changepass', {
       method: 'POST',
       headers: {
