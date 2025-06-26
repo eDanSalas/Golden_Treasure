@@ -37,6 +37,7 @@ constructor(private route: ActivatedRoute) {}
       const data = await response.json();
       this.nombre = data.nombre;
       this.contra = data.contra;
+      console.log("Datos cargados: ", this.nombre + "->", this.contra);
     } catch (error) {
       console.error('Error en la petición:', error);
     }
@@ -52,12 +53,13 @@ constructor(private route: ActivatedRoute) {}
         });
       return;
     }
-    console.log({
-        id: this.id,
-        nombre: this.nombre,
-        contra: this.contra,
-        nuevaContra: this.nuevaContra
-      });
+    console.log("-----------------------------------");
+    console.log(this.id);
+    console.log(this.nombre);
+    console.log(this.contra);
+    console.log(this.nuevaContra);
+    console.log("------------------------------------");
+
     fetch('https://goldentreasurebackend-production.up.railway.app/api/client/changepass', {
       method: 'POST',
       headers: {
