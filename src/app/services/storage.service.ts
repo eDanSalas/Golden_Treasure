@@ -43,6 +43,7 @@ export class StorageService {
   }
 
   editarServicios(index: number, servicio: any): Observable<any> {
+    console.log("Index en editar servicios: ", index);
     return this.http.put(`${this.apiUrl}/servicios/editar/${index}`, servicio);
   }
 
