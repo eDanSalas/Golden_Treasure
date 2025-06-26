@@ -39,11 +39,11 @@ export class StorageService {
   }
 
   eliminarServicio(index: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/servicios/eliminar/${index+1}`);
+    return this.http.delete(`${this.apiUrl}/servicios/eliminar/${index}`);
   }
 
   editarServicios(index: number, servicio: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/servicios/editar/${index+1}`, servicio);
+    return this.http.put(`${this.apiUrl}/servicios/editar/${index}`, servicio);
   }
 
   // Reservaciones
@@ -62,10 +62,10 @@ export class StorageService {
   }
 
   eliminarReservaciones(index: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/reservaciones/eliminar/${index+1}`);
+    return this.http.delete(`${this.apiUrl}/reservaciones/eliminar/${index}`);
   }
 
   editarReservaciones(index: number, reservacion: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/reservaciones/editar/${index+1}`, reservacion);
+    return this.http.put(`${this.apiUrl}/reservaciones/editar/${index}`, reservacion);
   }
 }
