@@ -19,7 +19,8 @@ export class CambiarContraComponent {
 constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    const idParam = this.route.snapshot.queryParamMap.get('id');
+    this.id = idParam !== null ? Number(idParam) : 0;
     if (this.id) {
       this.obtenerCliente();
     }
