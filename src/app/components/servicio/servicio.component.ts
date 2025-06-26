@@ -146,7 +146,7 @@ export class ServicioComponent {
         aceptacion:this.modelo.aceptacion 
       }
 
-      this.servicioCreado.emit(auxServ);
+      this.storageService.guardarServicio(auxServ);
 
       Swal.fire({
         icon: 'success',

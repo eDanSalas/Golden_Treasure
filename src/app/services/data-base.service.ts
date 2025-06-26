@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataBaseService {
-  private apiUrl = '/api'; // URL base
+  private apiUrl = 'https://goldentreasurebackend-production.up.railway.app/api'; // URL base
   constructor(private http: HttpClient) { }
 
   getAllAdmins(): Observable<any> {

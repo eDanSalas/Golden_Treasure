@@ -149,7 +149,7 @@ export class DashboardComponent {
 
   async eliminarServicio(index: number) {
     try {
-      await lastValueFrom(this.storageService.eliminarServicio(index));
+      await lastValueFrom(this.storageService.eliminarServicio(this.servicios[index].no_servicio));
       const data = await lastValueFrom(this.storageService.getServicios());
       this.servicios = data.sort((a, b) => a.no_servicio - b.no_servicio);
       this.updateChart();
@@ -201,7 +201,7 @@ export class DashboardComponent {
 
   async eliminarReservacion(index: number) {
     try {
-      await lastValueFrom(this.storageService.eliminarReservaciones(index));
+      await lastValueFrom(this.storageService.eliminarReservaciones(this.reservaciones[index].no_reservacion));
       const data = await lastValueFrom(this.storageService.getReservaciones());
       this.reservaciones = data.sort((a, b) => a.no_reservacion - b.no_reservacion);
       this.updateChart();

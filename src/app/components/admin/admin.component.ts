@@ -61,7 +61,7 @@ export class AdminComponent {
         let dia = String(auxDate.getDate()).padStart(2, '0');
 
         result.fecha = `${año}-${mes}-${dia}`;
-        this.editarServicio.emit({ index, servicio: result });
+        this.editarServicio.emit({ index: this.servicios[index].no_servicio, servicio: result });
       }
     });
   }

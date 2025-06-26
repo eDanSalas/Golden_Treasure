@@ -79,7 +79,7 @@ export class AdminReactiveComponent {
         dia = String(auxDate.getDate()).padStart(2, '0');
 
         result.fin = `${año}-${mes}-${dia}`;
-        this.editarReservacion.emit({ index, reservacion: result });
+        this.editarReservacion.emit({ index: this.reservaciones[index].no_reservacion , reservacion: result });
       }
     });
   }

@@ -150,7 +150,7 @@ export class HabitacionComponent {
   }
 
   private async obtenerDatosCredenciales() {
-    const credenciales = await fetch('/api/cliente_paypal', {
+    const credenciales = await fetch('https://goldentreasurebackend-production.up.railway.app/api/cliente_paypal', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -315,7 +315,7 @@ export class HabitacionComponent {
     this.dataTotales = data;
 
     try {
-      const response = await fetch('/api/reservaciones/crear', {
+      const response = await fetch('https://goldentreasurebackend-production.up.railway.app/api/reservaciones/crear', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

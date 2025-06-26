@@ -27,7 +27,7 @@ constructor(private route: ActivatedRoute) {}
 
   async obtenerCliente() {
     try {
-      const response = await fetch(`/api/client/${this.id}`, {
+      const response = await fetch(`https://goldentreasurebackend-production.up.railway.app/api/client/${this.id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -52,7 +52,7 @@ constructor(private route: ActivatedRoute) {}
         });
       return;
     }
-    fetch('/api/client/changepass', {
+    fetch('https://goldentreasurebackend-production.up.railway.app/api/client/changepass', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
